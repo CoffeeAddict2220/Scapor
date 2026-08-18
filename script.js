@@ -21,7 +21,7 @@ L.tileLayer(
 
 
 // ========================================
-// SPOT-VERWALTUNG
+// SPOTS
 // ========================================
 
 const spots = [];
@@ -37,20 +37,11 @@ let nextSpotId = 1;
 
 map.on('click', function (event) {
 
-    console.log('Karte geklickt');
-
-
-    // Solange ein neuer Spot noch nicht
-    // gespeichert wurde, keinen weiteren erstellen
+    // Wenn gerade ein neuer Spot bearbeitet wird,
+    // keinen weiteren erstellen
     if (activeSpot !== null) {
-
-        console.log(
-            'Es ist bereits ein Spot in Bearbeitung.'
-        );
-
         return;
     }
-
 
     createSpot(event.latlng);
 
@@ -58,17 +49,11 @@ map.on('click', function (event) {
 
 
 // ========================================
-// NEUEN SPOT ERSTELLEN
+// SPOT ERSTELLEN
 // ========================================
 
 function createSpot(position) {
 
-    console.log(
-        'Neuer Spot wird erstellt'
-    );
-
-
-    // Marker erstellen
     const marker = L.marker(
         position,
         {
@@ -77,7 +62,6 @@ function createSpot(position) {
     ).addTo(map);
 
 
-    // Spot erstellen
     const spot = {
 
         id: nextSpotId++,
@@ -95,11 +79,8 @@ function createSpot(position) {
     };
 
 
-    // Zur Liste hinzufügen
     spots.push(spot);
 
-
-    // Aktiver Spot
     activeSpot = spot;
 
 
@@ -109,7 +90,6 @@ function createSpot(position) {
 
     marker.on('click', function (event) {
 
-        // Klick nicht an Karte weitergeben
         L.DomEvent.stopPropagation(event);
 
 
@@ -132,14 +112,6 @@ function createSpot(position) {
 
     marker.on('dragend', function () {
 
-        console.log(
-            'Spot wurde verschoben'
-        );
-
-
-        // Solange der Spot nicht gespeichert ist,
-        // Formular nach dem Verschieben wieder öffnen
-
         if (!spot.saved) {
 
             setTimeout(function () {
@@ -153,7 +125,7 @@ function createSpot(position) {
     });
 
 
-    // Formular direkt öffnen
+    // Formular öffnen
     openEditor(spot);
 
 }
@@ -165,18 +137,10 @@ function createSpot(position) {
 
 function openEditor(spot) {
 
-    console.log(
-        'Editor für Spot ' + spot.id
-    );
-
-
     const html = `
-
         <div class="marker-form">
 
-            <label>
-                Name
-            </label>
+            <label>Name</label>
 
             <input
                 class="spot-name"
@@ -185,97 +149,113 @@ function openEditor(spot) {
                 value="${escapeHtml(spot.name)}"
             >
 
-
-            <label>
-                Beschreibung
-            </label>
+            <label>Beschreibung</label>
 
             <textarea
                 class="spot-description"
                 placeholder="Beschreibung eingeben"
             >${escapeHtml(spot.description)}</textarea>
 
-
-            <label>
-                Kategorie
-            </label>
+            <label>Kategorie</label>
 
             <select class="spot-category">
 
-                <option
-                    value="Carshooting"
-                    ${spot.category === 'Carshooting' ? 'selected' : ''}
-                >
+                <option value="Carshooting">
                     Carshooting
                 </option>
 
-                <option
-                    value="Landscape"
-                    ${spot.category === 'Landscape' ? 'selected' : ''}
-                >
+                <option value="Landscape">
                     Landscape
                 </option>
 
             </select>
 
-
             <button
                 type="button"
-                onclick="saveSpot(${spot.id})"
+                class="spot-save"
             >
                 Speichern
             </button>
 
         </div>
-
     `;
 
 
-    // Popup-Inhalt setzen
-    spot.marker.setPopupContent(html);
+    // ----------------------------------------
+    // Popup erstellen
+    // ----------------------------------------
+
+    markerPopup(
+        spot,
+        html
+    );
+
+
+    // ----------------------------------------
+    // Formular vorbereiten
+    // ----------------------------------------
+
+    const popupElement =
+        spot.marker.getPopup().getElement();
+
+
+    if (!popupElement) {
+        return;
+    }
+
+
+    const category =
+        popupElement.querySelector(
+            '.spot-category'
+        );
+
+
+    category.value =
+        spot.category;
+
+
+    const saveButton =
+        popupElement.querySelector(
+            '.spot-save'
+        );
+
+
+    // ----------------------------------------
+    // Speichern
+    // ----------------------------------------
+
+    saveButton.onclick = function (event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        saveSpot(spot);
+
+    };
+
+}
+
+
+// ========================================
+// POPUP ERSTELLEN
+// ========================================
+
+function markerPopup(spot, html) {
+
+    // Vorheriges Popup entfernen
+    spot.marker.unbindPopup();
+
+
+    // Neues Popup binden
+    spot.marker.bindPopup(
+        html
+    );
 
 
     // Popup öffnen
     spot.marker.openPopup();
-
-
-    // Popup-Klicks nicht an Karte weitergeben
-    setTimeout(function () {
-
-        const popup =
-            spot.marker.getPopup();
-
-
-        if (!popup) {
-            return;
-        }
-
-
-        const popupElement =
-            popup.getElement();
-
-
-        if (popupElement) {
-
-            L.DomEvent.disableClickPropagation(
-                popupElement
-            );
-
-        }
-
-
-        // Fokus auf Name
-        const input =
-            popupElement?.querySelector(
-                '.spot-name'
-            );
-
-
-        if (input) {
-            input.focus();
-        }
-
-    }, 50);
 
 }
 
@@ -284,47 +264,14 @@ function openEditor(spot) {
 // SPOT SPEICHERN
 // ========================================
 
-function saveSpot(spotId) {
+function saveSpot(spot) {
 
-    console.log(
-        'Speichern für Spot:',
-        spotId
-    );
-
-
-    // Spot suchen
-    const spot =
-        spots.find(function (item) {
-
-            return item.id === spotId;
-
-        });
-
-
-    if (!spot) {
-
-        console.error(
-            'Spot nicht gefunden!'
-        );
-
-        return;
-
-    }
-
-
-    // Popup holen
     const popup =
         spot.marker.getPopup();
 
 
     if (!popup) {
-
-        console.error(
-            'Popup nicht gefunden!'
-        );
-
         return;
-
     }
 
 
@@ -333,19 +280,9 @@ function saveSpot(spotId) {
 
 
     if (!popupElement) {
-
-        console.error(
-            'Popup-Element nicht gefunden!'
-        );
-
         return;
-
     }
 
-
-    // ----------------------------------------
-    // Formularfelder
-    // ----------------------------------------
 
     const nameInput =
         popupElement.querySelector(
@@ -365,23 +302,7 @@ function saveSpot(spotId) {
         );
 
 
-    if (!nameInput ||
-        !descriptionInput ||
-        !categoryInput) {
-
-        console.error(
-            'Formularfelder nicht gefunden!'
-        );
-
-        return;
-
-    }
-
-
-    // ----------------------------------------
     // Name prüfen
-    // ----------------------------------------
-
     const name =
         nameInput.value.trim();
 
@@ -392,17 +313,12 @@ function saveSpot(spotId) {
             'Bitte gib einen Namen für den Spot ein.'
         );
 
-        nameInput.focus();
-
         return;
 
     }
 
 
-    // ----------------------------------------
-    // Daten speichern
-    // ----------------------------------------
-
+    // Daten übernehmen
     spot.name =
         name;
 
@@ -415,37 +331,19 @@ function saveSpot(spotId) {
         categoryInput.value;
 
 
+    // Spot speichern
     spot.saved = true;
 
 
-    // ----------------------------------------
     // Marker fixieren
-    // ----------------------------------------
-
     spot.marker.dragging.disable();
 
 
-    // ----------------------------------------
     // Aktiven Spot freigeben
-    // ----------------------------------------
-
-    if (activeSpot === spot) {
-
-        activeSpot = null;
-
-    }
+    activeSpot = null;
 
 
-    console.log(
-        'Spot gespeichert:',
-        spot
-    );
-
-
-    // ----------------------------------------
-    // Info-Popup anzeigen
-    // ----------------------------------------
-
+    // Info anzeigen
     showSpot(spot);
 
 }
@@ -457,30 +355,21 @@ function saveSpot(spotId) {
 
 function showSpot(spot) {
 
-    console.log(
-        'Zeige Spot:',
-        spot.id
-    );
-
-
     const position =
         spot.marker.getLatLng();
 
 
     const html = `
-
         <div class="marker-info">
 
             <h3>
                 ${escapeHtml(spot.name)}
             </h3>
 
-
             <p>
                 <strong>Kategorie:</strong><br>
                 ${escapeHtml(spot.category)}
             </p>
-
 
             <p>
                 <strong>Beschreibung:</strong><br>
@@ -490,99 +379,60 @@ function showSpot(spot) {
                 )}
             </p>
 
-
             <p>
                 <strong>Position:</strong><br>
                 ${position.lat.toFixed(6)},
                 ${position.lng.toFixed(6)}
             </p>
 
-
             <button
                 type="button"
-                onclick="editSpot(${spot.id})"
+                class="spot-edit"
             >
                 Bearbeiten
             </button>
 
         </div>
-
     `;
 
 
-    // ----------------------------------------
-    // Popup-Inhalt setzen
-    // ----------------------------------------
-
-    spot.marker.setPopupContent(html);
-
-
-    // ----------------------------------------
-    // Popup öffnen
-    // ----------------------------------------
-
-    spot.marker.openPopup();
-
-
-    // Popup-Klicks nicht an Karte weitergeben
-    setTimeout(function () {
-
-        const popup =
-            spot.marker.getPopup();
-
-
-        if (!popup) {
-            return;
-        }
-
-
-        const popupElement =
-            popup.getElement();
-
-
-        if (popupElement) {
-
-            L.DomEvent.disableClickPropagation(
-                popupElement
-            );
-
-        }
-
-    }, 50);
-
-}
-
-
-// ========================================
-// GESPEICHERTEN SPOT BEARBEITEN
-// ========================================
-
-function editSpot(spotId) {
-
-    console.log(
-        'Bearbeite Spot:',
-        spotId
+    // Popup binden
+    markerPopup(
+        spot,
+        html
     );
 
 
-    const spot =
-        spots.find(function (item) {
-
-            return item.id === spotId;
-
-        });
+    // Bearbeiten-Button
+    const popupElement =
+        spot.marker.getPopup().getElement();
 
 
-    if (!spot) {
+    if (!popupElement) {
         return;
     }
 
 
-    // Wichtig:
-    // Der Spot bleibt gespeichert und fixiert.
-    // Nur die Daten werden bearbeitet.
+    const editButton =
+        popupElement.querySelector(
+            '.spot-edit'
+        );
 
-    openEditor(spot);
+
+    if (editButton) {
+
+        editButton.onclick =
+            function (event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+                openEditor(spot);
+
+            };
+
+    }
 
 }
 
@@ -596,10 +446,8 @@ function escapeHtml(text) {
     const div =
         document.createElement('div');
 
-
     div.textContent =
         text;
-
 
     return div.innerHTML;
 
