@@ -6,7 +6,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Meine Karte</title>
+    <title>Scapor</title>
 
     <!-- Leaflet CSS -->
     <link
@@ -14,19 +14,11 @@
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     >
 
-    <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-
-        #map {
-            height: 100%;
-            width: 100%;
-        }
-    </style>
+    <!-- Unsere eigene CSS-Datei -->
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 </head>
 
 <body>
@@ -38,27 +30,8 @@
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
     </script>
 
-    <script>
-        // Karte erstellen
-        const map = L.map('map').setView(
-            [51.7, 10.0],
-            10
-        );
-
-        // OpenStreetMap als Kartenquelle
-        L.tileLayer(
-            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            {
-                attribution:
-                    '&copy; OpenStreetMap contributors'
-            }
-        ).addTo(map);
-
-        // Test-Marker
-        L.marker([51.7, 10.0])
-            .addTo(map)
-            .bindPopup('Meine erste Markierung!');
-    </script>
+    <!-- Unsere eigene JavaScript-Datei -->
+    <script src="script.js"></script>
 
 </body>
 
