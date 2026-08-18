@@ -454,3 +454,52 @@ function escapeHtml(text) {
     return div.innerHTML;
 
 }
+
+
+// ========================================
+// WILLKOMMENS-POPUP
+// ========================================
+
+const welcomeOverlay =
+    document.getElementById('welcome-overlay');
+
+const welcomeStart =
+    document.getElementById('welcome-start');
+
+const welcomeClose =
+    document.getElementById('welcome-close');
+
+
+// Popup schließen
+function closeWelcomePopup() {
+
+    if (!welcomeOverlay) {
+        return;
+    }
+
+
+    welcomeOverlay.style.display = 'none';
+
+}
+
+
+// Start-Button
+if (welcomeStart) {
+
+    welcomeStart.addEventListener(
+        'click',
+        closeWelcomePopup
+    );
+
+}
+
+
+// X-Button
+if (welcomeClose) {
+
+    welcomeClose.addEventListener(
+        'click',
+        closeWelcomePopup
+    );
+
+}
