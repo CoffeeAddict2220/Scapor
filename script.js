@@ -2,7 +2,9 @@
 // KARTE
 // ========================================
 
-const map = L.map('map').setView(
+const map = L.map('map', {
+    zoomControl: false
+}).setView(
     [51.7, 10.0],
     10
 );
