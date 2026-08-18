@@ -10,3 +10,23 @@ body {
     width: 100%;
     height: 100%;
 }
+
+
+/* Eingabefeld für den Markernamen */
+
+.marker-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.marker-form input {
+    width: 180px;
+    padding: 6px;
+    box-sizing: border-box;
+}
+
+.marker-form button {
+    padding: 6px 10px;
+    cursor: pointer;
+}
