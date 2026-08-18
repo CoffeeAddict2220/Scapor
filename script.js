@@ -1,3 +1,6 @@
+console.log("NEUE SCRIPT.JS WIRD GELADEN");
+
+
 // ========================================
 // Karte erstellen
 // ========================================
@@ -39,24 +42,36 @@ let markerData = {
 
 
 // ========================================
-// Karte anklicken
+// KLICK AUF DIE KARTE
 // ========================================
 
 map.on('click', function (event) {
 
-    // Wenn bereits ein neuer, ungespeicherter
-    // Marker existiert, keinen weiteren erzeugen
+    console.log("KARTE WURDE ANGEKLICKT");
+
+
+    // Nur einen neuen Marker gleichzeitig erlauben
     if (marker !== null) {
+
+        console.log("Es existiert bereits ein Marker.");
+
         return;
     }
 
 
-    // Position des Klicks
+    // Position des Mausklicks
     const position = event.latlng;
 
 
+    console.log(
+        "Neue Marker-Position:",
+        position.lat,
+        position.lng
+    );
+
+
     // ========================================
-    // Neuen Marker erstellen
+    // Marker erstellen
     // ========================================
 
     marker = L.marker(
@@ -67,7 +82,10 @@ map.on('click', function (event) {
     ).addTo(map);
 
 
-    // Neue Daten zurücksetzen
+    // ========================================
+    // Neue Daten
+    // ========================================
+
     markerData = {
         name: '',
         description: '',
@@ -75,19 +93,25 @@ map.on('click', function (event) {
     };
 
 
-    // Editor öffnen
+    // ========================================
+    // Formular anzeigen
+    // ========================================
+
     openMarkerEditor();
 
 });
 
 
 // ========================================
-// Marker bearbeiten
+// Formular zum Bearbeiten
 // ========================================
 
 function openMarkerEditor() {
 
-    if (!marker) {
+    console.log("ÖFFNE MARKER-FORMULAR");
+
+
+    if (marker === null) {
         return;
     }
 
@@ -103,7 +127,6 @@ function openMarkerEditor() {
                 type="text"
                 id="marker-name"
                 placeholder="Name eingeben"
-                value="${escapeHtml(markerData.name)}"
             >
 
 
@@ -114,7 +137,7 @@ function openMarkerEditor() {
             <textarea
                 id="marker-description"
                 placeholder="Beschreibung eingeben"
-            >${escapeHtml(markerData.description)}</textarea>
+            ></textarea>
 
 
             <label for="marker-category">
@@ -150,51 +173,53 @@ function openMarkerEditor() {
         .openPopup();
 
 
-    // Kategorie setzen
+    // Kurz warten, bis Leaflet das Popup
+    // in die Seite eingesetzt hat
+
     setTimeout(function () {
-
-        const category =
-            document.getElementById('marker-category');
-
-        if (category) {
-
-            category.value =
-                markerData.category;
-
-        }
-
-
-        // ========================================
-        // Speichern-Button
-        // ========================================
 
         const saveButton =
             document.getElementById('save-marker');
 
 
-        if (saveButton) {
+        if (!saveButton) {
 
-            saveButton.onclick = function () {
+            console.error(
+                "SPEICHER-BUTTON NICHT GEFUNDEN"
+            );
 
-                saveMarker();
-
-            };
-
+            return;
         }
 
-    }, 50);
+
+        console.log(
+            "SPEICHER-BUTTON GEFUNDEN"
+        );
+
+
+        saveButton.addEventListener(
+            'click',
+            saveMarker
+        );
+
+    }, 100);
+
 }
 
 
 // ========================================
-// Marker speichern
+// MARKER SPEICHERN
 // ========================================
 
 function saveMarker() {
 
-    if (!marker) {
-        return;
-    }
+    console.log(
+        "=============================="
+    );
+
+    console.log(
+        "SPEICHERN WURDE GEKLICKT"
+    );
 
 
     const nameInput =
@@ -212,7 +237,7 @@ function saveMarker() {
         !categoryInput) {
 
         console.error(
-            'Marker-Formular konnte nicht gefunden werden.'
+            "FORMULAR NICHT GEFUNDEN"
         );
 
         return;
@@ -220,7 +245,7 @@ function saveMarker() {
 
 
     // ========================================
-    // Daten übernehmen
+    // Daten speichern
     // ========================================
 
     markerData.name =
@@ -233,22 +258,22 @@ function saveMarker() {
         categoryInput.value;
 
 
-    // Name erforderlich
-    if (markerData.name === '') {
-
-        alert(
-            'Bitte gib einen Namen für den Marker ein.'
-        );
-
-        return;
-    }
+    console.log(
+        "Gespeicherte Daten:",
+        markerData
+    );
 
 
     // ========================================
-    // Marker FESTSETZEN
+    // Marker festsetzen
     // ========================================
 
     marker.dragging.disable();
+
+
+    console.log(
+        "MARKER WURDE FESTGESETZT"
+    );
 
 
     // ========================================
@@ -257,25 +282,14 @@ function saveMarker() {
 
     showMarkerInfo();
 
-
-    console.log(
-        'Marker gespeichert:',
-        markerData
-    );
-
 }
 
 
 // ========================================
-// Marker-Informationen anzeigen
+// Gespeicherte Informationen anzeigen
 // ========================================
 
 function showMarkerInfo() {
-
-    if (!marker) {
-        return;
-    }
-
 
     const position =
         marker.getLatLng();
@@ -287,9 +301,9 @@ function showMarkerInfo() {
             <h3>
                 ${escapeHtml(
                     markerData.name
+                    || 'Unbenannter Marker'
                 )}
             </h3>
-
 
             <p>
                 <strong>Kategorie:</strong><br>
@@ -298,29 +312,19 @@ function showMarkerInfo() {
                 )}
             </p>
 
-
             <p>
                 <strong>Beschreibung:</strong><br>
                 ${escapeHtml(
-                    markerData.description ||
-                    'Keine Beschreibung'
+                    markerData.description
+                    || 'Keine Beschreibung'
                 )}
             </p>
-
 
             <p>
                 <strong>Position:</strong><br>
                 ${position.lat.toFixed(6)},
                 ${position.lng.toFixed(6)}
             </p>
-
-
-            <button
-                type="button"
-                id="edit-marker"
-            >
-                Bearbeiten
-            </button>
 
         </div>
     `;
@@ -329,46 +333,6 @@ function showMarkerInfo() {
     marker
         .bindPopup(html)
         .openPopup();
-
-
-    // Bearbeiten-Button
-    setTimeout(function () {
-
-        const editButton =
-            document.getElementById('edit-marker');
-
-
-        if (editButton) {
-
-            editButton.onclick = function () {
-
-                openMarkerEditor();
-
-            };
-
-        }
-
-    }, 50);
-
-}
-
-
-// ========================================
-// Gespeicherten Marker anklicken
-// ========================================
-
-function setupMarkerClick() {
-
-    if (!marker) {
-        return;
-    }
-
-
-    marker.on('click', function () {
-
-        showMarkerInfo();
-
-    });
 
 }
 
