@@ -6,7 +6,7 @@ const map = L.map('map', {
     zoomControl: false
 }).setView(
     [51.1, -349.4],
-    5
+    6
 );
 
 
