@@ -480,13 +480,6 @@ function showSpot(spot) {
                 ${position.lng.toFixed(6)}
             </p>
 
-            <button
-                type="button"
-                class="spot-edit"
-            >
-                Bearbeiten
-            </button>
-
         </div>
     `;
 
