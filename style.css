@@ -6,8 +6,18 @@ html,
 body {
     margin: 0;
     padding: 0;
+
     width: 100%;
     height: 100%;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
 }
 
 
@@ -22,21 +32,34 @@ body {
     left: 0;
     right: 0;
 
-    height: 60px;
+    height: 64px;
 
-    background: white;
+    background: #102A43;
 
     display: flex;
     align-items: center;
 
-    padding: 0 20px;
+    padding: 0 24px;
 
     box-sizing: border-box;
 
     z-index: 1000;
 
+    /*
+     * Nur unten abrunden.
+     * Dadurch wirkt die Leiste wie
+     * eine schwebende Karte.
+     */
+
+    border-radius:
+        0 0 18px 18px;
+
+    /*
+     * Dezenter Schatten
+     */
+
     box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.15);
+        0 6px 18px rgba(0, 0, 0, 0.18);
 }
 
 
@@ -45,13 +68,17 @@ body {
    ======================================== */
 
 .logo {
-    font-size: 24px;
+    color: #ffffff;
+
+    font-size: 22px;
 
     font-weight: 700;
 
-    color: #222;
+    letter-spacing: -0.4px;
 
-    letter-spacing: 0.5px;
+    line-height: 1;
+
+    user-select: none;
 }
 
 
@@ -62,7 +89,7 @@ body {
 #map {
     position: absolute;
 
-    top: 60px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
