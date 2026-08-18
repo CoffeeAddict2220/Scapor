@@ -1255,7 +1255,7 @@ body {
    ======================================== */
 
 .page {
-    width: 100%;
+
     min-height: 100vh;
 
     box-sizing: border-box;
@@ -1267,10 +1267,8 @@ body {
         #F4F7FA;
 
     display: flex;
-    flex-direction: column;
-    align-items: center;
 
-    margin: 0;
+    justify-content: center;
 }
 
 
@@ -1284,7 +1282,7 @@ body {
 
     max-width: 760px;
 
-    margin: 0 auto;
+    align-self: flex-start;
 
     box-sizing: border-box;
 
@@ -1328,7 +1326,7 @@ body {
 
 
 /* ========================================
-   ÃœBERSCHRIFT
+   ÜBERSCHRIFT
    ======================================== */
 
 .content-card h1 {
@@ -1430,7 +1428,7 @@ body {
 
 
 /* ========================================
-   ÃœBER SCAPOR HIGHLIGHT
+   ÜBER SCAPOR HIGHLIGHT
    ======================================== */
 
 .about-highlight {
@@ -1511,11 +1509,8 @@ body {
 
     .page {
 
-        width: 100%;
         padding:
-            82px 12px 40px;
-
-        box-sizing: border-box;
+            82px 12px 30px;
     }
 
 
@@ -1564,75 +1559,6 @@ body {
 
         padding:
             24px 18px;
-    }
-
-}
-
-
-/* ========================================
-   SCAPOR INFO-SEITEN
-   ======================================== */
-
-/*
- * Die Map benÃ¶tigt overflow: hidden.
- * Kontakt und Ãœber SCAPOR benÃ¶tigen dagegen
- * normales vertikales Scrollen.
- *
- * Wichtig: Auch das html-Element wird hier
- * freigegeben, da overflow: hidden global
- * auf html und body gesetzt ist.
- */
-
-html:has(body.info-page) {
-    width: 100%;
-    height: auto;
-    min-height: 100%;
-
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    background: #F4F7FA;
-}
-
-
-body.info-page {
-    width: 100%;
-    height: auto;
-    min-height: 100vh;
-
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    background: #F4F7FA;
-
-    -webkit-overflow-scrolling: touch;
-}
-
-
-/*
- * Die Inhaltsseite darf Ã¼ber die BildschirmhÃ¶he
- * hinaus wachsen.
- */
-
-body.info-page .page {
-    width: 100%;
-    min-height: 100vh;
-    height: auto;
-
-    box-sizing: border-box;
-
-    padding-top: 110px;
-    padding-bottom: 60px;
-}
-
-
-@media (max-width: 600px) {
-
-    body.info-page .page {
-        min-height: 100vh;
-
-        padding-top: 82px;
-        padding-bottom: 40px;
     }
 
 }
