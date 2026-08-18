@@ -22,7 +22,7 @@ body {
 
 
 /* ========================================
-   OBERE LEISTE
+   TOPBAR
    ======================================== */
 
 .topbar {
@@ -45,18 +45,8 @@ body {
 
     z-index: 1000;
 
-    /*
-     * Nur unten abrunden.
-     * Dadurch wirkt die Leiste wie
-     * eine schwebende Karte.
-     */
-
     border-radius:
         0 0 18px 18px;
-
-    /*
-     * Dezenter Schatten
-     */
 
     box-shadow:
         0 6px 18px rgba(0, 0, 0, 0.18);
@@ -93,4 +83,329 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
+}
+
+
+/* ========================================
+   LEAFLET POPUP
+   ======================================== */
+
+.leaflet-popup-content-wrapper {
+    padding: 0;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.20);
+}
+
+
+.leaflet-popup-content {
+    margin: 0;
+
+    width: 320px !important;
+}
+
+
+/* Pfeil unter dem Popup */
+
+.leaflet-popup-tip {
+    box-shadow:
+        3px 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ========================================
+   POPUP SCHLIESSEN
+   ======================================== */
+
+.leaflet-container a.leaflet-popup-close-button {
+    top: 12px;
+    right: 14px;
+
+    width: 30px;
+    height: 30px;
+
+    font-size: 26px;
+    line-height: 28px;
+
+    color: #6b7280;
+
+    font-weight: 400;
+
+    z-index: 10;
+}
+
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+    color: #102A43;
+
+    background: transparent;
+}
+
+
+/* ========================================
+   MARKER FORMULAR
+   ======================================== */
+
+.marker-form {
+    padding: 24px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+    box-sizing: border-box;
+}
+
+
+/* ========================================
+   LABELS
+   ======================================== */
+
+.marker-form label {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #243B53;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.1px;
+}
+
+
+/* ========================================
+   INPUTS
+   ======================================== */
+
+.marker-form input,
+.marker-form textarea,
+.marker-form select {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d8dee6;
+
+    border-radius: 10px;
+
+    background: #f8fafc;
+
+    color: #243B53;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
+
+
+/* Input */
+
+.marker-form input {
+    height: 44px;
+
+    padding: 0 13px;
+}
+
+
+/* Textarea */
+
+.marker-form textarea {
+    min-height: 82px;
+
+    padding: 11px 13px;
+
+    resize: vertical;
+}
+
+
+/* Select */
+
+.marker-form select {
+    height: 44px;
+
+    padding: 0 13px;
+
+    cursor: pointer;
+}
+
+
+/* ========================================
+   PLACEHOLDER
+   ======================================== */
+
+.marker-form input::placeholder,
+.marker-form textarea::placeholder {
+    color: #9aa5b1;
+}
+
+
+/* ========================================
+   FOCUS
+   ======================================== */
+
+.marker-form input:focus,
+.marker-form textarea:focus,
+.marker-form select:focus {
+
+    background: #ffffff;
+
+    border-color: #102A43;
+
+    box-shadow:
+        0 0 0 3px rgba(16, 42, 67, 0.10);
+}
+
+
+/* ========================================
+   SPEICHERN BUTTON
+   ======================================== */
+
+.marker-form button {
+
+    width: 100%;
+
+    height: 44px;
+
+    margin-top: 10px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #102A43;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        transform 0.1s ease;
+}
+
+
+.marker-form button:hover {
+    background: #163B5C;
+}
+
+
+.marker-form button:active {
+    transform: scale(0.98);
+}
+
+
+/* ========================================
+   GESPEICHERTER SPOT
+   ======================================== */
+
+.marker-info {
+    padding: 24px;
+
+    box-sizing: border-box;
+
+    color: #243B53;
+}
+
+
+.marker-info h3 {
+    margin: 0 0 18px 0;
+
+    padding-right: 25px;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    color: #102A43;
+}
+
+
+.marker-info p {
+    margin: 10px 0;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+.marker-info strong {
+    color: #102A43;
+}
+
+
+/* ========================================
+   BEARBEITEN BUTTON
+   ======================================== */
+
+.marker-info button {
+
+    width: 100%;
+
+    height: 42px;
+
+    margin-top: 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #102A43;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.marker-info button:hover {
+    background: #163B5C;
+}
+
+
+/* ========================================
+   MOBILE
+   ======================================== */
+
+@media (max-width: 480px) {
+
+    .leaflet-popup-content {
+        width: 280px !important;
+    }
+
+
+    .marker-form,
+    .marker-info {
+        padding: 20px;
+    }
+
 }
