@@ -59,7 +59,8 @@ function createSpot(position) {
     const marker = L.marker(
         position,
         {
-            draggable: true
+            draggable: true,
+            autoPan: true
         }
     ).addTo(map);
 
