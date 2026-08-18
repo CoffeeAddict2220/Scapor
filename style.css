@@ -1,9 +1,4 @@
 /* ========================================
-   SCAPOR â€“ STYLE.CSS
-   ======================================== */
-
-
-/* ========================================
    GRUNDLAYOUT
    ======================================== */
 
@@ -36,6 +31,7 @@ body {
 
 #map {
     position: fixed;
+
     inset: 0;
 
     width: 100%;
@@ -58,22 +54,28 @@ body {
 
     height: 64px;
 
-    box-sizing: border-box;
-
-    padding-left: 24px;
-    padding-right: 24px;
+    background: #102A43;
 
     display: flex;
     align-items: center;
 
-    background: #102A43;
+    padding-left: 24px;
+    padding-right: 24px;
+
+    box-sizing: border-box;
 
     z-index: 1000;
 
-    border-radius: 0 0 18px 18px;
+    border-radius:
+        0 0 18px 18px;
 
     box-shadow:
         0 6px 18px rgba(0, 0, 0, 0.18);
+
+    /*
+     * iPhone / Android Safe Area
+     */
+    padding-top: env(safe-area-inset-top);
 }
 
 
@@ -82,13 +84,10 @@ body {
    ======================================== */
 
 .logo {
-    display: block;
-
     color: #ffffff;
 
-    text-decoration: none;
-
     font-size: 22px;
+
     font-weight: 700;
 
     letter-spacing: -0.4px;
@@ -100,55 +99,7 @@ body {
 
 
 /* ========================================
-   NAVIGATION
-   ======================================== */
-
-.navigation {
-    margin-left: auto;
-
-    display: flex;
-    align-items: center;
-
-    gap: 6px;
-}
-
-.navigation a {
-    display: flex;
-    align-items: center;
-
-    height: 38px;
-
-    padding: 0 14px;
-
-    box-sizing: border-box;
-
-    border-radius: 9px;
-
-    color: rgba(255, 255, 255, 0.78);
-
-    text-decoration: none;
-
-    font-size: 14px;
-    font-weight: 500;
-
-    transition:
-        background 0.15s ease,
-        color 0.15s ease;
-}
-
-.navigation a:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.10);
-}
-
-.navigation a.active {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.14);
-}
-
-
-/* ========================================
-   LEAFLET
+   LEAFLET GRUNDANPASSUNG
    ======================================== */
 
 .leaflet-container {
@@ -161,6 +112,7 @@ body {
    ======================================== */
 
 .leaflet-popup-content-wrapper {
+
     padding: 0;
 
     border-radius: 18px;
@@ -171,25 +123,33 @@ body {
         0 12px 35px rgba(0, 0, 0, 0.22);
 }
 
+
 .leaflet-popup-content {
+
     margin: 0;
 
     width: 320px !important;
 
     max-width: calc(100vw - 60px);
+
 }
 
+
+/* Popup-Pfeil */
+
 .leaflet-popup-tip {
+
     box-shadow:
         3px 3px 8px rgba(0, 0, 0, 0.08);
 }
 
 
 /* ========================================
-   LEAFLET POPUP SCHLIESSEN
+   POPUP SCHLIESSEN
    ======================================== */
 
 .leaflet-container a.leaflet-popup-close-button {
+
     top: 12px;
     right: 12px;
 
@@ -197,6 +157,7 @@ body {
     height: 36px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -205,7 +166,9 @@ body {
     color: #829AB1;
 
     font-family: Arial, sans-serif;
+
     font-size: 27px;
+
     font-weight: 300;
 
     line-height: 36px;
@@ -215,8 +178,11 @@ body {
     z-index: 20;
 }
 
+
 .leaflet-container a.leaflet-popup-close-button:hover {
+
     background: #F0F4F8;
+
     color: #102A43;
 }
 
@@ -226,12 +192,15 @@ body {
    ======================================== */
 
 .marker-form {
+
     width: 100%;
+
     box-sizing: border-box;
 
     padding: 24px;
 
     display: flex;
+
     flex-direction: column;
 
     gap: 7px;
@@ -243,6 +212,7 @@ body {
    ======================================== */
 
 .marker-form label {
+
     display: block;
 
     margin-top: 7px;
@@ -250,6 +220,7 @@ body {
     color: #243B53;
 
     font-size: 14px;
+
     font-weight: 600;
 }
 
@@ -261,10 +232,13 @@ body {
 .marker-form input,
 .marker-form textarea,
 .marker-form select {
+
     width: 100%;
+
     box-sizing: border-box;
 
     border: 1px solid #D8DEE6;
+
     border-radius: 10px;
 
     background: #F8FAFC;
@@ -272,46 +246,86 @@ body {
     color: #243B53;
 
     font-family: inherit;
+
     font-size: 16px;
 
     outline: none;
 
+    /*
+     * Verhindert Zoom auf iOS
+     */
     -webkit-appearance: none;
-    appearance: none;
 }
+
+
+/* ========================================
+   INPUT
+   ======================================== */
 
 .marker-form input {
+
     height: 48px;
-    padding: 0 13px;
+
+    padding:
+        0 13px;
 }
 
+
+/* ========================================
+   TEXTAREA
+   ======================================== */
+
 .marker-form textarea {
+
     min-height: 90px;
-    padding: 11px 13px;
+
+    padding:
+        11px 13px;
 
     resize: vertical;
 }
 
+
+/* ========================================
+   SELECT
+   ======================================== */
+
 .marker-form select {
+
     height: 48px;
-    padding: 0 13px;
+
+    padding:
+        0 13px;
 
     cursor: pointer;
 }
 
+
+/* ========================================
+   FOCUS
+   ======================================== */
+
 .marker-form input:focus,
 .marker-form textarea:focus,
 .marker-form select:focus {
+
     background: #ffffff;
 
     border-color: #102A43;
 
     box-shadow:
-        0 0 0 3px rgba(16, 42, 67, 0.10);
+        0 0 0 3px
+        rgba(16, 42, 67, 0.10);
 }
+
+
+/* ========================================
+   PLACEHOLDER
+   ======================================== */
 
 .marker-form input::placeholder,
 .marker-form textarea::placeholder {
+
     color: #9AA5B1;
 }
 
@@ -321,25 +335,32 @@ body {
    ======================================== */
 
 .marker-form button {
+
     width: 100%;
 
     min-height: 48px;
 
     margin-top: 12px;
 
-    padding: 0 16px;
+    padding:
+        0 16px;
 
     border: none;
+
     border-radius: 11px;
 
     background: #102A43;
+
     color: #ffffff;
 
     font-family: inherit;
+
     font-size: 16px;
+
     font-weight: 600;
 
     cursor: pointer;
+
     touch-action: manipulation;
 
     transition:
@@ -347,11 +368,15 @@ body {
         transform 0.1s ease;
 }
 
+
 .marker-form button:hover {
+
     background: #163B5C;
 }
 
+
 .marker-form button:active {
+
     transform: scale(0.98);
 }
 
@@ -361,7 +386,9 @@ body {
    ======================================== */
 
 .marker-info {
+
     width: 100%;
+
     box-sizing: border-box;
 
     padding: 24px;
@@ -369,25 +396,37 @@ body {
     color: #243B53;
 }
 
+
 .marker-info h3 {
-    margin: 0 0 18px 0;
+
+    margin:
+        0 0 18px 0;
+
     padding-right: 30px;
 
     color: #102A43;
 
     font-size: 21px;
+
     line-height: 1.2;
+
     font-weight: 700;
 }
 
+
 .marker-info p {
-    margin: 10px 0;
+
+    margin:
+        10px 0;
 
     font-size: 14px;
+
     line-height: 1.55;
 }
 
+
 .marker-info strong {
+
     color: #102A43;
 }
 
@@ -397,6 +436,7 @@ body {
    ======================================== */
 
 .marker-info button {
+
     width: 100%;
 
     min-height: 48px;
@@ -404,20 +444,27 @@ body {
     margin-top: 16px;
 
     border: none;
+
     border-radius: 11px;
 
     background: #102A43;
+
     color: #ffffff;
 
     font-family: inherit;
+
     font-size: 15px;
+
     font-weight: 600;
 
     cursor: pointer;
+
     touch-action: manipulation;
 }
 
+
 .marker-info button:active {
+
     transform: scale(0.98);
 }
 
@@ -427,25 +474,38 @@ body {
    ======================================== */
 
 #welcome-overlay {
+
     position: fixed;
+
     inset: 0;
 
     z-index: 5000;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
-    padding: 20px;
-    padding-top: calc(20px + env(safe-area-inset-top));
-    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    padding:
+        20px;
+
+    padding-top:
+        calc(20px + env(safe-area-inset-top));
+
+    padding-bottom:
+        calc(20px + env(safe-area-inset-bottom));
 
     box-sizing: border-box;
 
-    background: rgba(8, 25, 40, 0.45);
+    background:
+        rgba(8, 25, 40, 0.45);
 
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter:
+        blur(5px);
+
+    -webkit-backdrop-filter:
+        blur(5px);
 }
 
 
@@ -454,14 +514,18 @@ body {
    ======================================== */
 
 #welcome-popup {
+
     position: relative;
 
     width: 100%;
+
     max-width: 480px;
 
-    max-height: calc(100vh - 40px);
+    max-height:
+        calc(100vh - 40px);
 
     overflow-y: auto;
+
     -webkit-overflow-scrolling: touch;
 
     background: #ffffff;
@@ -469,7 +533,8 @@ body {
     border-radius: 22px;
 
     box-shadow:
-        0 25px 60px rgba(0, 0, 0, 0.25);
+        0 25px 60px
+        rgba(0, 0, 0, 0.25);
 }
 
 
@@ -478,81 +543,113 @@ body {
    ======================================== */
 
 .welcome-content {
+
     padding: 34px;
 }
 
+
 .welcome-logo {
+
     display: inline-block;
 
     margin-bottom: 18px;
 
-    padding: 8px 12px;
+    padding:
+        8px 12px;
 
     border-radius: 8px;
 
     background: #102A43;
+
     color: #ffffff;
 
     font-size: 14px;
+
     font-weight: 700;
 
     letter-spacing: 0.3px;
 }
 
+
 .welcome-content h1 {
-    margin: 0 35px 12px 0;
+
+    margin:
+        0 35px 12px 0;
 
     color: #102A43;
 
     font-size: 28px;
+
     line-height: 1.15;
+
     font-weight: 750;
 
     letter-spacing: -0.6px;
 }
 
+
 .welcome-intro {
-    margin: 0 0 28px 0;
+
+    margin:
+        0 0 28px 0;
 
     color: #52606D;
 
     font-size: 16px;
+
     line-height: 1.55;
 }
 
+
 .welcome-section {
+
     margin-top: 24px;
 }
 
+
 .welcome-section h2 {
-    margin: 0 0 9px 0;
+
+    margin:
+        0 0 9px 0;
 
     color: #243B53;
 
     font-size: 16px;
+
     font-weight: 700;
 }
 
+
 .welcome-section p {
-    margin: 7px 0;
+
+    margin:
+        7px 0;
 
     color: #52606D;
 
     font-size: 14px;
+
     line-height: 1.55;
 }
 
+
 .welcome-section ul {
-    margin: 8px 0 0 0;
+
+    margin:
+        8px 0 0 0;
+
     padding-left: 20px;
 
     color: #52606D;
 
     font-size: 14px;
+
     line-height: 1.6;
 }
 
+
 .welcome-section li {
+
     margin-bottom: 6px;
 }
 
@@ -562,16 +659,21 @@ body {
    ======================================== */
 
 .welcome-note {
-    padding: 14px 16px;
+
+    padding:
+        14px 16px;
 
     background: #F4F7FA;
 
     border-radius: 12px;
 
-    border-left: 3px solid #102A43;
+    border-left:
+        3px solid #102A43;
 }
 
+
 .welcome-note strong {
+
     color: #102A43;
 
     font-size: 14px;
@@ -583,6 +685,7 @@ body {
    ======================================== */
 
 #welcome-start {
+
     width: 100%;
 
     min-height: 50px;
@@ -590,20 +693,27 @@ body {
     margin-top: 28px;
 
     border: none;
+
     border-radius: 11px;
 
     background: #102A43;
+
     color: #ffffff;
 
     font-family: inherit;
+
     font-size: 16px;
+
     font-weight: 600;
 
     cursor: pointer;
+
     touch-action: manipulation;
 }
 
+
 #welcome-start:active {
+
     transform: scale(0.98);
 }
 
@@ -613,6 +723,7 @@ body {
    ======================================== */
 
 #welcome-close {
+
     position: absolute;
 
     top: 12px;
@@ -622,6 +733,7 @@ body {
     height: 42px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -630,10 +742,13 @@ body {
     border: none;
 
     background: transparent;
+
     color: #829AB1;
 
     font-family: Arial, sans-serif;
+
     font-size: 30px;
+
     font-weight: 300;
 
     line-height: 1;
@@ -647,9 +762,306 @@ body {
     touch-action: manipulation;
 }
 
+
 #welcome-close:hover {
+
     background: #F0F4F8;
+
     color: #102A43;
+}
+
+
+/* ========================================
+   MOBILE
+   ======================================== */
+
+@media (max-width: 600px) {
+
+    /* ------------------------------------
+       TOPBAR
+       ------------------------------------ */
+
+    .topbar {
+
+        height: 58px;
+
+        padding-left:
+            18px;
+
+        padding-right:
+            18px;
+
+        border-radius:
+            0 0 16px 16px;
+    }
+
+
+    .logo {
+
+        font-size: 20px;
+
+        letter-spacing:
+            -0.5px;
+    }
+
+
+    /* ------------------------------------
+       LEAFLET POPUP
+       ------------------------------------ */
+
+    .leaflet-popup-content {
+
+        width:
+            min(300px, calc(100vw - 48px))
+        !important;
+
+        max-width:
+            calc(100vw - 48px);
+    }
+
+
+    .leaflet-popup-content-wrapper {
+
+        border-radius:
+            17px;
+    }
+
+
+    /* ------------------------------------
+       FORMULAR
+       ------------------------------------ */
+
+    .marker-form {
+
+        padding:
+            20px;
+    }
+
+
+    .marker-form label {
+
+        font-size:
+            13px;
+
+        margin-top:
+            6px;
+    }
+
+
+    .marker-form input {
+
+        height:
+            48px;
+    }
+
+
+    .marker-form textarea {
+
+        min-height:
+            90px;
+    }
+
+
+    .marker-form select {
+
+        height:
+            48px;
+    }
+
+
+    .marker-form button {
+
+        min-height:
+            50px;
+
+        margin-top:
+            14px;
+    }
+
+
+    /* ------------------------------------
+       GESPEICHERTER SPOT
+       ------------------------------------ */
+
+    .marker-info {
+
+        padding:
+            20px;
+    }
+
+
+    .marker-info h3 {
+
+        font-size:
+            19px;
+    }
+
+
+    .marker-info button {
+
+        min-height:
+            50px;
+    }
+
+
+    /* ------------------------------------
+       WILLKOMMEN
+       ------------------------------------ */
+
+    #welcome-overlay {
+
+        padding:
+            12px;
+
+        padding-top:
+            calc(12px + env(safe-area-inset-top));
+
+        padding-bottom:
+            calc(12px + env(safe-area-inset-bottom));
+
+        align-items:
+            center;
+    }
+
+
+    #welcome-popup {
+
+        max-height:
+            calc(100vh - 24px);
+
+        border-radius:
+            19px;
+    }
+
+
+    .welcome-content {
+
+        padding:
+            26px 22px;
+    }
+
+
+    .welcome-logo {
+
+        margin-bottom:
+            14px;
+    }
+
+
+    .welcome-content h1 {
+
+        margin-right:
+            35px;
+
+        font-size:
+            24px;
+    }
+
+
+    .welcome-intro {
+
+        margin-bottom:
+            22px;
+
+        font-size:
+            15px;
+    }
+
+
+    .welcome-section {
+
+        margin-top:
+            20px;
+    }
+
+
+    .welcome-section h2 {
+
+        font-size:
+            15px;
+    }
+
+
+    .welcome-section p,
+    .welcome-section ul {
+
+        font-size:
+            13px;
+    }
+
+
+    #welcome-start {
+
+        min-height:
+            50px;
+
+        margin-top:
+            22px;
+    }
+
+
+    #welcome-close {
+
+        width:
+            42px;
+
+        height:
+            42px;
+
+        top:
+            8px;
+
+        right:
+            8px;
+    }
+
+}
+
+
+/* ========================================
+   SEHR KLEINE HANDYS
+   ======================================== */
+
+@media (max-width: 380px) {
+
+    .leaflet-popup-content {
+
+        width:
+            calc(100vw - 34px)
+        !important;
+
+        max-width:
+            calc(100vw - 34px);
+    }
+
+
+    .marker-form {
+
+        padding:
+            18px;
+    }
+
+
+    .marker-info {
+
+        padding:
+            18px;
+    }
+
+
+    .welcome-content {
+
+        padding:
+            22px 18px;
+    }
+
+
+    .welcome-content h1 {
+
+        font-size:
+            22px;
+    }
+
 }
 
 
@@ -662,11 +1074,18 @@ body {
     border: none;
 }
 
+
+/* ========================================
+   MARKER
+   ======================================== */
+
 .scapor-marker {
+
     width: 36px;
     height: 36px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -679,7 +1098,13 @@ body {
         box-shadow 0.15s ease;
 }
 
+
+/* ========================================
+   INNERER PUNKT
+   ======================================== */
+
 .marker-dot {
+
     width: 14px;
     height: 14px;
 
@@ -692,34 +1117,136 @@ body {
     box-sizing: border-box;
 }
 
+
+/* ========================================
+   AKTIVER SPOT
+   ======================================== */
+
 .active-marker {
+
     background: rgba(155, 44, 44, 0.18);
 
-    border: 2px solid #9B2C2C;
+    border:
+        2px solid #9B2C2C;
 
     box-shadow:
-        0 4px 12px rgba(155, 44, 44, 0.30);
+        0 4px 12px
+        rgba(155, 44, 44, 0.30);
 }
+
 
 .active-marker .marker-dot {
-    border-color: #9B2C2C;
+
+    border-color:
+        #9B2C2C;
 }
+
+
+/* ========================================
+   GESPEICHERTER SPOT
+   ======================================== */
 
 .saved-marker {
+
     background: rgba(16, 42, 67, 0.18);
 
-    border: 2px solid #102A43;
+    border:
+        2px solid #102A43;
 
     box-shadow:
-        0 4px 12px rgba(16, 42, 67, 0.30);
+        0 4px 12px
+        rgba(16, 42, 67, 0.30);
 }
+
 
 .saved-marker .marker-dot {
-    border-color: #102A43;
+
+    border-color:
+        #102A43;
 }
 
+
+/* ========================================
+   HOVER
+   ======================================== */
+
 .scapor-marker:hover {
-    transform: scale(1.12);
+
+    transform:
+        scale(1.12);
+}
+
+
+/* ========================================
+   NAVIGATION
+   ======================================== */
+
+.logo {
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    letter-spacing: -0.4px;
+}
+
+
+.navigation {
+
+    margin-left: auto;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+.navigation a {
+
+    display: flex;
+
+    align-items: center;
+
+    height: 38px;
+
+    padding: 0 14px;
+
+    border-radius: 9px;
+
+    color: rgba(255, 255, 255, 0.78);
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+
+.navigation a:hover {
+
+    color: #ffffff;
+
+    background:
+        rgba(255, 255, 255, 0.10);
+}
+
+
+.navigation a.active {
+
+    color: #ffffff;
+
+    background:
+        rgba(255, 255, 255, 0.14);
 }
 
 
@@ -728,20 +1255,20 @@ body {
    ======================================== */
 
 .page {
-    width: 100%;
+
     min-height: 100vh;
 
     box-sizing: border-box;
 
-    padding: 110px 24px 50px;
+    padding:
+        110px 24px 50px;
 
-    background: #F4F7FA;
+    background:
+        #F4F7FA;
 
     display: flex;
-    flex-direction: column;
-    align-items: center;
 
-    margin: 0;
+    justify-content: center;
 }
 
 
@@ -750,10 +1277,12 @@ body {
    ======================================== */
 
 .content-card {
+
     width: 100%;
+
     max-width: 760px;
 
-    margin: 0 auto;
+    align-self: flex-start;
 
     box-sizing: border-box;
 
@@ -764,7 +1293,8 @@ body {
     border-radius: 22px;
 
     box-shadow:
-        0 10px 35px rgba(16, 42, 67, 0.08);
+        0 10px 35px
+        rgba(16, 42, 67, 0.08);
 }
 
 
@@ -773,18 +1303,22 @@ body {
    ======================================== */
 
 .page-label {
+
     display: inline-block;
 
     margin-bottom: 14px;
 
-    padding: 7px 10px;
+    padding:
+        7px 10px;
 
     border-radius: 7px;
 
     background: #102A43;
+
     color: #ffffff;
 
     font-size: 11px;
+
     font-weight: 700;
 
     letter-spacing: 0.8px;
@@ -792,26 +1326,33 @@ body {
 
 
 /* ========================================
-   ÃœBERSCHRIFT
+   ÜBERSCHRIFT
    ======================================== */
 
 .content-card h1 {
-    margin: 0 0 14px;
+
+    margin:
+        0 0 14px;
 
     color: #102A43;
 
     font-size: 38px;
+
     line-height: 1.1;
 
     letter-spacing: -1px;
 }
 
+
 .lead {
-    margin: 0 0 38px;
+
+    margin:
+        0 0 38px;
 
     color: #52606D;
 
     font-size: 17px;
+
     line-height: 1.6;
 }
 
@@ -822,29 +1363,40 @@ body {
 
 .contact-section,
 .about-section {
+
     margin-top: 30px;
+
     padding-top: 30px;
 
-    border-top: 1px solid #E5EAF0;
+    border-top:
+        1px solid #E5EAF0;
 }
+
 
 .contact-section h2,
 .about-section h2 {
-    margin: 0 0 10px;
+
+    margin:
+        0 0 10px;
 
     color: #243B53;
 
     font-size: 18px;
+
     font-weight: 700;
 }
 
+
 .contact-section p,
 .about-section p {
-    margin: 8px 0;
+
+    margin:
+        8px 0;
 
     color: #52606D;
 
     font-size: 15px;
+
     line-height: 1.65;
 }
 
@@ -854,6 +1406,7 @@ body {
    ======================================== */
 
 .contact-link {
+
     display: inline-block;
 
     margin-top: 8px;
@@ -861,32 +1414,40 @@ body {
     color: #102A43;
 
     font-size: 15px;
+
     font-weight: 600;
 
     text-decoration: none;
 }
 
+
 .contact-link:hover {
+
     text-decoration: underline;
 }
 
 
 /* ========================================
-   ÃœBER SCAPOR HIGHLIGHT
+   ÜBER SCAPOR HIGHLIGHT
    ======================================== */
 
 .about-highlight {
+
     margin-top: 38px;
 
-    padding: 22px 24px;
+    padding:
+        22px 24px;
 
     border-radius: 14px;
 
     background: #102A43;
+
     color: #ffffff;
 }
 
+
 .about-highlight strong {
+
     display: block;
 
     font-size: 20px;
@@ -894,62 +1455,16 @@ body {
     letter-spacing: -0.3px;
 }
 
-.about-highlight p {
-    margin: 5px 0 0;
 
-    color: rgba(255, 255, 255, 0.75);
+.about-highlight p {
+
+    margin:
+        5px 0 0;
+
+    color:
+        rgba(255, 255, 255, 0.75);
 
     font-size: 14px;
-}
-
-
-/* ========================================
-   INFO-SEITEN
-   ======================================== */
-
-/*
- * Die Map bleibt mit overflow: hidden fest.
- *
- * Kontakt und Ãœber SCAPOR bekommen Ã¼ber
- * body.info-page normales vertikales Scrollen.
- */
-
-html:has(body.info-page) {
-    width: 100%;
-    height: auto;
-    min-height: 100%;
-
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    background: #F4F7FA;
-}
-
-body.info-page {
-    width: 100%;
-    min-height: 100vh;
-    height: auto;
-
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    background: #F4F7FA;
-
-    -webkit-overflow-scrolling: touch;
-}
-
-body.info-page .page {
-    width: 100%;
-    min-height: 100vh;
-    height: auto;
-
-    box-sizing: border-box;
-
-    padding: 110px 24px 60px;
-}
-
-body.info-page .content-card {
-    flex-shrink: 0;
 }
 
 
@@ -960,219 +1475,90 @@ body.info-page .content-card {
 @media (max-width: 600px) {
 
     .topbar {
-        height: 58px;
 
         padding-left: 16px;
+
         padding-right: 16px;
 
-        border-radius: 0 0 16px 16px;
+        height: 58px;
     }
+
 
     .logo {
+
         font-size: 19px;
-        letter-spacing: -0.5px;
     }
 
+
     .navigation {
+
         gap: 2px;
     }
 
+
     .navigation a {
+
         height: 36px;
 
-        padding: 0 8px;
+        padding:
+            0 8px;
 
         font-size: 12px;
     }
 
 
-    /* Leaflet */
-
-    .leaflet-popup-content {
-        width: min(300px, calc(100vw - 48px)) !important;
-        max-width: calc(100vw - 48px);
-    }
-
-    .leaflet-popup-content-wrapper {
-        border-radius: 17px;
-    }
-
-
-    /* Marker */
-
-    .marker-form {
-        padding: 20px;
-    }
-
-    .marker-form label {
-        font-size: 13px;
-        margin-top: 6px;
-    }
-
-    .marker-form input,
-    .marker-form select {
-        height: 48px;
-    }
-
-    .marker-form textarea {
-        min-height: 90px;
-    }
-
-    .marker-form button {
-        min-height: 50px;
-        margin-top: 14px;
-    }
-
-    .marker-info {
-        padding: 20px;
-    }
-
-    .marker-info h3 {
-        font-size: 19px;
-    }
-
-    .marker-info button {
-        min-height: 50px;
-    }
-
-
-    /* Welcome */
-
-    #welcome-overlay {
-        padding: 12px;
-
-        padding-top:
-            calc(12px + env(safe-area-inset-top));
-
-        padding-bottom:
-            calc(12px + env(safe-area-inset-bottom));
-
-        align-items: center;
-    }
-
-    #welcome-popup {
-        max-height: calc(100vh - 24px);
-
-        border-radius: 19px;
-    }
-
-    .welcome-content {
-        padding: 26px 22px;
-    }
-
-    .welcome-logo {
-        margin-bottom: 14px;
-    }
-
-    .welcome-content h1 {
-        margin-right: 35px;
-
-        font-size: 24px;
-    }
-
-    .welcome-intro {
-        margin-bottom: 22px;
-
-        font-size: 15px;
-    }
-
-    .welcome-section {
-        margin-top: 20px;
-    }
-
-    .welcome-section h2 {
-        font-size: 15px;
-    }
-
-    .welcome-section p,
-    .welcome-section ul {
-        font-size: 13px;
-    }
-
-    #welcome-start {
-        min-height: 50px;
-        margin-top: 22px;
-    }
-
-    #welcome-close {
-        width: 42px;
-        height: 42px;
-
-        top: 8px;
-        right: 8px;
-    }
-
-
-    /* Info-Seiten */
-
-    body.info-page .page {
-        min-height: 100vh;
+    .page {
 
         padding:
-            82px 12px 40px;
+            82px 12px 30px;
     }
 
-    body.info-page .content-card {
+
+    .content-card {
+
         padding:
             28px 22px;
 
-        border-radius: 18px;
+        border-radius:
+            18px;
     }
 
-    body.info-page .content-card h1 {
-        font-size: 30px;
+
+    .content-card h1 {
+
+        font-size:
+            30px;
     }
 
-    body.info-page .lead {
-        font-size: 15px;
-        margin-bottom: 28px;
+
+    .lead {
+
+        font-size:
+            15px;
+
+        margin-bottom:
+            28px;
     }
+
 }
 
-
-/* ========================================
-   SEHR KLEINE HANDYS
-   ======================================== */
 
 @media (max-width: 380px) {
 
     .navigation a {
-        padding: 0 6px;
-        font-size: 11px;
-    }
 
-    .leaflet-popup-content {
-        width: calc(100vw - 34px) !important;
-        max-width: calc(100vw - 34px);
-    }
-
-    .marker-form {
-        padding: 18px;
-    }
-
-    .marker-info {
-        padding: 18px;
-    }
-
-    .welcome-content {
-        padding: 22px 18px;
-    }
-
-    .welcome-content h1 {
-        font-size: 22px;
-    }
-
-    body.info-page .page {
         padding:
-            78px 10px 32px;
+            0 6px;
+
+        font-size:
+            11px;
     }
 
-    body.info-page .content-card {
+
+    .content-card {
+
         padding:
             24px 18px;
     }
 
-    body.info-page .content-card h1 {
-        font-size: 26px;
-    }
 }
