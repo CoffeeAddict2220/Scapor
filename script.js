@@ -24,22 +24,19 @@ L.tileLayer(
 // SPOTS
 // ========================================
 
-// Alle erstellten Spots
 const spots = [];
 
 
-// Der aktuell neu erstellte,
-// noch nicht gespeicherte Spot
+// Aktuell ungespeicherter Spot
 let activeSpot = null;
 
 
-// Verhindert einen Kartenklick direkt
-// nach dem Speichern eines Spots
+// Verhindert neuen Spot direkt nach dem Speichern
 let ignoreNextMapClick = false;
 
 
 // ========================================
-// KLICK AUF DIE KARTE
+// KARTE KLICKEN
 // ========================================
 
 map.on('click', function (event) {
@@ -47,10 +44,7 @@ map.on('click', function (event) {
     console.log('Karte geklickt');
 
 
-    // ----------------------------------------
-    // Kartenklick nach dem Speichern ignorieren
-    // ----------------------------------------
-
+    // Klick direkt nach dem Speichern ignorieren
     if (ignoreNextMapClick) {
 
         ignoreNextMapClick = false;
@@ -59,43 +53,37 @@ map.on('click', function (event) {
     }
 
 
-    // ----------------------------------------
-    // Ist bereits ein neuer Spot aktiv?
-    // ----------------------------------------
-
+    // Wenn bereits ein neuer Spot bearbeitet wird,
+    // keinen weiteren erstellen
     if (activeSpot !== null) {
 
         console.log(
-            'Es befindet sich bereits ein Spot in Bearbeitung.'
+            'Es ist bereits ein Spot in Bearbeitung.'
         );
 
         return;
     }
 
 
-    // ----------------------------------------
     // Neuen Spot erstellen
-    // ----------------------------------------
-
     createSpot(event.latlng);
 
 });
 
 
 // ========================================
-// NEUEN SPOT ERSTELLEN
+// SPOT ERSTELLEN
 // ========================================
 
 function createSpot(position) {
 
     console.log(
-        'Neuer Spot wird erstellt:',
-        position
+        'Neuer Spot wird erstellt'
     );
 
 
     // ----------------------------------------
-    // Marker erstellen
+    // Marker
     // ----------------------------------------
 
     const marker = L.marker(
@@ -125,11 +113,11 @@ function createSpot(position) {
     };
 
 
-    // Spot zur Liste hinzufügen
+    // Spot speichern
     spots.push(spot);
 
 
-    // Spot als aktuell aktiv markieren
+    // Als aktiven Spot markieren
     activeSpot = spot;
 
 
@@ -145,24 +133,22 @@ function createSpot(position) {
             L.DomEvent.stopPropagation(event);
 
 
-            // Gespeicherter Spot
             if (spot.saved) {
 
                 showSpot(spot);
 
-                return;
+            } else {
+
+                openEditor(spot);
+
             }
-
-
-            // Noch nicht gespeicherter Spot
-            openEditor(spot);
 
         }
     );
 
 
     // ----------------------------------------
-    // Marker verschoben
+    // Marker verschieben
     // ----------------------------------------
 
     marker.on(
@@ -170,12 +156,12 @@ function createSpot(position) {
         function () {
 
             console.log(
-                'Spot wurde verschoben'
+                'Marker wurde verschoben'
             );
 
 
-            // Wenn der Spot noch nicht gespeichert ist,
-            // Popup nach dem Verschieben erneut öffnen
+            // Bei einem ungespeicherten Spot
+            // Popup wieder öffnen
 
             if (!spot.saved) {
 
@@ -185,7 +171,7 @@ function createSpot(position) {
                         openEditor(spot);
 
                     },
-                    100
+                    50
                 );
 
             }
@@ -213,13 +199,9 @@ function openEditor(spot) {
 
 
     console.log(
-        'Editor wird geöffnet'
+        'Editor öffnen'
     );
 
-
-    // ----------------------------------------
-    // Formular
-    // ----------------------------------------
 
     const html = `
         <div class="marker-form">
@@ -274,17 +256,10 @@ function openEditor(spot) {
     `;
 
 
-    // Popup-Inhalt setzen
-    marker.bindPopup(html);
-
-
-    // Popup öffnen
-    marker.openPopup();
-
-
-    // ----------------------------------------
-    // Warten, bis Popup vorhanden ist
-    // ----------------------------------------
+    // ========================================
+    // WICHTIG:
+    // Erst Listener registrieren
+    // ========================================
 
     marker.once(
         'popupopen',
@@ -297,18 +272,15 @@ function openEditor(spot) {
             if (!popupElement) {
 
                 console.error(
-                    'Popup konnte nicht gefunden werden.'
+                    'Popup-Element nicht gefunden'
                 );
 
                 return;
             }
 
 
-            // ------------------------------------
             // Klicks innerhalb des Popups
             // nicht an die Karte weitergeben
-            // ------------------------------------
-
             L.DomEvent.disableClickPropagation(
                 popupElement
             );
@@ -342,21 +314,20 @@ function openEditor(spot) {
                 );
 
 
-            // Prüfen
             if (!nameInput ||
                 !descriptionInput ||
                 !categoryInput ||
                 !saveButton) {
 
                 console.error(
-                    'Formularfelder konnten nicht gefunden werden.'
+                    'Formular konnte nicht gefunden werden'
                 );
 
                 return;
             }
 
 
-            // Aktuelle Kategorie anzeigen
+            // Kategorie setzen
             categoryInput.value =
                 spot.category;
 
@@ -369,13 +340,9 @@ function openEditor(spot) {
                 'click',
                 function (event) {
 
-                    // Klick nicht weitergeben
-                    L.DomEvent.stopPropagation(
-                        event
-                    );
-
-
                     event.preventDefault();
+
+                    event.stopPropagation();
 
 
                     saveSpot(
@@ -389,11 +356,27 @@ function openEditor(spot) {
             );
 
 
-            // Cursor in Name setzen
+            // Cursor ins Namensfeld
             nameInput.focus();
 
         }
     );
+
+
+    // ========================================
+    // ERST JETZT Popup setzen
+    // ========================================
+
+    marker.bindPopup(
+        html
+    );
+
+
+    // ========================================
+    // UND JETZT Popup öffnen
+    // ========================================
+
+    marker.openPopup();
 
 }
 
@@ -410,7 +393,7 @@ function saveSpot(
 ) {
 
     console.log(
-        'Speichern wurde geklickt'
+        'Speichern geklickt'
     );
 
 
@@ -454,14 +437,10 @@ function saveSpot(
 
 
     // ----------------------------------------
-    // Marker festsetzen
+    // Marker fixieren
     // ----------------------------------------
 
-    if (spot.marker.dragging) {
-
-        spot.marker.dragging.disable();
-
-    }
+    spot.marker.dragging.disable();
 
 
     // ----------------------------------------
@@ -476,8 +455,8 @@ function saveSpot(
 
 
     // ----------------------------------------
-    // Verhindern, dass der Speichern-Klick
-    // einen neuen Spot erzeugt
+    // Nächsten Kartenklick nicht als neuen
+    // Spot interpretieren
     // ----------------------------------------
 
     ignoreNextMapClick = true;
@@ -499,10 +478,7 @@ function saveSpot(
     );
 
 
-    // ----------------------------------------
     // Gespeicherte Informationen anzeigen
-    // ----------------------------------------
-
     showSpot(spot);
 
 }
@@ -562,17 +538,10 @@ function showSpot(spot) {
     `;
 
 
-    // Popup setzen
-    marker.bindPopup(html);
-
-
-    // Popup öffnen
-    marker.openPopup();
-
-
-    // ----------------------------------------
-    // Popup-Event
-    // ----------------------------------------
+    // ========================================
+    // WICHTIG:
+    // Listener VOR dem Öffnen registrieren
+    // ========================================
 
     marker.once(
         'popupopen',
@@ -587,14 +556,12 @@ function showSpot(spot) {
             }
 
 
-            // Klicks innerhalb des Popups
-            // nicht an Karte weitergeben
+            // Popup-Klicks nicht an Karte weitergeben
             L.DomEvent.disableClickPropagation(
                 popupElement
             );
 
 
-            // Bearbeiten-Button
             const editButton =
                 popupElement.querySelector(
                     '.spot-edit'
@@ -610,12 +577,9 @@ function showSpot(spot) {
                 'click',
                 function (event) {
 
-                    L.DomEvent.stopPropagation(
-                        event
-                    );
-
-
                     event.preventDefault();
+
+                    event.stopPropagation();
 
 
                     openEditor(spot);
@@ -625,6 +589,16 @@ function showSpot(spot) {
 
         }
     );
+
+
+    // Popup setzen
+    marker.bindPopup(
+        html
+    );
+
+
+    // Popup öffnen
+    marker.openPopup();
 
 }
 
