@@ -44,29 +44,25 @@ const marker = L.marker(
 
 
 // ========================================
-// Bearbeitungsformular erzeugen
+// Marker bearbeiten
 // ========================================
 
-function getEditorHtml() {
+function openMarkerEditor() {
 
-    return `
+    const html = `
         <div class="marker-form">
 
-            <label for="marker-name">
-                Name
-            </label>
+            <label>Name</label>
 
             <input
                 type="text"
                 id="marker-name"
-                value="${escapeHtml(markerData.name)}"
                 placeholder="Name eingeben"
+                value="${escapeHtml(markerData.name)}"
             >
 
 
-            <label for="marker-description">
-                Beschreibung
-            </label>
+            <label>Beschreibung</label>
 
             <textarea
                 id="marker-description"
@@ -74,19 +70,15 @@ function getEditorHtml() {
             >${escapeHtml(markerData.description)}</textarea>
 
 
-            <label for="marker-category">
-                Kategorie
-            </label>
+            <label>Kategorie</label>
 
             <select id="marker-category">
 
-                <option value="Carshooting"
-                    ${markerData.category === 'Carshooting' ? 'selected' : ''}>
+                <option value="Carshooting">
                     Carshooting
                 </option>
 
-                <option value="Landscape"
-                    ${markerData.category === 'Landscape' ? 'selected' : ''}>
+                <option value="Landscape">
                     Landscape
                 </option>
 
@@ -94,90 +86,93 @@ function getEditorHtml() {
 
 
             <button
-                id="save-marker"
                 type="button"
+                onclick="saveMarker()"
             >
                 Speichern
             </button>
 
         </div>
     `;
+
+
+    marker
+        .bindPopup(html)
+        .openPopup();
+
+
+    // Bereits gespeicherte Kategorie auswählen
+    setTimeout(function () {
+
+        const category =
+            document.getElementById('marker-category');
+
+        if (category) {
+
+            category.value =
+                markerData.category;
+
+        }
+
+    }, 50);
 }
 
 
 // ========================================
-// Marker bearbeiten
+// MARKER SPEICHERN
 // ========================================
 
-function openMarkerEditor() {
+function saveMarker() {
 
-    marker.setPopupContent(
-        getEditorHtml()
+    console.log('Speichern wurde geklickt');
+
+
+    const nameInput =
+        document.getElementById('marker-name');
+
+    const descriptionInput =
+        document.getElementById('marker-description');
+
+    const categoryInput =
+        document.getElementById('marker-category');
+
+
+    if (!nameInput ||
+        !descriptionInput ||
+        !categoryInput) {
+
+        console.error(
+            'Formularfelder wurden nicht gefunden!'
+        );
+
+        return;
+    }
+
+
+    // Daten übernehmen
+    markerData.name =
+        nameInput.value.trim();
+
+    markerData.description =
+        descriptionInput.value.trim();
+
+    markerData.category =
+        categoryInput.value;
+
+
+    console.log(
+        'Marker gespeichert:',
+        markerData
     );
 
-    marker.openPopup();
+
+    // Informationen anzeigen
+    showMarkerInfo();
 }
 
 
 // ========================================
-// Popup wurde geöffnet
-// ========================================
-
-marker.on('popupopen', function () {
-
-    const popupElement =
-        document.querySelector('.marker-form');
-
-    if (!popupElement) {
-        return;
-    }
-
-
-    const saveButton =
-        popupElement.querySelector('#save-marker');
-
-
-    if (!saveButton) {
-        return;
-    }
-
-
-    saveButton.onclick = function () {
-
-        const nameInput =
-            popupElement.querySelector('#marker-name');
-
-        const descriptionInput =
-            popupElement.querySelector('#marker-description');
-
-        const categoryInput =
-            popupElement.querySelector('#marker-category');
-
-
-        // Daten speichern
-        markerData.name =
-            nameInput.value.trim();
-
-        markerData.description =
-            descriptionInput.value.trim();
-
-        markerData.category =
-            categoryInput.value;
-
-
-        console.log('Marker gespeichert:');
-        console.log(markerData);
-
-
-        // Informationen anzeigen
-        showMarkerInfo();
-    };
-
-});
-
-
-// ========================================
-// Gespeicherte Daten anzeigen
+// MARKER-DATEN ANZEIGEN
 // ========================================
 
 function showMarkerInfo() {
@@ -186,34 +181,33 @@ function showMarkerInfo() {
         marker.getLatLng();
 
 
-    const name =
-        markerData.name || 'Unbenannter Marker';
-
-
-    const description =
-        markerData.description || 'Keine Beschreibung';
-
-
-    const category =
-        markerData.category || 'Keine Kategorie';
-
-
     const html = `
         <div class="marker-info">
 
             <h3>
-                ${escapeHtml(name)}
+                ${escapeHtml(
+                    markerData.name ||
+                    'Unbenannter Marker'
+                )}
             </h3>
+
 
             <p>
                 <strong>Kategorie:</strong><br>
-                ${escapeHtml(category)}
+                ${escapeHtml(
+                    markerData.category
+                )}
             </p>
+
 
             <p>
                 <strong>Beschreibung:</strong><br>
-                ${escapeHtml(description)}
+                ${escapeHtml(
+                    markerData.description ||
+                    'Keine Beschreibung'
+                )}
             </p>
+
 
             <p>
                 <strong>Position:</strong><br>
@@ -221,9 +215,10 @@ function showMarkerInfo() {
                 ${position.lng.toFixed(6)}
             </p>
 
+
             <button
-                id="edit-marker"
                 type="button"
+                onclick="openMarkerEditor()"
             >
                 Bearbeiten
             </button>
@@ -232,26 +227,9 @@ function showMarkerInfo() {
     `;
 
 
-    marker.setPopupContent(html);
-    marker.openPopup();
-
-
-    // Bearbeiten-Button
-    marker.once('popupopen', function () {
-
-        const editButton =
-            document.getElementById('edit-marker');
-
-
-        if (editButton) {
-
-            editButton.onclick = function () {
-                openMarkerEditor();
-            };
-
-        }
-
-    });
+    marker
+        .bindPopup(html)
+        .openPopup();
 }
 
 
@@ -259,37 +237,45 @@ function showMarkerInfo() {
 // Marker anklicken
 // ========================================
 
-marker.on('click', function () {
+marker.on(
+    'click',
+    function () {
 
-    openMarkerEditor();
+        openMarkerEditor();
 
-});
+    }
+);
 
 
 // ========================================
 // Marker verschieben
 // ========================================
 
-marker.on('dragend', function () {
+marker.on(
+    'dragend',
+    function () {
 
-    const position =
-        marker.getLatLng();
-
-
-    console.log(
-        'Neue Position:',
-        position.lat,
-        position.lng
-    );
+        const position =
+            marker.getLatLng();
 
 
-    if (markerData.name !== '') {
+        console.log(
+            'Neue Position:',
+            position.lat,
+            position.lng
+        );
 
-        showMarkerInfo();
+
+        // Wenn bereits ein Name vorhanden ist,
+        // Daten nach dem Verschieben anzeigen
+        if (markerData.name !== '') {
+
+            showMarkerInfo();
+
+        }
 
     }
-
-});
+);
 
 
 // ========================================
