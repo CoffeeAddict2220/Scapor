@@ -12,21 +12,68 @@ body {
 }
 
 
-/* Eingabefeld für den Markernamen */
+/* ========================================
+   Marker-Formular
+   ======================================== */
 
 .marker-form {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    min-width: 220px;
 }
 
-.marker-form input {
-    width: 180px;
-    padding: 6px;
+.marker-form label {
+    font-weight: bold;
+}
+
+.marker-form input,
+.marker-form textarea,
+.marker-form select {
+    width: 100%;
+    padding: 7px;
     box-sizing: border-box;
+    font-family: inherit;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.marker-form textarea {
+    resize: vertical;
+    min-height: 70px;
 }
 
 .marker-form button {
-    padding: 6px 10px;
+    padding: 8px 12px;
     cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background: #3388ff;
+    color: white;
+    font-weight: bold;
+}
+
+.marker-form button:hover {
+    background: #2277ee;
+}
+
+
+/* ========================================
+   Anzeige der Marker-Daten
+   ======================================== */
+
+.marker-info {
+    min-width: 220px;
+}
+
+.marker-info h3 {
+    margin: 0 0 8px 0;
+}
+
+.marker-info p {
+    margin: 5px 0;
+}
+
+.marker-category {
+    font-weight: bold;
 }
