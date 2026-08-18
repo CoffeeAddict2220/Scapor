@@ -2,38 +2,203 @@
 <html lang="de">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>SCAPOR.de</title>
 
-    <!-- Leaflet CSS -->
+
+    <!-- ========================================
+         LEAFLET CSS
+         ======================================== -->
+
     <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     >
 
-    <!-- Unsere CSS-Datei -->
+
+    <!-- ========================================
+         SCAPOR CSS
+         ======================================== -->
+
     <link
         rel="stylesheet"
         href="style.css"
     >
+
 </head>
+
 
 <body>
 
+
     <!-- ========================================
-         OBERE LEISTE
+         NAVIGATION
          ======================================== -->
 
     <header class="topbar">
 
-        <div class="logo">
+        <a
+            href="index.html"
+            class="logo"
+        >
             SCAPOR.de
-        </div>
+        </a>
+
+
+        <nav class="navigation">
+
+            <a
+                href="index.html"
+                class="active"
+            >
+                Map
+            </a>
+
+
+            <a
+                href="kontakt.html"
+            >
+                Kontakt
+            </a>
+
+
+            <a
+                href="ueber-scapor.html"
+            >
+                Über SCAPOR
+            </a>
+
+        </nav>
 
     </header>
+
+
+    <!-- ========================================
+         WILLKOMMENS-POPUP
+         ======================================== -->
+
+    <div id="welcome-overlay">
+
+        <div id="welcome-popup">
+
+            <button
+                id="welcome-close"
+                type="button"
+                onclick="closeWelcomePopup()"
+                aria-label="Schließen"
+            >
+                ×
+            </button>
+
+
+            <div class="welcome-content">
+
+                <div class="welcome-logo">
+                    SCAPOR.de
+                </div>
+
+
+                <h1>
+                    Willkommen bei SCAPOR
+                </h1>
+
+
+                <p class="welcome-intro">
+                    Entdecke interessante Orte für
+                    Carshootings, Landschaftsfotografie
+                    und mehr.
+                </p>
+
+
+                <div class="welcome-section">
+
+                    <h2>
+                        📍 So funktioniert's
+                    </h2>
+
+                    <p>
+                        Klicke auf einen beliebigen Punkt
+                        auf der Karte, um einen neuen Spot
+                        zu erstellen.
+                    </p>
+
+                    <p>
+                        Du kannst den Marker zunächst
+                        verschieben und anschließend
+                        Informationen zum Spot hinzufügen.
+                    </p>
+
+                </div>
+
+
+                <div class="welcome-section">
+
+                    <h2>
+                        📋 Regeln
+                    </h2>
+
+                    <ul>
+
+                        <li>
+                            Teile nur Orte, die du auch
+                            wirklich empfehlen kannst.
+                        </li>
+
+                        <li>
+                            Respektiere Privateigentum und
+                            bestehende Verbote.
+                        </li>
+
+                        <li>
+                            Hinterlasse keine sensiblen
+                            oder privaten Informationen.
+                        </li>
+
+                        <li>
+                            Respektiere Natur, Menschen
+                            und die Umgebung.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <div class="welcome-section welcome-note">
+
+                    <strong>
+                        Wichtig
+                    </strong>
+
+                    <p>
+                        SCAPOR zeigt Orte auf einer Karte.
+                        Die Verantwortung für die Nutzung
+                        eines Spots liegt bei dir.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="welcome-start"
+                    type="button"
+                    onclick="closeWelcomePopup()"
+                >
+                    Los geht's
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
     <!-- ========================================
@@ -43,135 +208,22 @@
     <div id="map"></div>
 
 
-    <!-- Leaflet JavaScript -->
+    <!-- ========================================
+         LEAFLET JAVASCRIPT
+         ======================================== -->
+
     <script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
     </script>
 
-    <!-- Unsere JavaScript-Datei -->
+
+    <!-- ========================================
+         SCAPOR JAVASCRIPT
+         ======================================== -->
+
     <script src="script.js"></script>
 
+
 </body>
-    
-<!-- ========================================
-     WILLKOMMENS-POPUP
-     ======================================== -->
 
-<div id="welcome-overlay">
-
-    <div id="welcome-popup">
-
-        <button
-            id="welcome-close"
-            type="button"
-            onclick="closeWelcomePopup()"
-            aria-label="Schließen"
-        >
-            ×
-        </button>
-
-
-        <div class="welcome-content">
-
-            <div class="welcome-logo">
-                SCAPOR.de
-            </div>
-
-
-            <h1>
-                Willkommen bei SCAPOR
-            </h1>
-
-
-            <p class="welcome-intro">
-                Entdecke interessante Orte für
-                Carshootings, Landschaftsfotografie
-                und mehr.
-            </p>
-
-
-            <div class="welcome-section">
-
-                <h2>
-                    📍 So funktioniert's
-                </h2>
-
-                <p>
-                    Klicke auf einen beliebigen Punkt
-                    auf der Karte, um einen neuen Spot
-                    zu erstellen.
-                </p>
-
-                <p>
-                    Ansonsten kannst du die typische 
-                    Steuerung von Deiner Navigations-App
-                    nutzen.
-                </p>
-
-            </div>
-
-
-            <div class="welcome-section">
-
-                <h2>
-                    📋 Regeln
-                </h2>
-
-                <ul>
-
-                    <li>
-                        Teile nur Orte, die du auch
-                        wirklich empfehlen kannst.
-                    </li>
-
-                    <li>
-                        Respektiere Privateigentum und
-                        bestehende Verbote.
-                    </li>
-
-                    <li>
-                        Hinterlasse keine sensiblen oder
-                        privaten Informationen.
-                    </li>
-
-                    <li>
-                        Respektiere Natur, Menschen und
-                        die Umgebung.
-                    </li>
-
-                </ul>
-
-            </div>
-
-
-            <div class="welcome-section welcome-note">
-
-                <strong>
-                    Wichtig
-                </strong>
-
-                <p>
-                    SCAPOR zeigt Orte auf einer Karte.
-                    Die Verantwortung für die Nutzung
-                    eines Spots liegt bei dir.
-                    Bitte nutze SCAPOR vertrauensvoll.
-                </p>
-
-            </div>
-
-
-            <button
-                id="welcome-start"
-                type="button"
-                onclick="closeWelcomePopup()"
-            >
-                Los geht's
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-    
 </html>
