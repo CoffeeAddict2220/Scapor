@@ -10,6 +10,8 @@ body {
     width: 100%;
     height: 100%;
 
+    overflow: hidden;
+
     font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -18,6 +20,24 @@ body {
         Helvetica,
         Arial,
         sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/* ========================================
+   KARTE
+   ======================================== */
+
+#map {
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 1;
 }
 
 
@@ -39,7 +59,8 @@ body {
     display: flex;
     align-items: center;
 
-    padding: 0 24px;
+    padding-left: 24px;
+    padding-right: 24px;
 
     box-sizing: border-box;
 
@@ -50,6 +71,11 @@ body {
 
     box-shadow:
         0 6px 18px rgba(0, 0, 0, 0.18);
+
+    /*
+     * iPhone / Android Safe Area
+     */
+    padding-top: env(safe-area-inset-top);
 }
 
 
@@ -73,16 +99,11 @@ body {
 
 
 /* ========================================
-   KARTE
+   LEAFLET GRUNDANPASSUNG
    ======================================== */
 
-#map {
-    position: absolute;
-
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+.leaflet-container {
+    font-family: inherit;
 }
 
 
@@ -91,6 +112,7 @@ body {
    ======================================== */
 
 .leaflet-popup-content-wrapper {
+
     padding: 0;
 
     border-radius: 18px;
@@ -98,20 +120,25 @@ body {
     overflow: hidden;
 
     box-shadow:
-        0 12px 35px rgba(0, 0, 0, 0.20);
+        0 12px 35px rgba(0, 0, 0, 0.22);
 }
 
 
 .leaflet-popup-content {
+
     margin: 0;
 
     width: 320px !important;
+
+    max-width: calc(100vw - 60px);
+
 }
 
 
-/* Pfeil unter dem Popup */
+/* Popup-Pfeil */
 
 .leaflet-popup-tip {
+
     box-shadow:
         3px 3px 8px rgba(0, 0, 0, 0.08);
 }
@@ -122,27 +149,41 @@ body {
    ======================================== */
 
 .leaflet-container a.leaflet-popup-close-button {
+
     top: 12px;
-    right: 14px;
+    right: 12px;
 
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
 
-    font-size: 26px;
-    line-height: 28px;
+    display: flex;
 
-    color: #6b7280;
+    align-items: center;
+    justify-content: center;
 
-    font-weight: 400;
+    padding: 0;
 
-    z-index: 10;
+    color: #829AB1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 27px;
+
+    font-weight: 300;
+
+    line-height: 36px;
+
+    border-radius: 50%;
+
+    z-index: 20;
 }
 
 
 .leaflet-container a.leaflet-popup-close-button:hover {
-    color: #102A43;
 
-    background: transparent;
+    background: #F0F4F8;
+
+    color: #102A43;
 }
 
 
@@ -151,6 +192,11 @@ body {
    ======================================== */
 
 .marker-form {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
     padding: 24px;
 
     display: flex;
@@ -158,8 +204,6 @@ body {
     flex-direction: column;
 
     gap: 7px;
-
-    box-sizing: border-box;
 }
 
 
@@ -168,22 +212,21 @@ body {
    ======================================== */
 
 .marker-form label {
+
     display: block;
 
-    margin-top: 5px;
+    margin-top: 7px;
 
     color: #243B53;
 
     font-size: 14px;
 
     font-weight: 600;
-
-    letter-spacing: 0.1px;
 }
 
 
 /* ========================================
-   INPUTS
+   INPUT / TEXTAREA / SELECT
    ======================================== */
 
 .marker-form input,
@@ -194,65 +237,67 @@ body {
 
     box-sizing: border-box;
 
-    border: 1px solid #d8dee6;
+    border: 1px solid #D8DEE6;
 
     border-radius: 10px;
 
-    background: #f8fafc;
+    background: #F8FAFC;
 
     color: #243B53;
 
     font-family: inherit;
 
-    font-size: 15px;
+    font-size: 16px;
 
     outline: none;
 
-    transition:
-        border-color 0.15s ease,
-        box-shadow 0.15s ease,
-        background 0.15s ease;
+    /*
+     * Verhindert Zoom auf iOS
+     */
+    -webkit-appearance: none;
 }
 
 
-/* Input */
+/* ========================================
+   INPUT
+   ======================================== */
 
 .marker-form input {
-    height: 44px;
 
-    padding: 0 13px;
+    height: 48px;
+
+    padding:
+        0 13px;
 }
 
 
-/* Textarea */
+/* ========================================
+   TEXTAREA
+   ======================================== */
 
 .marker-form textarea {
-    min-height: 82px;
 
-    padding: 11px 13px;
+    min-height: 90px;
+
+    padding:
+        11px 13px;
 
     resize: vertical;
 }
 
 
-/* Select */
-
-.marker-form select {
-    height: 44px;
-
-    padding: 0 13px;
-
-    cursor: pointer;
-}
-
-
 /* ========================================
-   PLACEHOLDER
+   SELECT
    ======================================== */
 
-.marker-form input::placeholder,
-.marker-form textarea::placeholder {
-    color: #9aa5b1;
+.marker-form select {
+
+    height: 48px;
+
+    padding:
+        0 13px;
+
+    cursor: pointer;
 }
 
 
@@ -269,25 +314,138 @@ body {
     border-color: #102A43;
 
     box-shadow:
-        0 0 0 3px rgba(16, 42, 67, 0.10);
+        0 0 0 3px
+        rgba(16, 42, 67, 0.10);
 }
 
 
 /* ========================================
-   SPEICHERN BUTTON
+   PLACEHOLDER
+   ======================================== */
+
+.marker-form input::placeholder,
+.marker-form textarea::placeholder {
+
+    color: #9AA5B1;
+}
+
+
+/* ========================================
+   SPEICHERN
    ======================================== */
 
 .marker-form button {
 
     width: 100%;
 
-    height: 44px;
+    min-height: 48px;
 
-    margin-top: 10px;
+    margin-top: 12px;
+
+    padding:
+        0 16px;
 
     border: none;
 
-    border-radius: 10px;
+    border-radius: 11px;
+
+    background: #102A43;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    transition:
+        background 0.15s ease,
+        transform 0.1s ease;
+}
+
+
+.marker-form button:hover {
+
+    background: #163B5C;
+}
+
+
+.marker-form button:active {
+
+    transform: scale(0.98);
+}
+
+
+/* ========================================
+   GESPEICHERTER SPOT
+   ======================================== */
+
+.marker-info {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 24px;
+
+    color: #243B53;
+}
+
+
+.marker-info h3 {
+
+    margin:
+        0 0 18px 0;
+
+    padding-right: 30px;
+
+    color: #102A43;
+
+    font-size: 21px;
+
+    line-height: 1.2;
+
+    font-weight: 700;
+}
+
+
+.marker-info p {
+
+    margin:
+        10px 0;
+
+    font-size: 14px;
+
+    line-height: 1.55;
+}
+
+
+.marker-info strong {
+
+    color: #102A43;
+}
+
+
+/* ========================================
+   BEARBEITEN
+   ======================================== */
+
+.marker-info button {
+
+    width: 100%;
+
+    min-height: 48px;
+
+    margin-top: 16px;
+
+    border: none;
+
+    border-radius: 11px;
 
     background: #102A43;
 
@@ -301,120 +459,22 @@ body {
 
     cursor: pointer;
 
-    transition:
-        background 0.15s ease,
-        transform 0.1s ease;
+    touch-action: manipulation;
 }
 
 
-.marker-form button:hover {
-    background: #163B5C;
-}
+.marker-info button:active {
 
-
-.marker-form button:active {
     transform: scale(0.98);
 }
 
 
 /* ========================================
-   GESPEICHERTER SPOT
-   ======================================== */
-
-.marker-info {
-    padding: 24px;
-
-    box-sizing: border-box;
-
-    color: #243B53;
-}
-
-
-.marker-info h3 {
-    margin: 0 0 18px 0;
-
-    padding-right: 25px;
-
-    font-size: 20px;
-
-    font-weight: 700;
-
-    color: #102A43;
-}
-
-
-.marker-info p {
-    margin: 10px 0;
-
-    font-size: 14px;
-
-    line-height: 1.5;
-}
-
-
-.marker-info strong {
-    color: #102A43;
-}
-
-
-/* ========================================
-   BEARBEITEN BUTTON
-   ======================================== */
-
-.marker-info button {
-
-    width: 100%;
-
-    height: 42px;
-
-    margin-top: 14px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background: #102A43;
-
-    color: #ffffff;
-
-    font-family: inherit;
-
-    font-size: 14px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-}
-
-
-.marker-info button:hover {
-    background: #163B5C;
-}
-
-
-/* ========================================
-   MOBILE
-   ======================================== */
-
-@media (max-width: 480px) {
-
-    .leaflet-popup-content {
-        width: 280px !important;
-    }
-
-
-    .marker-form,
-    .marker-info {
-        padding: 20px;
-    }
-
-}
-
-/* ========================================
-   WILLKOMMENS-POPUP
+   WILLKOMMENS-OVERLAY
    ======================================== */
 
 #welcome-overlay {
+
     position: fixed;
 
     inset: 0;
@@ -427,18 +487,30 @@ body {
 
     justify-content: center;
 
-    padding: 20px;
+    padding:
+        20px;
+
+    padding-top:
+        calc(20px + env(safe-area-inset-top));
+
+    padding-bottom:
+        calc(20px + env(safe-area-inset-bottom));
 
     box-sizing: border-box;
 
-    background: rgba(8, 25, 40, 0.45);
+    background:
+        rgba(8, 25, 40, 0.45);
 
-    backdrop-filter: blur(5px);
+    backdrop-filter:
+        blur(5px);
+
+    -webkit-backdrop-filter:
+        blur(5px);
 }
 
 
 /* ========================================
-   POPUP
+   WILLKOMMENS-POPUP
    ======================================== */
 
 #welcome-popup {
@@ -449,24 +521,25 @@ body {
 
     max-width: 480px;
 
-    max-height: calc(100vh - 40px);
+    max-height:
+        calc(100vh - 40px);
 
     overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
 
     background: #ffffff;
 
     border-radius: 22px;
 
     box-shadow:
-        0 25px 60px rgba(0, 0, 0, 0.25);
-
-    animation:
-        welcomePopupIn 0.25s ease-out;
+        0 25px 60px
+        rgba(0, 0, 0, 0.25);
 }
 
 
 /* ========================================
-   INHALT
+   WILLKOMMENS-INHALT
    ======================================== */
 
 .welcome-content {
@@ -475,17 +548,14 @@ body {
 }
 
 
-/* ========================================
-   LOGO
-   ======================================== */
-
 .welcome-logo {
 
     display: inline-block;
 
     margin-bottom: 18px;
 
-    padding: 8px 12px;
+    padding:
+        8px 12px;
 
     border-radius: 8px;
 
@@ -501,13 +571,10 @@ body {
 }
 
 
-/* ========================================
-   ÜBERSCHRIFT
-   ======================================== */
-
 .welcome-content h1 {
 
-    margin: 0 35px 12px 0;
+    margin:
+        0 35px 12px 0;
 
     color: #102A43;
 
@@ -521,13 +588,10 @@ body {
 }
 
 
-/* ========================================
-   EINLEITUNG
-   ======================================== */
-
 .welcome-intro {
 
-    margin: 0 0 28px 0;
+    margin:
+        0 0 28px 0;
 
     color: #52606D;
 
@@ -537,10 +601,6 @@ body {
 }
 
 
-/* ========================================
-   ABSCHNITTE
-   ======================================== */
-
 .welcome-section {
 
     margin-top: 24px;
@@ -549,7 +609,8 @@ body {
 
 .welcome-section h2 {
 
-    margin: 0 0 9px 0;
+    margin:
+        0 0 9px 0;
 
     color: #243B53;
 
@@ -561,7 +622,8 @@ body {
 
 .welcome-section p {
 
-    margin: 7px 0;
+    margin:
+        7px 0;
 
     color: #52606D;
 
@@ -571,13 +633,10 @@ body {
 }
 
 
-/* ========================================
-   LISTE
-   ======================================== */
-
 .welcome-section ul {
 
-    margin: 8px 0 0 0;
+    margin:
+        8px 0 0 0;
 
     padding-left: 20px;
 
@@ -596,18 +655,20 @@ body {
 
 
 /* ========================================
-   HINWEIS
+   WILLKOMMENS-HINWEIS
    ======================================== */
 
 .welcome-note {
 
-    padding: 14px 16px;
+    padding:
+        14px 16px;
 
     background: #F4F7FA;
 
     border-radius: 12px;
 
-    border-left: 3px solid #102A43;
+    border-left:
+        3px solid #102A43;
 }
 
 
@@ -620,14 +681,14 @@ body {
 
 
 /* ========================================
-   START BUTTON
+   WILLKOMMENS-BUTTON
    ======================================== */
 
 #welcome-start {
 
     width: 100%;
 
-    height: 48px;
+    min-height: 50px;
 
     margin-top: 28px;
 
@@ -641,21 +702,13 @@ body {
 
     font-family: inherit;
 
-    font-size: 15px;
+    font-size: 16px;
 
     font-weight: 600;
 
     cursor: pointer;
 
-    transition:
-        background 0.15s ease,
-        transform 0.1s ease;
-}
-
-
-#welcome-start:hover {
-
-    background: #163B5C;
+    touch-action: manipulation;
 }
 
 
@@ -666,20 +719,25 @@ body {
 
 
 /* ========================================
-   SCHLIESSEN
+   WILLKOMMENS-X
    ======================================== */
 
 #welcome-close {
 
     position: absolute;
 
-    top: 14px;
+    top: 12px;
+    right: 12px;
 
-    right: 16px;
+    width: 42px;
+    height: 42px;
 
-    width: 34px;
+    display: flex;
 
-    height: 34px;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
 
     border: none;
 
@@ -687,7 +745,9 @@ body {
 
     color: #829AB1;
 
-    font-size: 28px;
+    font-family: Arial, sans-serif;
+
+    font-size: 30px;
 
     font-weight: 300;
 
@@ -696,6 +756,10 @@ body {
     cursor: pointer;
 
     border-radius: 50%;
+
+    z-index: 20;
+
+    touch-action: manipulation;
 }
 
 
@@ -708,58 +772,294 @@ body {
 
 
 /* ========================================
-   ANIMATION
-   ======================================== */
-
-@keyframes welcomePopupIn {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(10px)
-            scale(0.98);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-
-    }
-
-}
-
-
-/* ========================================
    MOBILE
    ======================================== */
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+
+    /* ------------------------------------
+       TOPBAR
+       ------------------------------------ */
+
+    .topbar {
+
+        height: 58px;
+
+        padding-left:
+            18px;
+
+        padding-right:
+            18px;
+
+        border-radius:
+            0 0 16px 16px;
+    }
+
+
+    .logo {
+
+        font-size: 20px;
+
+        letter-spacing:
+            -0.5px;
+    }
+
+
+    /* ------------------------------------
+       LEAFLET POPUP
+       ------------------------------------ */
+
+    .leaflet-popup-content {
+
+        width:
+            min(300px, calc(100vw - 48px))
+        !important;
+
+        max-width:
+            calc(100vw - 48px);
+    }
+
+
+    .leaflet-popup-content-wrapper {
+
+        border-radius:
+            17px;
+    }
+
+
+    /* ------------------------------------
+       FORMULAR
+       ------------------------------------ */
+
+    .marker-form {
+
+        padding:
+            20px;
+    }
+
+
+    .marker-form label {
+
+        font-size:
+            13px;
+
+        margin-top:
+            6px;
+    }
+
+
+    .marker-form input {
+
+        height:
+            48px;
+    }
+
+
+    .marker-form textarea {
+
+        min-height:
+            90px;
+    }
+
+
+    .marker-form select {
+
+        height:
+            48px;
+    }
+
+
+    .marker-form button {
+
+        min-height:
+            50px;
+
+        margin-top:
+            14px;
+    }
+
+
+    /* ------------------------------------
+       GESPEICHERTER SPOT
+       ------------------------------------ */
+
+    .marker-info {
+
+        padding:
+            20px;
+    }
+
+
+    .marker-info h3 {
+
+        font-size:
+            19px;
+    }
+
+
+    .marker-info button {
+
+        min-height:
+            50px;
+    }
+
+
+    /* ------------------------------------
+       WILLKOMMEN
+       ------------------------------------ */
+
+    #welcome-overlay {
+
+        padding:
+            12px;
+
+        padding-top:
+            calc(12px + env(safe-area-inset-top));
+
+        padding-bottom:
+            calc(12px + env(safe-area-inset-bottom));
+
+        align-items:
+            center;
+    }
+
 
     #welcome-popup {
 
         max-height:
             calc(100vh - 24px);
 
-        border-radius: 18px;
+        border-radius:
+            19px;
     }
 
 
     .welcome-content {
 
-        padding: 26px 22px;
+        padding:
+            26px 22px;
+    }
+
+
+    .welcome-logo {
+
+        margin-bottom:
+            14px;
     }
 
 
     .welcome-content h1 {
 
-        font-size: 24px;
+        margin-right:
+            35px;
+
+        font-size:
+            24px;
+    }
+
+
+    .welcome-intro {
+
+        margin-bottom:
+            22px;
+
+        font-size:
+            15px;
+    }
+
+
+    .welcome-section {
+
+        margin-top:
+            20px;
+    }
+
+
+    .welcome-section h2 {
+
+        font-size:
+            15px;
+    }
+
+
+    .welcome-section p,
+    .welcome-section ul {
+
+        font-size:
+            13px;
+    }
+
+
+    #welcome-start {
+
+        min-height:
+            50px;
+
+        margin-top:
+            22px;
+    }
+
+
+    #welcome-close {
+
+        width:
+            42px;
+
+        height:
+            42px;
+
+        top:
+            8px;
+
+        right:
+            8px;
+    }
+
+}
+
+
+/* ========================================
+   SEHR KLEINE HANDYS
+   ======================================== */
+
+@media (max-width: 380px) {
+
+    .leaflet-popup-content {
+
+        width:
+            calc(100vw - 34px)
+        !important;
+
+        max-width:
+            calc(100vw - 34px);
+    }
+
+
+    .marker-form {
+
+        padding:
+            18px;
+    }
+
+
+    .marker-info {
+
+        padding:
+            18px;
+    }
+
+
+    .welcome-content {
+
+        padding:
+            22px 18px;
+    }
+
+
+    .welcome-content h1 {
+
+        font-size:
+            22px;
     }
 
 }
