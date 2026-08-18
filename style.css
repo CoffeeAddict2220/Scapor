@@ -1328,7 +1328,7 @@ body {
 
 
 /* ========================================
-   ÃœBERSCHRIFT
+   ÜBERSCHRIFT
    ======================================== */
 
 .content-card h1 {
@@ -1430,7 +1430,7 @@ body {
 
 
 /* ========================================
-   ÃœBER SCAPOR HIGHLIGHT
+   ÜBER SCAPOR HIGHLIGHT
    ======================================== */
 
 .about-highlight {
@@ -1574,8 +1574,8 @@ body {
    ======================================== */
 
 /*
- * Die Map benÃ¶tigt overflow: hidden.
- * Kontakt und Ãœber SCAPOR benÃ¶tigen dagegen
+ * Die Map benötigt overflow: hidden.
+ * Kontakt und Über SCAPOR benötigen dagegen
  * normales vertikales Scrollen.
  *
  * Wichtig: Auch das html-Element wird hier
@@ -1610,7 +1610,7 @@ body.info-page {
 
 
 /*
- * Die Inhaltsseite darf Ã¼ber die BildschirmhÃ¶he
+ * Die Inhaltsseite darf über die Bildschirmhöhe
  * hinaus wachsen.
  */
 
