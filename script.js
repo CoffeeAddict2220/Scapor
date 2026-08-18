@@ -540,29 +540,56 @@ function escapeHtml(text) {
     return div.innerHTML;
 
 }
-
-
 // ========================================
 // WILLKOMMENS-POPUP
 // ========================================
 
-function closeWelcomePopup() {
-
-    const welcomeOverlay =
-        document.getElementById('welcome-overlay');
+const welcomeOverlay =
+    document.getElementById('welcome-overlay');
 
 
-    if (!welcomeOverlay) {
+// ========================================
+// PRÜFEN, OB POPUP SCHON GEZEIGT WURDE
+// ========================================
 
-        console.error(
-            'Willkommens-Popup nicht gefunden.'
+if (welcomeOverlay) {
+
+    const welcomeShown =
+        sessionStorage.getItem(
+            'scaporWelcomeShown'
         );
 
+
+    if (welcomeShown === 'true') {
+
+        // Popup nicht anzeigen
+        welcomeOverlay.style.display = 'none';
+
+    }
+
+}
+
+
+// ========================================
+// POPUP SCHLIESSEN
+// ========================================
+
+function closeWelcomePopup() {
+
+    if (!welcomeOverlay) {
         return;
     }
 
 
+    // Popup ausblenden
     welcomeOverlay.style.display = 'none';
+
+
+    // Für diesen Besuch merken
+    sessionStorage.setItem(
+        'scaporWelcomeShown',
+        'true'
+    );
 
 }
 
