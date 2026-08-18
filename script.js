@@ -460,20 +460,18 @@ function escapeHtml(text) {
 // WILLKOMMENS-POPUP
 // ========================================
 
-const welcomeOverlay =
-    document.getElementById('welcome-overlay');
-
-const welcomeStart =
-    document.getElementById('welcome-start');
-
-const welcomeClose =
-    document.getElementById('welcome-close');
-
-
-// Popup schließen
 function closeWelcomePopup() {
 
+    const welcomeOverlay =
+        document.getElementById('welcome-overlay');
+
+
     if (!welcomeOverlay) {
+
+        console.error(
+            'Willkommens-Popup nicht gefunden.'
+        );
+
         return;
     }
 
