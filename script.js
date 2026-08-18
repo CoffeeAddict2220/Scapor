@@ -37,11 +37,66 @@ const marker = L.marker(
 // Marker-Daten
 // ========================================
 
-let markerName = '';
+let markerData = {
+    name: '',
+    description: '',
+    category: 'Carshooting'
+};
 
 
 // ========================================
-// Popup zum Bearbeiten öffnen
+// Marker-Daten anzeigen
+// ========================================
+
+function showMarkerInfo() {
+
+    const position = marker.getLatLng();
+
+    const name =
+        markerData.name || 'Unbenannter Marker';
+
+    const description =
+        markerData.description || 'Keine Beschreibung';
+
+    const category =
+        markerData.category || 'Keine Kategorie';
+
+
+    const popupContent = `
+        <div class="marker-info">
+
+            <h3>${escapeHtml(name)}</h3>
+
+            <p>
+                <strong>Kategorie:</strong><br>
+                <span class="marker-category">
+                    ${escapeHtml(category)}
+                </span>
+            </p>
+
+            <p>
+                <strong>Beschreibung:</strong><br>
+                ${escapeHtml(description)}
+            </p>
+
+            <p>
+                <strong>Position:</strong><br>
+                ${position.lat.toFixed(6)},
+                ${position.lng.toFixed(6)}
+            </p>
+
+        </div>
+    `;
+
+
+    marker
+        .bindPopup(popupContent)
+        .openPopup();
+}
+
+
+// ========================================
+// Marker bearbeiten
 // ========================================
 
 function openMarkerEditor() {
@@ -50,15 +105,49 @@ function openMarkerEditor() {
         <div class="marker-form">
 
             <label for="marker-name">
-                Name:
+                Name
             </label>
 
             <input
                 type="text"
                 id="marker-name"
                 placeholder="Name eingeben"
-                value="${markerName}"
+                value="${escapeHtml(markerData.name)}"
             >
+
+
+            <label for="marker-description">
+                Beschreibung
+            </label>
+
+            <textarea
+                id="marker-description"
+                placeholder="Beschreibung eingeben"
+            >${escapeHtml(markerData.description)}</textarea>
+
+
+            <label for="marker-category">
+                Kategorie
+            </label>
+
+            <select id="marker-category">
+
+                <option
+                    value="Carshooting"
+                    ${markerData.category === 'Carshooting' ? 'selected' : ''}
+                >
+                    Carshooting
+                </option>
+
+                <option
+                    value="Landscape"
+                    ${markerData.category === 'Landscape' ? 'selected' : ''}
+                >
+                    Landscape
+                </option>
+
+            </select>
+
 
             <button
                 id="save-marker"
@@ -70,44 +159,56 @@ function openMarkerEditor() {
         </div>
     `;
 
+
     marker
         .bindPopup(popupContent)
         .openPopup();
 
 
-    // Warten, bis das Popup tatsächlich
-    // im DOM vorhanden ist
+    // ========================================
+    // Warten bis Popup geöffnet ist
+    // ========================================
+
     marker.once('popupopen', function () {
 
-        const input =
+        const nameInput =
             document.getElementById('marker-name');
 
-        const button =
+        const descriptionInput =
+            document.getElementById('marker-description');
+
+        const categoryInput =
+            document.getElementById('marker-category');
+
+        const saveButton =
             document.getElementById('save-marker');
 
 
-        // Eingabefeld automatisch auswählen
-        input.focus();
+        nameInput.focus();
 
 
-        // Name speichern
-        button.addEventListener('click', function () {
+        // ========================================
+        // Daten speichern
+        // ========================================
 
-            markerName = input.value.trim();
+        saveButton.addEventListener(
+            'click',
+            function () {
+
+                markerData.name =
+                    nameInput.value.trim();
+
+                markerData.description =
+                    descriptionInput.value.trim();
+
+                markerData.category =
+                    categoryInput.value;
 
 
-            if (markerName === '') {
-                markerName = 'Unbenannter Marker';
+                // Daten anzeigen
+                showMarkerInfo();
             }
-
-
-            // Name dauerhaft am Marker-Popup anzeigen
-            marker
-                .bindPopup(
-                    `<strong>${markerName}</strong>`
-                )
-                .openPopup();
-        });
+        );
     });
 }
 
@@ -116,26 +217,57 @@ function openMarkerEditor() {
 // Klick auf Marker
 // ========================================
 
-marker.on('click', function () {
+marker.on(
+    'click',
+    function () {
 
-    openMarkerEditor();
+        openMarkerEditor();
 
-});
+    }
+);
 
 
 // ========================================
 // Marker verschoben
 // ========================================
 
-marker.on('dragend', function (event) {
+marker.on(
+    'dragend',
+    function (event) {
 
-    const position =
-        event.target.getLatLng();
+        const position =
+            event.target.getLatLng();
 
-    console.log(
-        'Neue Position:',
-        position.lat,
-        position.lng
-    );
 
-});
+        console.log(
+            'Neue Position:',
+            position.lat,
+            position.lng
+        );
+
+
+        // Falls bereits Daten vorhanden sind,
+        // Popup mit neuer Position aktualisieren
+        if (markerData.name !== '') {
+
+            showMarkerInfo();
+
+        }
+
+    }
+);
+
+
+// ========================================
+// HTML-Sonderzeichen absichern
+// ========================================
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement('div');
+
+    div.textContent = text;
+
+    return div.innerHTML;
+}
