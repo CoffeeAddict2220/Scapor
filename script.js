@@ -11,6 +11,57 @@ const map = L.map('map', {
 
 
 // ========================================
+// MARKER FARBEN
+// ========================================
+
+function createActiveIcon() {
+
+    return L.divIcon({
+
+        className: 'scapor-marker-wrapper',
+
+        html: `
+            <div class="scapor-marker active-marker">
+                <div class="marker-dot"></div>
+            </div>
+        `,
+
+        iconSize: [36, 36],
+
+        iconAnchor: [18, 18],
+
+        popupAnchor: [0, -18]
+
+    });
+
+}
+
+
+function createSavedIcon() {
+
+    return L.divIcon({
+
+        className: 'scapor-marker-wrapper',
+
+        html: `
+            <div class="scapor-marker saved-marker">
+                <div class="marker-dot"></div>
+            </div>
+        `,
+
+        iconSize: [36, 36],
+
+        iconAnchor: [18, 18],
+
+        popupAnchor: [0, -18]
+
+    });
+
+}
+
+
+
+// ========================================
 // OPENSTREETMAP
 // ========================================
 
@@ -60,6 +111,7 @@ function createSpot(position) {
         position,
         {
             draggable: true,
+            icon: createActiveIcon(),
             autoPan: true
         }
     ).addTo(map);
@@ -340,6 +392,14 @@ function saveSpot(spot) {
 
     // Marker fixieren
     spot.marker.dragging.disable();
+
+    
+
+
+    // Marker von Rot auf Blau wechseln
+    spot.marker.setIcon(
+        createSavedIcon()
+    );
 
 
     // Aktiven Spot freigeben
