@@ -215,19 +215,19 @@ function openEditor(spot) {
 
             <select class="spot-category">
 
-                <option value="Carspotting">
+                <option value="Architecture">
                     Architecture
                 </option>
 
-                <option value="Carshooting">
+                <option value="Astro">
                     Astro
                 </option>
 
-                <option value="Trainspotting">
+                <option value="Carshooting">
                     Carshooting
                 </option>
 
-                <option value="Planespotting">
+                <option value="Carspotting">
                     Carspotting
                 </option>
 
@@ -239,7 +239,7 @@ function openEditor(spot) {
                     Nature
                 </option>
 
-                <option value="Architecture">
+                <option value="Planespotting">
                     Planespotting
                 </option>
 
@@ -247,11 +247,11 @@ function openEditor(spot) {
                     Portrait
                 </option>
 
-                <option value="Astro">
+                <option value="Trainspotting">
                     Trainspotting
                 </option>
 
-                <option value="Astro">
+                <option value="Wildlife">
                     Wildlife
                 </option>
 
