@@ -1,6 +1,3 @@
-console.log("SCRIPT.JS GELADEN");
-
-
 // ========================================
 // Karte erstellen
 // ========================================
@@ -24,11 +21,17 @@ L.tileLayer(
 
 
 // ========================================
-// Spots
+// Alle Spots
 // ========================================
 
-// Hier werden alle erstellten Spots gespeichert
 const spots = [];
+
+
+// ========================================
+// Aktuell ungespeicherter Spot
+// ========================================
+
+let activeSpot = null;
 
 
 // ========================================
@@ -37,12 +40,26 @@ const spots = [];
 
 map.on('click', function (event) {
 
-    console.log("Karte geklickt");
+    console.log('Karte geklickt');
 
 
-    // ========================================
+    // ----------------------------------------
+    // Ist bereits ein Spot in Bearbeitung?
+    // ----------------------------------------
+
+    if (activeSpot !== null) {
+
+        console.log(
+            'Es gibt bereits einen ungespeicherten Spot.'
+        );
+
+        return;
+    }
+
+
+    // ----------------------------------------
     // Neuen Spot erstellen
-    // ========================================
+    // ----------------------------------------
 
     const marker = L.marker(
         event.latlng,
@@ -52,16 +69,367 @@ map.on('click', function (event) {
     ).addTo(map);
 
 
-    // Daten des neuen Spots
-    const spotData = {
+    const spot = {
 
-        name: '',
+        marker: marker,
 
-        description: '',
+        data: {
 
-        category: 'Carshooting',
+            name: '',
+
+            description: '',
+
+            category: 'Carshooting'
+
+        },
 
         saved: false
+
+    };
+
+
+    // In Liste speichern
+    spots.push(spot);
+
+
+    // Als aktiven Spot markieren
+    activeSpot = spot;
+
+
+    console.log(
+        'Neuer Spot erstellt:',
+        spot
+    );
+
+
+    // Klick-Verhalten einrichten
+    setupMarkerClick(spot);
+
+
+    // Formular öffnen
+    openMarkerEditor(spot);
+
+});
+
+
+// ========================================
+// Marker bearbeiten
+// ========================================
+
+function openMarkerEditor(spot) {
+
+    const marker = spot.marker;
+    const data = spot.data;
+
+
+    const html = `
+        <div class="marker-form">
+
+            <label for="marker-name">
+                Name
+            </label>
+
+            <input
+                type="text"
+                id="marker-name"
+                placeholder="Name eingeben"
+                value="${escapeHtml(data.name)}"
+            >
+
+
+            <label for="marker-description">
+                Beschreibung
+            </label>
+
+            <textarea
+                id="marker-description"
+                placeholder="Beschreibung eingeben"
+            >${escapeHtml(data.description)}</textarea>
+
+
+            <label for="marker-category">
+                Kategorie
+            </label>
+
+            <select id="marker-category">
+
+                <option value="Carshooting">
+                    Carshooting
+                </option>
+
+                <option value="Landscape">
+                    Landscape
+                </option>
+
+            </select>
+
+
+            <button
+                type="button"
+                id="save-marker"
+            >
+                Speichern
+            </button>
+
+        </div>
+    `;
+
+
+    marker
+        .bindPopup(html)
+        .openPopup();
+
+
+    setTimeout(function () {
+
+        const category =
+            document.getElementById('marker-category');
+
+
+        if (category) {
+
+            category.value =
+                data.category;
+
+        }
+
+
+        const saveButton =
+            document.getElementById('save-marker');
+
+
+        if (saveButton) {
+
+            saveButton.onclick = function () {
+
+                saveMarker(spot);
+
+            };
+
+        }
+
+    }, 100);
+
+}
+
+
+// ========================================
+// Spot speichern
+// ========================================
+
+function saveMarker(spot) {
+
+    const data = spot.data;
+    const marker = spot.marker;
+
+
+    const nameInput =
+        document.getElementById('marker-name');
+
+    const descriptionInput =
+        document.getElementById('marker-description');
+
+    const categoryInput =
+        document.getElementById('marker-category');
+
+
+    if (!nameInput ||
+        !descriptionInput ||
+        !categoryInput) {
+
+        console.error(
+            'Formular konnte nicht gefunden werden.'
+        );
+
+        return;
+    }
+
+
+    // ----------------------------------------
+    // Daten übernehmen
+    // ----------------------------------------
+
+    data.name =
+        nameInput.value.trim();
+
+    data.description =
+        descriptionInput.value.trim();
+
+    data.category =
+        categoryInput.value;
+
+
+    // Name erforderlich
+    if (data.name === '') {
+
+        alert(
+            'Bitte gib einen Namen für den Spot ein.'
+        );
+
+        return;
+    }
+
+
+    // ----------------------------------------
+    // Spot speichern
+    // ----------------------------------------
+
+    spot.saved = true;
+
+
+    // ----------------------------------------
+    // Marker fixieren
+    // ----------------------------------------
+
+    marker.dragging.disable();
+
+
+    // ----------------------------------------
+    // Aktiven Spot zurücksetzen
+    // ----------------------------------------
+
+    activeSpot = null;
+
+
+    console.log(
+        'Spot gespeichert:',
+        spot
+    );
+
+
+    // ----------------------------------------
+    // Informationen anzeigen
+    // ----------------------------------------
+
+    showMarkerInfo(spot);
+
+}
+
+
+// ========================================
+// Marker anklicken
+// ========================================
+
+function setupMarkerClick(spot) {
+
+    spot.marker.on(
+        'click',
+        function () {
+
+            // Falls dieser Spot noch nicht gespeichert
+            // wurde, wieder das Bearbeitungsfenster öffnen
+            if (!spot.saved) {
+
+                openMarkerEditor(spot);
+
+                return;
+            }
+
+
+            // Gespeicherten Spot anzeigen
+            showMarkerInfo(spot);
+
+        }
+    );
+
+}
+
+
+// ========================================
+// Informationen anzeigen
+// ========================================
+
+function showMarkerInfo(spot) {
+
+    const marker = spot.marker;
+    const data = spot.data;
+
+
+    const position =
+        marker.getLatLng();
+
+
+    const html = `
+        <div class="marker-info">
+
+            <h3>
+                ${escapeHtml(data.name)}
+            </h3>
+
+
+            <p>
+                <strong>Kategorie:</strong><br>
+                ${escapeHtml(data.category)}
+            </p>
+
+
+            <p>
+                <strong>Beschreibung:</strong><br>
+                ${escapeHtml(
+                    data.description ||
+                    'Keine Beschreibung'
+                )}
+            </p>
+
+
+            <p>
+                <strong>Position:</strong><br>
+                ${position.lat.toFixed(6)},
+                ${position.lng.toFixed(6)}
+            </p>
+
+
+            <button
+                type="button"
+                id="edit-marker"
+            >
+                Bearbeiten
+            </button>
+
+        </div>
+    `;
+
+
+    marker
+        .bindPopup(html)
+        .openPopup();
+
+
+    setTimeout(function () {
+
+        const editButton =
+            document.getElementById('edit-marker');
+
+
+        if (editButton) {
+
+            editButton.onclick = function () {
+
+                openMarkerEditor(spot);
+
+            };
+
+        }
+
+    }, 100);
+
+}
+
+
+// ========================================
+// HTML absichern
+// ========================================
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement('div');
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}        saved: false
 
     };
 
