@@ -127,7 +127,7 @@ function createSpot(position) {
 
         description: '',
 
-        category: 'Carshooting',
+        category: 'Architecture',
 
         saved: false
 
