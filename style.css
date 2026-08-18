@@ -1565,26 +1565,23 @@ body {
 
 
 /* ========================================
-   SCAPOR INFORMATIONSSEITEN
+   SCAPOR INFO-SEITEN
    ======================================== */
 
-body:has(.page) {
-    overflow-y: auto;
-    overflow-x: hidden;
+html:has(body.info-page),
+body.info-page {
     height: auto;
-    min-height: 100vh;
+    min-height: 100%;
 }
 
 
-/* ========================================
-   MOBILE SCROLLING
-   ======================================== */
+body.info-page {
+    overflow-x: hidden;
+    overflow-y: auto;
 
-@media (max-width: 600px) {
+    min-height: 100vh;
 
-    body:has(.page) {
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-    }
+    background: #F4F7FA;
 
+    -webkit-overflow-scrolling: touch;
 }
