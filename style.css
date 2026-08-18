@@ -1255,7 +1255,7 @@ body {
    ======================================== */
 
 .page {
-
+    width: 100%;
     min-height: 100vh;
 
     box-sizing: border-box;
@@ -1267,8 +1267,10 @@ body {
         #F4F7FA;
 
     display: flex;
+    flex-direction: column;
+    align-items: center;
 
-    justify-content: center;
+    margin: 0;
 }
 
 
@@ -1282,7 +1284,7 @@ body {
 
     max-width: 760px;
 
-    align-self: flex-start;
+    margin: 0 auto;
 
     box-sizing: border-box;
 
@@ -1509,8 +1511,11 @@ body {
 
     .page {
 
+        width: 100%;
         padding:
-            82px 12px 30px;
+            82px 12px 40px;
+
+        box-sizing: border-box;
     }
 
 
@@ -1585,6 +1590,8 @@ html:has(body.info-page) {
 
     overflow-x: hidden;
     overflow-y: auto;
+
+    background: #F4F7FA;
 }
 
 
