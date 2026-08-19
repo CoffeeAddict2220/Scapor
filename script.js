@@ -2,36 +2,46 @@
 // DATABASE CONNECTION
 // ========================================
 
-const SUPABASE_URL = "https://nsvpvhftaadgerxdoukw.supabase.co";
-const SUPABASE_KEY = "sb_publishable_xJjyb2cuXbHV6ltaYwRF3w_WDNEknEH";
+const SUPABASE_URL =
+    "https://nsvpvhftaadgerxdoukw.supabase.co";
 
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+const SUPABASE_KEY =
+    "sb_publishable_xJjyb2cuXbHV6ltaYwRF3w_WDNEknEH";
+
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
 // ========================================
 // KARTE
 // ========================================
 
-const map = L.map('map', {
-    zoomControl: false
-}).setView(
-    [51.1, 9.4],
-    7
-);
+const map =
+    L.map(
+        'map',
+        {
+            zoomControl: false
+        }
+    ).setView(
+        [51.1, 9.4],
+        7
+    );
 
 
 // ========================================
-// MARKER FARBEN
+// MARKER ICONS
 // ========================================
 
 function createActiveIcon() {
 
     return L.divIcon({
 
-        className: 'scapor-marker-wrapper',
+        className:
+            'scapor-marker-wrapper',
 
         html: `
             <div class="scapor-marker active-marker">
@@ -39,11 +49,14 @@ function createActiveIcon() {
             </div>
         `,
 
-        iconSize: [36, 36],
+        iconSize:
+            [36, 36],
 
-        iconAnchor: [18, 18],
+        iconAnchor:
+            [18, 18],
 
-        popupAnchor: [0, -18]
+        popupAnchor:
+            [0, -18]
 
     });
 
@@ -54,7 +67,8 @@ function createSavedIcon() {
 
     return L.divIcon({
 
-        className: 'scapor-marker-wrapper',
+        className:
+            'scapor-marker-wrapper',
 
         html: `
             <div class="scapor-marker saved-marker">
@@ -62,11 +76,14 @@ function createSavedIcon() {
             </div>
         `,
 
-        iconSize: [36, 36],
+        iconSize:
+            [36, 36],
 
-        iconAnchor: [18, 18],
+        iconAnchor:
+            [18, 18],
 
-        popupAnchor: [0, -18]
+        popupAnchor:
+            [0, -18]
 
     });
 
@@ -78,57 +95,115 @@ function createSavedIcon() {
 // ========================================
 
 // Normale Kartenansicht
-const streetMap = L.tileLayer(
-    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-        attribution: '&copy; OpenStreetMap contributors'
-    }
-);
+
+const streetMap =
+    L.tileLayer(
+        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            attribution:
+                '&copy; OpenStreetMap contributors'
+        }
+    );
 
 
 // Satellitenansicht
-const satelliteMap = L.tileLayer(
-    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    {
-        attribution: 'Tiles &copy; Esri'
-    }
-);
+
+const satelliteMap =
+    L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        {
+            attribution:
+                'Tiles &copy; Esri'
+        }
+    );
 
 
-// Beschriftungen für Satellitenansicht
-const satelliteLabels = L.tileLayer(
-    'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-    {
-        attribution: 'Labels &copy; Esri'
-    }
-);
+// Satelliten-Beschriftungen
+
+const satelliteLabels =
+    L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+        {
+            attribution:
+                'Labels &copy; Esri'
+        }
+    );
 
 
-// Standardmäßig normale Karte anzeigen
+// Standardkarte
+
 streetMap.addTo(map);
 
 
-// ========================================
-// KARTEN-AUSWAHL
-// ========================================
+// Satellitenbeschriftungen zunächst nicht anzeigen
 
 const baseMaps = {
 
-    'Karte': streetMap,
+    'Karte':
+        streetMap,
 
-    'Satellit': satelliteMap
+    'Satellit':
+        satelliteMap
 
 };
 
 
-L.control.layers(
-    baseMaps,
-    null,
-    {
-        collapsed: true,
-        position: 'topright'
+const layerControl =
+    L.control.layers(
+        baseMaps,
+        null,
+        {
+            collapsed:
+                true,
+
+            position:
+                'topright'
+        }
+    ).addTo(map);
+
+
+// ========================================
+// SATELLITEN-LABELS AUTOMATISCH SCHALTEN
+// ========================================
+
+map.on(
+    'baselayerchange',
+    function (event) {
+
+        if (
+            event.name === 'Satellit'
+        ) {
+
+            if (
+                !map.hasLayer(
+                    satelliteLabels
+                )
+            ) {
+
+                satelliteLabels.addTo(
+                    map
+                );
+
+            }
+
+        } else {
+
+            if (
+                map.hasLayer(
+                    satelliteLabels
+                )
+            ) {
+
+                map.removeLayer(
+                    satelliteLabels
+                );
+
+            }
+
+        }
+
     }
-).addTo(map);
+);
 
 
 // ========================================
@@ -136,6 +211,10 @@ L.control.layers(
 // ========================================
 
 const spots = [];
+
+
+// Aktuell bearbeiteter,
+// noch nicht gespeicherter Spot
 
 let activeSpot = null;
 
@@ -146,37 +225,60 @@ let activeSpot = null;
 
 async function loadSpots() {
 
-    const { data, error } = await supabaseClient
-        .from('spots')
-        .select('*')
-        .order('created_at', {
-            ascending: true
-        });
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from('spots')
+                .select('*')
+                .order(
+                    'created_at',
+                    {
+                        ascending:
+                            true
+                    }
+                );
 
 
-    if (error) {
+        if (error) {
+
+            console.error(
+                'Fehler beim Laden der Spots:',
+                error
+            );
+
+            return;
+
+        }
+
+
+        console.log(
+            'Spots aus Supabase geladen:',
+            data
+        );
+
+
+        data.forEach(
+            function (row) {
+
+                createSpotFromDatabase(
+                    row
+                );
+
+            }
+        );
+
+    } catch (error) {
 
         console.error(
-            'Fehler beim Laden der Spots:',
+            'Unerwarteter Fehler beim Laden der Spots:',
             error
         );
 
-        return;
-
     }
-
-
-    console.log(
-        'Spots aus Supabase geladen:',
-        data
-    );
-
-
-    data.forEach(function (row) {
-
-        createSpotFromDatabase(row);
-
-    });
 
 }
 
@@ -187,55 +289,202 @@ async function loadSpots() {
 
 function createSpotFromDatabase(row) {
 
+    const latitude =
+        Number(
+            row.latitude
+        );
+
+    const longitude =
+        Number(
+            row.longitude
+        );
+
+
+    if (
+        !Number.isFinite(latitude) ||
+        !Number.isFinite(longitude)
+    ) {
+
+        console.error(
+            'Ungültige Position für Spot:',
+            row
+        );
+
+        return;
+
+    }
+
+
     const position = [
-        row.latitude,
-        row.longitude
+        latitude,
+        longitude
     ];
 
 
-    const marker = L.marker(
-        position,
-        {
-            draggable: false,
-            icon: createSavedIcon(),
-            autoPan: true
-        }
-    ).addTo(map);
+    const marker =
+        L.marker(
+            position,
+            {
+                draggable:
+                    false,
+
+                icon:
+                    createSavedIcon(),
+
+                autoPan:
+                    true
+            }
+        ).addTo(map);
 
 
     const spot = {
 
-        id: row.id,
+        id:
+            row.id,
 
-        marker: marker,
+        marker:
+            marker,
 
-        name: row.name || '',
+        name:
+            row.name || '',
 
-        description: row.description || '',
+        description:
+            row.description || '',
 
-        category: row.category || 'Architecture',
+        category:
+            row.category ||
+            'Architecture',
 
-        rating: 0,
+        rating:
+            Number(
+                row.rating || 0
+            ),
 
-        saved: true
+        saved:
+            true
 
     };
 
 
-    spots.push(spot);
+    spots.push(
+        spot
+    );
 
 
     // ========================================
     // MARKER KLICK
     // ========================================
 
-    marker.on('click', function (event) {
+    marker.on(
+        'click',
+        function (event) {
 
-        L.DomEvent.stopPropagation(event);
+            L.DomEvent.stopPropagation(
+                event
+            );
 
-        showSpot(spot);
 
-    });
+            // Falls gerade ein neuer
+            // ungespeicherter Spot bearbeitet wird,
+            // diesen entfernen.
+
+            if (
+                activeSpot !== null &&
+                activeSpot !== spot &&
+                !activeSpot.saved
+            ) {
+
+                removeActiveSpot();
+
+            }
+
+
+            showSpot(
+                spot
+            );
+
+        }
+    );
+
+}
+
+
+// ========================================
+// UNGESPEICHERTEN SPOT ENTFERNEN
+// ========================================
+
+function removeActiveSpot() {
+
+    if (
+        activeSpot === null
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        activeSpot.saved
+    ) {
+
+        activeSpot =
+            null;
+
+        return;
+
+    }
+
+
+    // Popup schließen
+
+    if (
+        activeSpot.marker &&
+        activeSpot.marker.getPopup()
+    ) {
+
+        activeSpot.marker.closePopup();
+
+    }
+
+
+    // Marker von Karte entfernen
+
+    if (
+        map.hasLayer(
+            activeSpot.marker
+        )
+    ) {
+
+        map.removeLayer(
+            activeSpot.marker
+        );
+
+    }
+
+
+    // Aus lokalem Array entfernen
+
+    const index =
+        spots.indexOf(
+            activeSpot
+        );
+
+
+    if (
+        index !== -1
+    ) {
+
+        spots.splice(
+            index,
+            1
+        );
+
+    }
+
+
+    activeSpot =
+        null;
 
 }
 
@@ -244,47 +493,33 @@ function createSpotFromDatabase(row) {
 // KLICK AUF DIE KARTE
 // ========================================
 
-map.on('click', function (event) {
+map.on(
+    'click',
+    function (event) {
 
-    // Wenn bereits ein neuer Spot bearbeitet wird,
-    // diesen entfernen
-    if (activeSpot !== null) {
+        // ========================================
+        // VORHERIGEN UNGESPEICHERTEN SPOT ENTFERNEN
+        // ========================================
 
-        // Nur ungespeicherte Spots dürfen
-        // auf diese Weise entfernt werden
-        if (!activeSpot.saved) {
+        if (
+            activeSpot !== null
+        ) {
 
-            map.removeLayer(
-                activeSpot.marker
-            );
-
-
-            const index =
-                spots.indexOf(activeSpot);
-
-
-            if (index !== -1) {
-
-                spots.splice(
-                    index,
-                    1
-                );
-
-            }
+            removeActiveSpot();
 
         }
 
 
-        // Aktiven Spot zurücksetzen
-        activeSpot = null;
+        // ========================================
+        // NEUEN SPOT ERSTELLEN
+        // ========================================
+
+        createSpot(
+            event.latlng
+        );
 
     }
-
-
-    // Neuen Spot erstellen
-    createSpot(event.latlng);
-
-});
+);
 
 
 // ========================================
@@ -293,84 +528,128 @@ map.on('click', function (event) {
 
 function createSpot(position) {
 
-    const marker = L.marker(
-        position,
-        {
-            draggable: true,
-            icon: createActiveIcon(),
-            autoPan: true
-        }
-    ).addTo(map);
+    const marker =
+        L.marker(
+            position,
+            {
+                draggable:
+                    true,
+
+                icon:
+                    createActiveIcon(),
+
+                autoPan:
+                    true
+            }
+        ).addTo(map);
 
 
     const spot = {
 
-        // Temporäre lokale ID
-        id: nextSpotId++,
+        // Noch keine Datenbank-ID.
+        // Die echte ID kommt von Supabase.
 
-        marker: marker,
+        id:
+            null,
 
-        name: '',
+        marker:
+            marker,
 
-        description: '',
+        name:
+            '',
 
-        category: 'Architecture',
+        description:
+            '',
 
-        rating: 0,
+        category:
+            'Architecture',
 
-        saved: false
+        rating:
+            0,
+
+        saved:
+            false
 
     };
 
 
-    spots.push(spot);
+    spots.push(
+        spot
+    );
 
-    activeSpot = spot;
+
+    // Ganz wichtig:
+    // Dieser Spot ist jetzt der aktive Spot.
+
+    activeSpot =
+        spot;
 
 
     // ========================================
     // MARKER KLICK
     // ========================================
 
-    marker.on('click', function (event) {
+    marker.on(
+        'click',
+        function (event) {
 
-        L.DomEvent.stopPropagation(event);
+            L.DomEvent.stopPropagation(
+                event
+            );
 
 
-        if (spot.saved) {
+            if (
+                spot.saved
+            ) {
 
-            showSpot(spot);
+                showSpot(
+                    spot
+                );
 
-        } else {
+            } else {
 
-            openEditor(spot);
+                openEditor(
+                    spot
+                );
+
+            }
 
         }
-
-    });
+    );
 
 
     // ========================================
     // MARKER VERSCHIEBEN
     // ========================================
 
-    marker.on('dragend', function () {
+    marker.on(
+        'dragend',
+        function () {
 
-        if (!spot.saved) {
+            if (
+                spot.saved
+            ) {
 
-            setTimeout(function () {
+                return;
 
-                openEditor(spot);
+            }
 
-            }, 100);
+
+            openEditor(
+                spot
+            );
 
         }
+    );
 
-    });
 
+    // ========================================
+    // FORMULAR DIREKT ÖFFNEN
+    // ========================================
 
-    // Formular öffnen
-    openEditor(spot);
+    openEditor(
+        spot
+    );
 
 }
 
@@ -381,28 +660,53 @@ function createSpot(position) {
 
 function openEditor(spot) {
 
+    if (
+        !spot ||
+        !spot.marker
+    ) {
+
+        return;
+
+    }
+
+
     const html = `
         <div class="marker-form">
 
-            <label>Name</label>
+            <label>
+                Name
+            </label>
 
             <input
                 class="spot-name"
                 type="text"
                 placeholder="Name eingeben"
-                value="${escapeHtml(spot.name)}"
+                value="${escapeHtml(
+                    spot.name
+                )}"
+                autocomplete="off"
             >
 
-            <label>Beschreibung</label>
+
+            <label>
+                Beschreibung
+            </label>
 
             <textarea
                 class="spot-description"
                 placeholder="Beschreibung eingeben"
-            >${escapeHtml(spot.description)}</textarea>
+            >${escapeHtml(
+                spot.description
+            )}</textarea>
 
-            <label>Kategorie</label>
 
-            <select class="spot-category">
+            <label>
+                Kategorie
+            </label>
+
+            <select
+                class="spot-category"
+            >
 
                 <option value="Architecture">
                     Architecture
@@ -446,6 +750,7 @@ function openEditor(spot) {
 
             </select>
 
+
             <button
                 type="button"
                 class="spot-save"
@@ -458,25 +763,80 @@ function openEditor(spot) {
 
 
     // ========================================
-    // POPUP ERSTELLEN
+    // POPUP BINDEN
     // ========================================
 
-    markerPopup(
-        spot,
-        html
+    spot.marker.unbindPopup();
+
+
+    spot.marker.bindPopup(
+        html,
+        {
+            closeButton:
+                true,
+
+            autoPan:
+                true,
+
+            autoPanPadding:
+                [20, 80],
+
+            maxWidth:
+                340
+        }
     );
 
 
     // ========================================
-    // FORMULAR VORBEREITEN
+    // POPUP ÖFFNEN
     // ========================================
 
-    const popupElement =
-        spot.marker.getPopup().getElement();
+    spot.marker.once(
+        'popupopen',
+        function (event) {
+
+            setupEditorPopup(
+                spot,
+                event.popup
+            );
+
+        }
+    );
 
 
-    if (!popupElement) {
+    spot.marker.openPopup();
+
+}
+
+
+// ========================================
+// EDITOR POPUP EINRICHTEN
+// ========================================
+
+function setupEditorPopup(
+    spot,
+    popup
+) {
+
+    if (
+        !popup
+    ) {
+
         return;
+
+    }
+
+
+    const popupElement =
+        popup.getElement();
+
+
+    if (
+        !popupElement
+    ) {
+
+        return;
+
     }
 
 
@@ -486,8 +846,14 @@ function openEditor(spot) {
         );
 
 
-    category.value =
-        spot.category;
+    if (
+        category
+    ) {
+
+        category.value =
+            spot.category;
+
+    }
 
 
     const saveButton =
@@ -496,19 +862,34 @@ function openEditor(spot) {
         );
 
 
-    // ========================================
-    // SPEICHERN
-    // ========================================
+    if (
+        !saveButton
+    ) {
 
-    saveButton.onclick = function (event) {
+        console.error(
+            'Speichern-Button wurde nicht gefunden.'
+        );
 
-        event.preventDefault();
+        return;
 
-        event.stopPropagation();
+    }
 
-        saveSpot(spot);
 
-    };
+    saveButton.addEventListener(
+        'click',
+        function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            saveSpot(
+                spot
+            );
+
+        }
+    );
 
 }
 
@@ -517,19 +898,62 @@ function openEditor(spot) {
 // POPUP ERSTELLEN
 // ========================================
 
-function markerPopup(spot, html) {
+function markerPopup(
+    spot,
+    html,
+    onOpen
+) {
 
-    // Vorheriges Popup entfernen
+    if (
+        !spot ||
+        !spot.marker
+    ) {
+
+        return;
+
+    }
+
+
     spot.marker.unbindPopup();
 
 
-    // Neues Popup binden
     spot.marker.bindPopup(
-        html
+        html,
+        {
+            closeButton:
+                true,
+
+            autoPan:
+                true,
+
+            autoPanPadding:
+                [20, 80],
+
+            maxWidth:
+                340
+        }
     );
 
 
-    // Popup öffnen
+    if (
+        typeof onOpen ===
+        'function'
+    ) {
+
+        spot.marker.once(
+            'popupopen',
+            function (event) {
+
+                onOpen(
+                    event.popup
+                );
+
+            }
+        );
+
+    }
+
+
     spot.marker.openPopup();
 
 }
@@ -541,12 +965,26 @@ function markerPopup(spot, html) {
 
 async function saveSpot(spot) {
 
+    if (
+        !spot ||
+        !spot.marker
+    ) {
+
+        return;
+
+    }
+
+
     const popup =
         spot.marker.getPopup();
 
 
-    if (!popup) {
+    if (
+        !popup
+    ) {
+
         return;
+
     }
 
 
@@ -554,8 +992,12 @@ async function saveSpot(spot) {
         popup.getElement();
 
 
-    if (!popupElement) {
+    if (
+        !popupElement
+    ) {
+
         return;
+
     }
 
 
@@ -577,6 +1019,21 @@ async function saveSpot(spot) {
         );
 
 
+    if (
+        !nameInput ||
+        !descriptionInput ||
+        !categoryInput
+    ) {
+
+        console.error(
+            'Spot-Formular ist unvollständig.'
+        );
+
+        return;
+
+    }
+
+
     // ========================================
     // NAME PRÜFEN
     // ========================================
@@ -585,11 +1042,15 @@ async function saveSpot(spot) {
         nameInput.value.trim();
 
 
-    if (name === '') {
+    if (
+        name === ''
+    ) {
 
         alert(
             'Bitte gib einen Namen für den Spot ein.'
         );
+
+        nameInput.focus();
 
         return;
 
@@ -620,41 +1081,13 @@ async function saveSpot(spot) {
         spot.marker.getLatLng();
 
 
-    // ========================================
-    // IN SUPABASE SPEICHERN
-    // ========================================
-
-    const { data, error } =
-        await supabaseClient
-            .from('spots')
-            .insert({
-                name: spot.name,
-                description: spot.description,
-                category: spot.category,
-                latitude: position.lat,
-                longitude: position.lng,
-                status: 'active'
-            })
-            .select()
-            .single();
-
-
-    // ========================================
-    // FEHLER BEHANDELN
-    // ========================================
-
-    if (error) {
-
-        console.error(
-            'Fehler beim Speichern des Spots:',
-            error
-        );
-
+    if (
+        !position
+    ) {
 
         alert(
-            'Der Spot konnte nicht gespeichert werden.'
+            'Die Position des Spots konnte nicht ermittelt werden.'
         );
-
 
         return;
 
@@ -662,37 +1095,219 @@ async function saveSpot(spot) {
 
 
     // ========================================
-    // SUPABASE-ID ÜBERNEHMEN
+    // BUTTON DEAKTIVIEREN
     // ========================================
 
-    spot.id =
-        data.id;
+    const saveButton =
+        popupElement.querySelector(
+            '.spot-save'
+        );
+
+
+    if (
+        saveButton
+    ) {
+
+        saveButton.disabled =
+            true;
+
+        saveButton.textContent =
+            'Speichert ...';
+
+    }
 
 
     // ========================================
-    // SPOT ALS GESPEICHERT MARKIEREN
+    // IN SUPABASE SPEICHERN
     // ========================================
 
-    spot.saved =
-        true;
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from('spots')
+                .insert({
+
+                    name:
+                        spot.name,
+
+                    description:
+                        spot.description,
+
+                    category:
+                        spot.category,
+
+                    latitude:
+                        position.lat,
+
+                    longitude:
+                        position.lng,
+
+                    status:
+                        'active'
+
+                })
+                .select()
+                .single();
 
 
-    // Marker fixieren
-    spot.marker.dragging.disable();
+        // ========================================
+        // FEHLER
+        // ========================================
+
+        if (
+            error
+        ) {
+
+            console.error(
+                'Fehler beim Speichern des Spots:',
+                error
+            );
 
 
-    // Marker von Rot auf Blau wechseln
-    spot.marker.setIcon(
-        createSavedIcon()
-    );
+            if (
+                saveButton
+            ) {
+
+                saveButton.disabled =
+                    false;
+
+                saveButton.textContent =
+                    'Speichern';
+
+            }
 
 
-    // Aktiven Spot freigeben
-    activeSpot = null;
+            alert(
+                'Der Spot konnte nicht gespeichert werden.'
+            );
+
+            return;
+
+        }
 
 
-    // Gespeicherten Spot anzeigen
-    showSpot(spot);
+        if (
+            !data
+        ) {
+
+            console.error(
+                'Supabase hat keine Spot-Daten zurückgegeben.'
+            );
+
+
+            if (
+                saveButton
+            ) {
+
+                saveButton.disabled =
+                    false;
+
+                saveButton.textContent =
+                    'Speichern';
+
+            }
+
+
+            alert(
+                'Der Spot wurde gespeichert, aber die Antwort der Datenbank war leer.'
+            );
+
+            return;
+
+        }
+
+
+        // ========================================
+        // SUPABASE-ID ÜBERNEHMEN
+        // ========================================
+
+        spot.id =
+            data.id;
+
+
+        // ========================================
+        // SPOT ALS GESPEICHERT MARKIEREN
+        // ========================================
+
+        spot.saved =
+            true;
+
+
+        // ========================================
+        // MARKER NICHT MEHR VERSCHIEBBAR
+        // ========================================
+
+        if (
+            spot.marker.dragging
+        ) {
+
+            spot.marker.dragging.disable();
+
+        }
+
+
+        // ========================================
+        // MARKER VON ROT AUF BLAU WECHSELN
+        // ========================================
+
+        spot.marker.setIcon(
+            createSavedIcon()
+        );
+
+
+        // ========================================
+        // AKTIVEN SPOT FREIGEBEN
+        // ========================================
+
+        if (
+            activeSpot === spot
+        ) {
+
+            activeSpot =
+                null;
+
+        }
+
+
+        // ========================================
+        // GESPEICHERTEN SPOT ANZEIGEN
+        // ========================================
+
+        showSpot(
+            spot
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            'Unerwarteter Fehler beim Speichern:',
+            error
+        );
+
+
+        if (
+            saveButton
+        ) {
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                'Speichern';
+
+        }
+
+
+        alert(
+            'Beim Speichern des Spots ist ein unerwarteter Fehler aufgetreten.'
+        );
+
+    }
 
 }
 
@@ -703,6 +1318,16 @@ async function saveSpot(spot) {
 
 function showSpot(spot) {
 
+    if (
+        !spot ||
+        !spot.marker
+    ) {
+
+        return;
+
+    }
+
+
     const position =
         spot.marker.getLatLng();
 
@@ -711,18 +1336,30 @@ function showSpot(spot) {
         <div class="marker-info">
 
             <h3>
-                ${escapeHtml(spot.name)}
+                ${escapeHtml(
+                    spot.name ||
+                    'Unbenannter Spot'
+                )}
             </h3>
 
 
             <p>
-                <strong>Kategorie:</strong><br>
-                ${escapeHtml(spot.category)}
+                <strong>
+                    Kategorie:
+                </strong>
+                <br>
+                ${escapeHtml(
+                    spot.category ||
+                    'Keine Kategorie'
+                )}
             </p>
 
 
             <p>
-                <strong>Beschreibung:</strong><br>
+                <strong>
+                    Beschreibung:
+                </strong>
+                <br>
                 ${escapeHtml(
                     spot.description ||
                     'Keine Beschreibung'
@@ -731,7 +1368,10 @@ function showSpot(spot) {
 
 
             <p>
-                <strong>Position:</strong><br>
+                <strong>
+                    Position:
+                </strong>
+                <br>
                 ${position.lat.toFixed(6)},
                 ${position.lng.toFixed(6)}
             </p>
@@ -739,7 +1379,10 @@ function showSpot(spot) {
 
             <div class="spot-rating">
 
-                <strong>Bewertung:</strong>
+                <strong>
+                    Bewertung:
+                </strong>
+
 
                 <div class="rating-stars">
 
@@ -751,6 +1394,7 @@ function showSpot(spot) {
                         ☆
                     </button>
 
+
                     <button
                         type="button"
                         data-rating="2"
@@ -758,6 +1402,7 @@ function showSpot(spot) {
                     >
                         ☆
                     </button>
+
 
                     <button
                         type="button"
@@ -767,6 +1412,7 @@ function showSpot(spot) {
                         ☆
                     </button>
 
+
                     <button
                         type="button"
                         data-rating="4"
@@ -774,6 +1420,7 @@ function showSpot(spot) {
                     >
                         ☆
                     </button>
+
 
                     <button
                         type="button"
@@ -792,31 +1439,55 @@ function showSpot(spot) {
 
 
     // ========================================
-    // POPUP BINDEN
+    // POPUP ÖFFNEN
     // ========================================
 
     markerPopup(
         spot,
-        html
+        html,
+        function (popup) {
+
+            setupRating(
+                spot,
+                popup
+            );
+
+        }
     );
 
-
-    // ========================================
-    // POPUP ELEMENT
-    // ========================================
-
-    const popupElement =
-        spot.marker.getPopup().getElement();
+}
 
 
-    if (!popupElement) {
+// ========================================
+// BEWERTUNG EINRICHTEN
+// ========================================
+
+function setupRating(
+    spot,
+    popup
+) {
+
+    if (
+        !popup
+    ) {
+
         return;
+
     }
 
 
-    // ========================================
-    // BEWERTUNG
-    // ========================================
+    const popupElement =
+        popup.getElement();
+
+
+    if (
+        !popupElement
+    ) {
+
+        return;
+
+    }
+
 
     const ratingButtons =
         popupElement.querySelectorAll(
@@ -824,67 +1495,101 @@ function showSpot(spot) {
         );
 
 
-    ratingButtons.forEach(function (button) {
+    ratingButtons.forEach(
+        function (button) {
 
-        const rating =
-            Number(
-                button.dataset.rating
-            );
-
-
-        // Bereits vorhandene Bewertung anzeigen
-        if (rating <= spot.rating) {
-
-            button.textContent =
-                '★';
-
-        }
-
-
-        // Bewertung auswählen
-        button.onclick =
-            function (event) {
-
-                event.preventDefault();
-
-                event.stopPropagation();
-
-
-                spot.rating =
-                    rating;
-
-
-                // Sterne aktualisieren
-                ratingButtons.forEach(
-                    function (starButton) {
-
-                        const starRating =
-                            Number(
-                                starButton.dataset.rating
-                            );
-
-
-                        if (
-                            starRating <=
-                            spot.rating
-                        ) {
-
-                            starButton.textContent =
-                                '★';
-
-                        } else {
-
-                            starButton.textContent =
-                                '☆';
-
-                        }
-
-                    }
+            const rating =
+                Number(
+                    button.dataset.rating
                 );
 
-            };
 
-    });
+            // ========================================
+            // VORHANDENE BEWERTUNG
+            // ========================================
+
+            if (
+                rating <=
+                spot.rating
+            ) {
+
+                button.textContent =
+                    '★';
+
+            } else {
+
+                button.textContent =
+                    '☆';
+
+            }
+
+
+            // ========================================
+            // BEWERTUNG AUSWÄHLEN
+            // ========================================
+
+            button.addEventListener(
+                'click',
+                function (event) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+
+                    spot.rating =
+                        rating;
+
+
+                    updateRatingStars(
+                        ratingButtons,
+                        spot.rating
+                    );
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+// ========================================
+// BEWERTUNGSSTERNE AKTUALISIEREN
+// ========================================
+
+function updateRatingStars(
+    buttons,
+    rating
+) {
+
+    buttons.forEach(
+        function (button) {
+
+            const starRating =
+                Number(
+                    button.dataset.rating
+                );
+
+
+            if (
+                starRating <=
+                rating
+            ) {
+
+                button.textContent =
+                    '★';
+
+            } else {
+
+                button.textContent =
+                    '☆';
+
+            }
+
+        }
+    );
 
 }
 
@@ -895,12 +1600,24 @@ function showSpot(spot) {
 
 function escapeHtml(text) {
 
+    if (
+        text === null ||
+        text === undefined
+    ) {
+
+        return '';
+
+    }
+
+
     const div =
-        document.createElement('div');
+        document.createElement(
+            'div'
+        );
 
 
     div.textContent =
-        text;
+        String(text);
 
 
     return div.innerHTML;
@@ -934,7 +1651,9 @@ const welcomeClose =
 // PRÜFEN, OB POPUP SCHON GEZEIGT WURDE
 // ========================================
 
-if (welcomeOverlay) {
+if (
+    welcomeOverlay
+) {
 
     const welcomeShown =
         sessionStorage.getItem(
@@ -942,7 +1661,10 @@ if (welcomeOverlay) {
         );
 
 
-    if (welcomeShown === 'true') {
+    if (
+        welcomeShown ===
+        'true'
+    ) {
 
         welcomeOverlay.style.display =
             'none';
@@ -953,22 +1675,24 @@ if (welcomeOverlay) {
 
 
 // ========================================
-// POPUP SCHLIESSEN
+// WILLKOMMENS-POPUP SCHLIESSEN
 // ========================================
 
 function closeWelcomePopup() {
 
-    if (!welcomeOverlay) {
+    if (
+        !welcomeOverlay
+    ) {
+
         return;
+
     }
 
 
-    // Popup ausblenden
     welcomeOverlay.style.display =
         'none';
 
 
-    // Für diesen Besuch merken
     sessionStorage.setItem(
         'scaporWelcomeShown',
         'true'
@@ -981,7 +1705,9 @@ function closeWelcomePopup() {
 // START-BUTTON
 // ========================================
 
-if (welcomeStart) {
+if (
+    welcomeStart
+) {
 
     welcomeStart.addEventListener(
         'click',
@@ -995,7 +1721,9 @@ if (welcomeStart) {
 // X-BUTTON
 // ========================================
 
-if (welcomeClose) {
+if (
+    welcomeClose
+) {
 
     welcomeClose.addEventListener(
         'click',
@@ -1006,46 +1734,7 @@ if (welcomeClose) {
 
 
 // ========================================
-// SUPABASE VERBINDUNG TESTEN
-// ========================================
-
-async function testSupabaseConnection() {
-
-    const { data, error } =
-        await supabaseClient
-            .from('test_connection')
-            .select('*');
-
-
-    if (error) {
-
-        console.error(
-            'Supabase-Verbindung fehlgeschlagen:',
-            error
-        );
-
-        return;
-
-    }
-
-
-    console.log(
-        'Supabase-Verbindung erfolgreich!'
-    );
-
-
-    console.log(
-        'Daten aus Supabase:',
-        data
-    );
-
-}
-
-
-// ========================================
 // SUPABASE STARTEN
 // ========================================
-
-testSupabaseConnection();
 
 loadSpots();
