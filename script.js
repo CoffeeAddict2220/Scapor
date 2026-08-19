@@ -137,67 +137,43 @@ let nextSpotId = 1;
 // SPOTS AUS SUPABASE LADEN
 // ========================================
 
+// ========================================
+// SPOTS AUS SUPABASE LADEN
+// ========================================
+
 async function loadSpots() {
 
-    alert('loadSpots gestartet');
-
-    try {
-
-        alert('Starte Supabase Anfrage');
-
-        const result = await supabaseClient
-            .from('spots')
-            .select('*');
-
-        alert(
-            'Supabase Antwort erhalten'
-        );
-
-        console.log(
-            'Supabase Ergebnis:',
-            result
-        );
-
-
-        if (result.error) {
-
-            alert(
-                'Supabase Fehler:\n\n' +
-                result.error.message
-            );
-
-            return;
-
-        }
-
-
-        const data = result.data;
-
-        alert(
-            'Spots geladen: ' +
-            data.length
-        );
-
-
-        data.forEach(function (row) {
-
-            createSpotFromDatabase(row);
-
+    const { data, error } = await supabaseClient
+        .from('spots')
+        .select('*')
+        .order('created_at', {
+            ascending: true
         });
 
-    } catch (error) {
 
-        alert(
-            'JavaScript Fehler:\n\n' +
-            error.message
-        );
+    if (error) {
 
         console.error(
-            'LoadSpots Fehler:',
+            'Fehler beim Laden der Spots:',
             error
         );
 
+        return;
+
     }
+
+
+    console.log(
+        'Spots aus Supabase geladen:',
+        data
+    );
+
+
+    data.forEach(function (row) {
+
+        createSpotFromDatabase(row);
+
+    });
 
 }
 
