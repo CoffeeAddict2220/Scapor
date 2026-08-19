@@ -127,12 +127,42 @@ let nextSpotId = 1;
 
 map.on('click', function (event) {
 
-    // Wenn gerade ein neuer Spot bearbeitet wird,
-    // keinen weiteren erstellen
+    // Wenn bereits ein neuer Spot bearbeitet wird,
+    // diesen entfernen
     if (activeSpot !== null) {
-        return;
+
+        // Nur ungespeicherte Spots dürfen
+        // auf diese Weise entfernt werden
+        if (!activeSpot.saved) {
+
+            map.removeLayer(
+                activeSpot.marker
+            );
+
+
+            const index =
+                spots.indexOf(activeSpot);
+
+
+            if (index !== -1) {
+
+                spots.splice(
+                    index,
+                    1
+                );
+
+            }
+
+        }
+
+        // Aktiven Spot zurücksetzen
+        activeSpot = null;
+
     }
 
+
+    // Neuen Spot an der angetippten
+    // Position erstellen
     createSpot(event.latlng);
 
 });
