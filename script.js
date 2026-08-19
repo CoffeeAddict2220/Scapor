@@ -139,6 +139,8 @@ let nextSpotId = 1;
 
 async function loadSpots() {
 
+    alert('loadSpots gestartet');
+
     const { data, error } = await supabaseClient
         .from('spots')
         .select('*')
@@ -146,8 +148,12 @@ async function loadSpots() {
             ascending: true
         });
 
-
     if (error) {
+
+        alert(
+            'Supabase Fehler:\n' +
+            error.message
+        );
 
         console.error(
             'Fehler beim Laden der Spots:',
@@ -155,15 +161,11 @@ async function loadSpots() {
         );
 
         return;
-
     }
 
-
-    console.log(
-        'Spots aus Supabase geladen:',
-        data
+    alert(
+        'Spots geladen: ' + data.length
     );
-
 
     data.forEach(function (row) {
 
