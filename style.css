@@ -1,4 +1,3 @@
-```css
 /* ========================================
    GRUNDLAYOUT
    ======================================== */
@@ -73,9 +72,6 @@ body {
     box-shadow:
         0 6px 18px rgba(0, 0, 0, 0.18);
 
-    /*
-     * iPhone / Android Safe Area
-     */
     padding-top: env(safe-area-inset-top);
 }
 
@@ -104,6 +100,16 @@ body {
    ======================================== */
 
 .leaflet-container {
+    font-family: inherit;
+}
+
+
+/* ========================================
+   LEAFLET POPUP SCHRIFT
+   ======================================== */
+
+.leaflet-popup-content,
+.marker-info {
     font-family: inherit;
 }
 
@@ -204,7 +210,6 @@ body {
     width: 320px !important;
 
     max-width: calc(100vw - 60px);
-
 }
 
 
@@ -324,9 +329,6 @@ body {
 
     outline: none;
 
-    /*
-     * Verhindert Zoom auf iOS
-     */
     -webkit-appearance: none;
 }
 
@@ -561,7 +563,7 @@ body {
 
     color: #C4CDD5;
 
-    font-family: Arial, sans-serif;
+    font-family: inherit;
 
     font-size: 29px;
 
@@ -1804,4 +1806,3 @@ body {
     }
 
 }
-```
