@@ -95,6 +95,15 @@ const satelliteMap = L.tileLayer(
 );
 
 
+// Beschriftungen für Satellitenansicht
+const satelliteLabels = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+    {
+        attribution: 'Labels &copy; Esri'
+    }
+);
+
+
 // Standardmäßig normale Karte anzeigen
 streetMap.addTo(map);
 
@@ -130,12 +139,6 @@ const spots = [];
 
 let activeSpot = null;
 
-let nextSpotId = 1;
-
-
-// ========================================
-// SPOTS AUS SUPABASE LADEN
-// ========================================
 
 // ========================================
 // SPOTS AUS SUPABASE LADEN
