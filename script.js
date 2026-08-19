@@ -1,4 +1,3 @@
-```javascript
 // ========================================
 // KARTE
 // ========================================
@@ -155,14 +154,14 @@ map.on('click', function (event) {
 
         }
 
+
         // Aktiven Spot zurücksetzen
         activeSpot = null;
 
     }
 
 
-    // Neuen Spot an der angetippten
-    // Position erstellen
+    // Neuen Spot erstellen
     createSpot(event.latlng);
 
 });
@@ -337,9 +336,9 @@ function openEditor(spot) {
     `;
 
 
-    // ----------------------------------------
-    // Popup erstellen
-    // ----------------------------------------
+    // ========================================
+    // POPUP ERSTELLEN
+    // ========================================
 
     markerPopup(
         spot,
@@ -347,9 +346,9 @@ function openEditor(spot) {
     );
 
 
-    // ----------------------------------------
-    // Formular vorbereiten
-    // ----------------------------------------
+    // ========================================
+    // FORMULAR VORBEREITEN
+    // ========================================
 
     const popupElement =
         spot.marker.getPopup().getElement();
@@ -376,16 +375,15 @@ function openEditor(spot) {
         );
 
 
-    // ----------------------------------------
-    // Speichern
-    // ----------------------------------------
+    // ========================================
+    // SPEICHERN
+    // ========================================
 
     saveButton.onclick = function (event) {
 
         event.preventDefault();
 
         event.stopPropagation();
-
 
         saveSpot(spot);
 
@@ -458,7 +456,10 @@ function saveSpot(spot) {
         );
 
 
-    // Name prüfen
+    // ========================================
+    // NAME PRÜFEN
+    // ========================================
+
     const name =
         nameInput.value.trim();
 
@@ -474,7 +475,10 @@ function saveSpot(spot) {
     }
 
 
-    // Daten übernehmen
+    // ========================================
+    // DATEN ÜBERNEHMEN
+    // ========================================
+
     spot.name =
         name;
 
@@ -487,7 +491,10 @@ function saveSpot(spot) {
         categoryInput.value;
 
 
-    // Spot speichern
+    // ========================================
+    // SPOT SPEICHERN
+    // ========================================
+
     spot.saved = true;
 
 
@@ -505,7 +512,7 @@ function saveSpot(spot) {
     activeSpot = null;
 
 
-    // Info anzeigen
+    // Gespeicherten Spot anzeigen
     showSpot(spot);
 
 }
@@ -528,10 +535,12 @@ function showSpot(spot) {
                 ${escapeHtml(spot.name)}
             </h3>
 
+
             <p>
                 <strong>Kategorie:</strong><br>
                 ${escapeHtml(spot.category)}
             </p>
+
 
             <p>
                 <strong>Beschreibung:</strong><br>
@@ -541,11 +550,13 @@ function showSpot(spot) {
                 )}
             </p>
 
+
             <p>
                 <strong>Position:</strong><br>
                 ${position.lat.toFixed(6)},
                 ${position.lng.toFixed(6)}
             </p>
+
 
             <div class="spot-rating">
 
@@ -556,6 +567,7 @@ function showSpot(spot) {
                     <button
                         type="button"
                         data-rating="1"
+                        aria-label="1 von 5 Sternen"
                     >
                         ☆
                     </button>
@@ -563,6 +575,7 @@ function showSpot(spot) {
                     <button
                         type="button"
                         data-rating="2"
+                        aria-label="2 von 5 Sternen"
                     >
                         ☆
                     </button>
@@ -570,6 +583,7 @@ function showSpot(spot) {
                     <button
                         type="button"
                         data-rating="3"
+                        aria-label="3 von 5 Sternen"
                     >
                         ☆
                     </button>
@@ -577,6 +591,7 @@ function showSpot(spot) {
                     <button
                         type="button"
                         data-rating="4"
+                        aria-label="4 von 5 Sternen"
                     >
                         ☆
                     </button>
@@ -584,6 +599,7 @@ function showSpot(spot) {
                     <button
                         type="button"
                         data-rating="5"
+                        aria-label="5 von 5 Sternen"
                     >
                         ☆
                     </button>
@@ -596,16 +612,19 @@ function showSpot(spot) {
     `;
 
 
-    // Popup binden
+    // ========================================
+    // POPUP BINDEN
+    // ========================================
+
     markerPopup(
         spot,
         html
     );
 
 
-    // ----------------------------------------
+    // ========================================
     // POPUP ELEMENT
-    // ----------------------------------------
+    // ========================================
 
     const popupElement =
         spot.marker.getPopup().getElement();
@@ -616,9 +635,9 @@ function showSpot(spot) {
     }
 
 
-    // ----------------------------------------
+    // ========================================
     // BEWERTUNG
-    // ----------------------------------------
+    // ========================================
 
     const ratingButtons =
         popupElement.querySelectorAll(
@@ -634,7 +653,7 @@ function showSpot(spot) {
             );
 
 
-        // Bereits gespeicherte Bewertung anzeigen
+        // Bereits vorhandene Bewertung anzeigen
         if (rating <= spot.rating) {
 
             button.textContent =
@@ -688,32 +707,6 @@ function showSpot(spot) {
 
     });
 
-
-    // ----------------------------------------
-    // BEARBEITEN
-    // ----------------------------------------
-
-    const editButton =
-        popupElement.querySelector(
-            '.spot-edit'
-        );
-
-
-    if (editButton) {
-
-        editButton.onclick =
-            function (event) {
-
-                event.preventDefault();
-
-                event.stopPropagation();
-
-                openEditor(spot);
-
-            };
-
-    }
-
 }
 
 
@@ -726,8 +719,10 @@ function escapeHtml(text) {
     const div =
         document.createElement('div');
 
+
     div.textContent =
         text;
+
 
     return div.innerHTML;
 
@@ -739,7 +734,21 @@ function escapeHtml(text) {
 // ========================================
 
 const welcomeOverlay =
-    document.getElementById('welcome-overlay');
+    document.getElementById(
+        'welcome-overlay'
+    );
+
+
+const welcomeStart =
+    document.getElementById(
+        'welcome-start'
+    );
+
+
+const welcomeClose =
+    document.getElementById(
+        'welcome-close'
+    );
 
 
 // ========================================
@@ -756,8 +765,8 @@ if (welcomeOverlay) {
 
     if (welcomeShown === 'true') {
 
-        // Popup nicht anzeigen
-        welcomeOverlay.style.display = 'none';
+        welcomeOverlay.style.display =
+            'none';
 
     }
 
@@ -776,7 +785,8 @@ function closeWelcomePopup() {
 
 
     // Popup ausblenden
-    welcomeOverlay.style.display = 'none';
+    welcomeOverlay.style.display =
+        'none';
 
 
     // Für diesen Besuch merken
@@ -788,7 +798,10 @@ function closeWelcomePopup() {
 }
 
 
-// Start-Button
+// ========================================
+// START-BUTTON
+// ========================================
+
 if (welcomeStart) {
 
     welcomeStart.addEventListener(
@@ -799,7 +812,10 @@ if (welcomeStart) {
 }
 
 
-// X-Button
+// ========================================
+// X-BUTTON
+// ========================================
+
 if (welcomeClose) {
 
     welcomeClose.addEventListener(
@@ -808,4 +824,3 @@ if (welcomeClose) {
     );
 
 }
-```
