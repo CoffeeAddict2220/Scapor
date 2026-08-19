@@ -836,3 +836,20 @@ if (welcomeClose) {
     );
 
 }
+
+
+async function testSupabaseConnection() {
+    const { data, error } = await supabaseClient
+        .from("test_connection")
+        .select("*");
+
+    if (error) {
+        console.error("Supabase-Verbindung fehlgeschlagen:", error);
+        return;
+    }
+
+    console.log("Supabase-Verbindung erfolgreich!");
+    console.log("Daten aus Supabase:", data);
+}
+
+testSupabaseConnection();
