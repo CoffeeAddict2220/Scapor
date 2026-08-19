@@ -10,6 +10,7 @@ const supabaseClient = supabase.createClient(
     SUPABASE_KEY
 );
 
+
 // ========================================
 // KARTE
 // ========================================
@@ -133,6 +134,106 @@ let nextSpotId = 1;
 
 
 // ========================================
+// SPOTS AUS SUPABASE LADEN
+// ========================================
+
+async function loadSpots() {
+
+    const { data, error } = await supabaseClient
+        .from('spots')
+        .select('*')
+        .order('created_at', {
+            ascending: true
+        });
+
+
+    if (error) {
+
+        console.error(
+            'Fehler beim Laden der Spots:',
+            error
+        );
+
+        return;
+
+    }
+
+
+    console.log(
+        'Spots aus Supabase geladen:',
+        data
+    );
+
+
+    data.forEach(function (row) {
+
+        createSpotFromDatabase(row);
+
+    });
+
+}
+
+
+// ========================================
+// SPOT AUS DATENBANK ERSTELLEN
+// ========================================
+
+function createSpotFromDatabase(row) {
+
+    const position = [
+        row.latitude,
+        row.longitude
+    ];
+
+
+    const marker = L.marker(
+        position,
+        {
+            draggable: false,
+            icon: createSavedIcon(),
+            autoPan: true
+        }
+    ).addTo(map);
+
+
+    const spot = {
+
+        id: row.id,
+
+        marker: marker,
+
+        name: row.name || '',
+
+        description: row.description || '',
+
+        category: row.category || 'Architecture',
+
+        rating: 0,
+
+        saved: true
+
+    };
+
+
+    spots.push(spot);
+
+
+    // ========================================
+    // MARKER KLICK
+    // ========================================
+
+    marker.on('click', function (event) {
+
+        L.DomEvent.stopPropagation(event);
+
+        showSpot(spot);
+
+    });
+
+}
+
+
+// ========================================
 // KLICK AUF DIE KARTE
 // ========================================
 
@@ -197,6 +298,7 @@ function createSpot(position) {
 
     const spot = {
 
+        // Temporäre lokale ID
         id: nextSpotId++,
 
         marker: marker,
@@ -430,7 +532,7 @@ function markerPopup(spot, html) {
 // SPOT SPEICHERN
 // ========================================
 
-function saveSpot(spot) {
+async function saveSpot(spot) {
 
     const popup =
         spot.marker.getPopup();
@@ -504,10 +606,68 @@ function saveSpot(spot) {
 
 
     // ========================================
-    // SPOT SPEICHERN
+    // POSITION AUSLESEN
     // ========================================
 
-    spot.saved = true;
+    const position =
+        spot.marker.getLatLng();
+
+
+    // ========================================
+    // IN SUPABASE SPEICHERN
+    // ========================================
+
+    const { data, error } =
+        await supabaseClient
+            .from('spots')
+            .insert({
+                name: spot.name,
+                description: spot.description,
+                category: spot.category,
+                latitude: position.lat,
+                longitude: position.lng,
+                status: 'active'
+            })
+            .select()
+            .single();
+
+
+    // ========================================
+    // FEHLER BEHANDELN
+    // ========================================
+
+    if (error) {
+
+        console.error(
+            'Fehler beim Speichern des Spots:',
+            error
+        );
+
+
+        alert(
+            'Der Spot konnte nicht gespeichert werden.'
+        );
+
+
+        return;
+
+    }
+
+
+    // ========================================
+    // SUPABASE-ID ÜBERNEHMEN
+    // ========================================
+
+    spot.id =
+        data.id;
+
+
+    // ========================================
+    // SPOT ALS GESPEICHERT MARKIEREN
+    // ========================================
+
+    spot.saved =
+        true;
 
 
     // Marker fixieren
@@ -838,18 +998,47 @@ if (welcomeClose) {
 }
 
 
+// ========================================
+// SUPABASE VERBINDUNG TESTEN
+// ========================================
+
 async function testSupabaseConnection() {
-    const { data, error } = await supabaseClient
-        .from("test_connection")
-        .select("*");
+
+    const { data, error } =
+        await supabaseClient
+            .from('test_connection')
+            .select('*');
+
 
     if (error) {
-        console.error("Supabase-Verbindung fehlgeschlagen:", error);
+
+        console.error(
+            'Supabase-Verbindung fehlgeschlagen:',
+            error
+        );
+
         return;
+
     }
 
-    console.log("Supabase-Verbindung erfolgreich!");
-    console.log("Daten aus Supabase:", data);
+
+    console.log(
+        'Supabase-Verbindung erfolgreich!'
+    );
+
+
+    console.log(
+        'Daten aus Supabase:',
+        data
+    );
+
 }
 
+
+// ========================================
+// SUPABASE STARTEN
+// ========================================
+
 testSupabaseConnection();
+
+loadSpots();
