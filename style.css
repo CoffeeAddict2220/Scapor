@@ -108,6 +108,78 @@ body {
 
 
 /* ========================================
+   LEAFLET KARTENAUSWAHL
+   ======================================== */
+
+.leaflet-top.leaflet-right {
+
+    top: 78px;
+
+    right: 14px;
+}
+
+
+.leaflet-control-layers {
+
+    border: none;
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 6px 18px
+        rgba(0, 0, 0, 0.18);
+
+    overflow: hidden;
+
+    font-family: inherit;
+}
+
+
+.leaflet-control-layers-toggle {
+
+    width: 44px;
+
+    height: 44px;
+
+    background-color: #ffffff;
+
+    background-size: 22px 22px;
+}
+
+
+.leaflet-control-layers-expanded {
+
+    padding: 10px 12px;
+
+    background: #ffffff;
+
+    color: #243B53;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+.leaflet-control-layers label {
+
+    margin: 0;
+
+    padding: 3px 0;
+
+    cursor: pointer;
+}
+
+
+.leaflet-control-layers input {
+
+    margin-right: 7px;
+
+    accent-color: #102A43;
+}
+
+
+/* ========================================
    LEAFLET POPUP
    ======================================== */
 
