@@ -1,3 +1,4 @@
+```javascript
 // ========================================
 // KARTE
 // ========================================
@@ -58,7 +59,6 @@ function createSavedIcon() {
     });
 
 }
-
 
 
 // ========================================
@@ -195,6 +195,8 @@ function createSpot(position) {
         description: '',
 
         category: 'Architecture',
+
+        rating: 0,
 
         saved: false
 
@@ -492,8 +494,6 @@ function saveSpot(spot) {
     // Marker fixieren
     spot.marker.dragging.disable();
 
-    
-
 
     // Marker von Rot auf Blau wechseln
     spot.marker.setIcon(
@@ -547,6 +547,51 @@ function showSpot(spot) {
                 ${position.lng.toFixed(6)}
             </p>
 
+            <div class="spot-rating">
+
+                <strong>Bewertung:</strong>
+
+                <div class="rating-stars">
+
+                    <button
+                        type="button"
+                        data-rating="1"
+                    >
+                        ☆
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="2"
+                    >
+                        ☆
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="3"
+                    >
+                        ☆
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="4"
+                    >
+                        ☆
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="5"
+                    >
+                        ☆
+                    </button>
+
+                </div>
+
+            </div>
+
         </div>
     `;
 
@@ -558,7 +603,10 @@ function showSpot(spot) {
     );
 
 
-    // Bearbeiten-Button
+    // ----------------------------------------
+    // POPUP ELEMENT
+    // ----------------------------------------
+
     const popupElement =
         spot.marker.getPopup().getElement();
 
@@ -567,6 +615,83 @@ function showSpot(spot) {
         return;
     }
 
+
+    // ----------------------------------------
+    // BEWERTUNG
+    // ----------------------------------------
+
+    const ratingButtons =
+        popupElement.querySelectorAll(
+            '.rating-stars button'
+        );
+
+
+    ratingButtons.forEach(function (button) {
+
+        const rating =
+            Number(
+                button.dataset.rating
+            );
+
+
+        // Bereits gespeicherte Bewertung anzeigen
+        if (rating <= spot.rating) {
+
+            button.textContent =
+                '★';
+
+        }
+
+
+        // Bewertung auswählen
+        button.onclick =
+            function (event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                spot.rating =
+                    rating;
+
+
+                // Sterne aktualisieren
+                ratingButtons.forEach(
+                    function (starButton) {
+
+                        const starRating =
+                            Number(
+                                starButton.dataset.rating
+                            );
+
+
+                        if (
+                            starRating <=
+                            spot.rating
+                        ) {
+
+                            starButton.textContent =
+                                '★';
+
+                        } else {
+
+                            starButton.textContent =
+                                '☆';
+
+                        }
+
+                    }
+                );
+
+            };
+
+    });
+
+
+    // ----------------------------------------
+    // BEARBEITEN
+    // ----------------------------------------
 
     const editButton =
         popupElement.querySelector(
@@ -607,6 +732,8 @@ function escapeHtml(text) {
     return div.innerHTML;
 
 }
+
+
 // ========================================
 // WILLKOMMENS-POPUP
 // ========================================
@@ -681,3 +808,4 @@ if (welcomeClose) {
     );
 
 }
+```
