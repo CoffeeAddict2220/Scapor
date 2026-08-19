@@ -18,7 +18,7 @@ const supabaseClient = supabase.createClient(
 const map = L.map('map', {
     zoomControl: false
 }).setView(
-    [51.1, -349.4],
+    [51.1, 9.4],
     7
 );
 
