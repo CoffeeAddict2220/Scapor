@@ -106,7 +106,9 @@ const streetMap =
     );
 
 
-// Satellitenansicht
+// ========================================
+// SATELLITENANSICHT
+// ========================================
 
 const satelliteMap =
     L.tileLayer(
@@ -118,9 +120,25 @@ const satelliteMap =
     );
 
 
-// Satelliten-Beschriftungen
+// ========================================
+// SATELLITEN - STRASSEN / VERKEHR
+// ========================================
 
 const satelliteLabels =
+    L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
+        {
+            attribution:
+                'Transportation &copy; Esri'
+        }
+    );
+
+
+// ========================================
+// SATELLITEN - ORTSNAMEN / GRENZEN
+// ========================================
+
+const satellitePlaces =
     L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
         {
@@ -130,12 +148,12 @@ const satelliteLabels =
     );
 
 
-// Standardkarte
+// ========================================
+// STANDARDKARTE
+// ========================================
 
 streetMap.addTo(map);
 
-
-// Satellitenbeschriftungen zunächst nicht anzeigen
 
 const baseMaps = {
 
@@ -170,9 +188,15 @@ map.on(
     'baselayerchange',
     function (event) {
 
+        // ========================================
+        // SATELLIT AKTIV
+        // ========================================
+
         if (
             event.name === 'Satellit'
         ) {
+
+            // Straßen / Verkehr einschalten
 
             if (
                 !map.hasLayer(
@@ -186,7 +210,31 @@ map.on(
 
             }
 
-        } else {
+
+            // Ortsnamen / Grenzen einschalten
+
+            if (
+                !map.hasLayer(
+                    satellitePlaces
+                )
+            ) {
+
+                satellitePlaces.addTo(
+                    map
+                );
+
+            }
+
+        }
+
+
+        // ========================================
+        // NORMALE KARTE AKTIV
+        // ========================================
+
+        else {
+
+            // Straßen / Verkehr entfernen
 
             if (
                 map.hasLayer(
@@ -196,6 +244,21 @@ map.on(
 
                 map.removeLayer(
                     satelliteLabels
+                );
+
+            }
+
+
+            // Ortsnamen / Grenzen entfernen
+
+            if (
+                map.hasLayer(
+                    satellitePlaces
+                )
+            ) {
+
+                map.removeLayer(
+                    satellitePlaces
                 );
 
             }
@@ -384,10 +447,6 @@ function createSpotFromDatabase(row) {
             );
 
 
-            // Falls gerade ein neuer
-            // ungespeicherter Spot bearbeitet wird,
-            // diesen entfernen.
-
             if (
                 activeSpot !== null &&
                 activeSpot !== spot &&
@@ -436,8 +495,6 @@ function removeActiveSpot() {
     }
 
 
-    // Popup schließen
-
     if (
         activeSpot.marker &&
         activeSpot.marker.getPopup()
@@ -447,8 +504,6 @@ function removeActiveSpot() {
 
     }
 
-
-    // Marker von Karte entfernen
 
     if (
         map.hasLayer(
@@ -462,8 +517,6 @@ function removeActiveSpot() {
 
     }
 
-
-    // Aus lokalem Array entfernen
 
     const index =
         spots.indexOf(
@@ -497,10 +550,6 @@ map.on(
     'click',
     function (event) {
 
-        // ========================================
-        // VORHERIGEN UNGESPEICHERTEN SPOT ENTFERNEN
-        // ========================================
-
         if (
             activeSpot !== null
         ) {
@@ -509,10 +558,6 @@ map.on(
 
         }
 
-
-        // ========================================
-        // NEUEN SPOT ERSTELLEN
-        // ========================================
 
         createSpot(
             event.latlng
@@ -546,9 +591,6 @@ function createSpot(position) {
 
     const spot = {
 
-        // Noch keine Datenbank-ID.
-        // Die echte ID kommt von Supabase.
-
         id:
             null,
 
@@ -577,9 +619,6 @@ function createSpot(position) {
         spot
     );
 
-
-    // Ganz wichtig:
-    // Dieser Spot ist jetzt der aktive Spot.
 
     activeSpot =
         spot;
@@ -762,10 +801,6 @@ function openEditor(spot) {
     `;
 
 
-    // ========================================
-    // POPUP BINDEN
-    // ========================================
-
     spot.marker.unbindPopup();
 
 
@@ -786,10 +821,6 @@ function openEditor(spot) {
         }
     );
 
-
-    // ========================================
-    // POPUP ÖFFNEN
-    // ========================================
 
     spot.marker.once(
         'popupopen',
@@ -1034,10 +1065,6 @@ async function saveSpot(spot) {
     }
 
 
-    // ========================================
-    // NAME PRÜFEN
-    // ========================================
-
     const name =
         nameInput.value.trim();
 
@@ -1057,10 +1084,6 @@ async function saveSpot(spot) {
     }
 
 
-    // ========================================
-    // DATEN ÜBERNEHMEN
-    // ========================================
-
     spot.name =
         name;
 
@@ -1072,10 +1095,6 @@ async function saveSpot(spot) {
     spot.category =
         categoryInput.value;
 
-
-    // ========================================
-    // POSITION AUSLESEN
-    // ========================================
 
     const position =
         spot.marker.getLatLng();
@@ -1093,10 +1112,6 @@ async function saveSpot(spot) {
 
     }
 
-
-    // ========================================
-    // BUTTON DEAKTIVIEREN
-    // ========================================
 
     const saveButton =
         popupElement.querySelector(
@@ -1116,10 +1131,6 @@ async function saveSpot(spot) {
 
     }
 
-
-    // ========================================
-    // IN SUPABASE SPEICHERN
-    // ========================================
 
     try {
 
@@ -1153,10 +1164,6 @@ async function saveSpot(spot) {
                 .select()
                 .single();
 
-
-        // ========================================
-        // FEHLER
-        // ========================================
 
         if (
             error
@@ -1221,25 +1228,13 @@ async function saveSpot(spot) {
         }
 
 
-        // ========================================
-        // SUPABASE-ID ÜBERNEHMEN
-        // ========================================
-
         spot.id =
             data.id;
 
 
-        // ========================================
-        // SPOT ALS GESPEICHERT MARKIEREN
-        // ========================================
-
         spot.saved =
             true;
 
-
-        // ========================================
-        // MARKER NICHT MEHR VERSCHIEBBAR
-        // ========================================
 
         if (
             spot.marker.dragging
@@ -1250,18 +1245,10 @@ async function saveSpot(spot) {
         }
 
 
-        // ========================================
-        // MARKER VON ROT AUF BLAU WECHSELN
-        // ========================================
-
         spot.marker.setIcon(
             createSavedIcon()
         );
 
-
-        // ========================================
-        // AKTIVEN SPOT FREIGEBEN
-        // ========================================
 
         if (
             activeSpot === spot
@@ -1272,10 +1259,6 @@ async function saveSpot(spot) {
 
         }
 
-
-        // ========================================
-        // GESPEICHERTEN SPOT ANZEIGEN
-        // ========================================
 
         showSpot(
             spot
@@ -1438,10 +1421,6 @@ function showSpot(spot) {
     `;
 
 
-    // ========================================
-    // POPUP ÖFFNEN
-    // ========================================
-
     markerPopup(
         spot,
         html,
@@ -1504,10 +1483,6 @@ function setupRating(
                 );
 
 
-            // ========================================
-            // VORHANDENE BEWERTUNG
-            // ========================================
-
             if (
                 rating <=
                 spot.rating
@@ -1523,10 +1498,6 @@ function setupRating(
 
             }
 
-
-            // ========================================
-            // BEWERTUNG AUSWÄHLEN
-            // ========================================
 
             button.addEventListener(
                 'click',
