@@ -24,7 +24,28 @@ const map =
     L.map(
         'map',
         {
-            zoomControl: false
+            zoomControl:
+                false,
+
+            // Keine Wiederholung der Welt
+            // nach links und rechts
+
+            worldCopyJump:
+                false,
+
+            // Grenzen der Karte
+
+            maxBounds:
+                [
+                    [-85, -180],
+                    [85, 180]
+                ],
+
+            // 1.0 = Karte kann nicht
+            // über die Grenze gezogen werden
+
+            maxBoundsViscosity:
+                1.0
         }
     ).setView(
         [51.1, 9.4],
@@ -106,8 +127,8 @@ const streetMap =
             attribution:
                 '&copy; OpenStreetMap contributors',
 
-            maxZoom:
-                19
+            noWrap:
+                true
         }
     );
 
@@ -123,11 +144,8 @@ const satelliteMap =
             attribution:
                 'Tiles &copy; Esri',
 
-            maxZoom:
-                19,
-
-            maxNativeZoom:
-                19
+            noWrap:
+                true
         }
     );
 
@@ -137,11 +155,13 @@ const satelliteMap =
 // ========================================
 //
 // Reiner Beschriftungs-Layer.
-// Das Satellitenbild bleibt darunter sichtbar.
 //
-// Der Layer enthält OSM-basierte geografische
-// Beschriftungen und wird ausschließlich über
-// der Satellitenansicht eingeblendet.
+// Dieser Layer liegt über dem Satellitenbild.
+// Dadurch bleiben Straßen, Ortsnamen und
+// geografische Beschriftungen sichtbar.
+//
+// CARTO stellt diesen Layer ohne API-Key
+// bereit.
 //
 
 map.createPane(
@@ -184,6 +204,9 @@ const satelliteLabels =
 
             opacity:
                 1,
+
+            noWrap:
+                true,
 
             attribution:
                 '&copy; OpenStreetMap contributors &copy; CARTO'
