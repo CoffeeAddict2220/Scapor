@@ -27,22 +27,14 @@ const map =
             zoomControl:
                 false,
 
-            // Keine Wiederholung der Welt
-            // nach links und rechts
-
             worldCopyJump:
                 false,
-
-            // Grenzen der Karte
 
             maxBounds:
                 [
                     [-85, -180],
                     [85, 180]
                 ],
-
-            // 1.0 = Karte kann nicht
-            // über die Grenze gezogen werden
 
             maxBoundsViscosity:
                 1.0
@@ -115,7 +107,6 @@ function createSavedIcon() {
 // KARTENLAYER
 // ========================================
 
-
 // ========================================
 // NORMALE KARTENANSICHT
 // ========================================
@@ -153,16 +144,6 @@ const satelliteMap =
 // ========================================
 // SATELLITEN-BESCHRIFTUNGEN
 // ========================================
-//
-// Reiner Beschriftungs-Layer.
-//
-// Dieser Layer liegt über dem Satellitenbild.
-// Dadurch bleiben Straßen, Ortsnamen und
-// geografische Beschriftungen sichtbar.
-//
-// CARTO stellt diesen Layer ohne API-Key
-// bereit.
-//
 
 map.createPane(
     'satelliteLabels'
@@ -267,10 +248,6 @@ map.on(
     'baselayerchange',
     function (event) {
 
-        // ========================================
-        // SATELLIT AKTIV
-        // ========================================
-
         if (
             event.name ===
             'Satellit'
@@ -289,11 +266,6 @@ map.on(
             }
 
         }
-
-
-        // ========================================
-        // NORMALE KARTE AKTIV
-        // ========================================
 
         else {
 
@@ -493,10 +465,6 @@ function createSpotFromDatabase(row) {
             );
 
 
-            // Falls gerade ein neuer
-            // ungespeicherter Spot bearbeitet wird,
-            // diesen entfernen.
-
             if (
                 activeSpot !== null &&
                 activeSpot !== spot &&
@@ -545,8 +513,6 @@ function removeActiveSpot() {
     }
 
 
-    // Popup schließen
-
     if (
         activeSpot.marker &&
         activeSpot.marker.getPopup()
@@ -556,8 +522,6 @@ function removeActiveSpot() {
 
     }
 
-
-    // Marker von Karte entfernen
 
     if (
         map.hasLayer(
@@ -571,8 +535,6 @@ function removeActiveSpot() {
 
     }
 
-
-    // Aus lokalem Array entfernen
 
     const index =
         spots.indexOf(
@@ -606,10 +568,6 @@ map.on(
     'click',
     function (event) {
 
-        // ========================================
-        // VORHERIGEN UNGESPEICHERTEN SPOT ENTFERNEN
-        // ========================================
-
         if (
             activeSpot !== null
         ) {
@@ -618,10 +576,6 @@ map.on(
 
         }
 
-
-        // ========================================
-        // NEUEN SPOT ERSTELLEN
-        // ========================================
 
         createSpot(
             event.latlng
@@ -655,9 +609,6 @@ function createSpot(position) {
 
     const spot = {
 
-        // Noch keine Datenbank-ID.
-        // Die echte ID kommt von Supabase.
-
         id:
             null,
 
@@ -687,16 +638,9 @@ function createSpot(position) {
     );
 
 
-    // Ganz wichtig:
-    // Dieser Spot ist jetzt der aktive Spot.
-
     activeSpot =
         spot;
 
-
-    // ========================================
-    // MARKER KLICK
-    // ========================================
 
     marker.on(
         'click',
@@ -727,10 +671,6 @@ function createSpot(position) {
     );
 
 
-    // ========================================
-    // MARKER VERSCHIEBEN
-    // ========================================
-
     marker.on(
         'dragend',
         function () {
@@ -751,10 +691,6 @@ function createSpot(position) {
         }
     );
 
-
-    // ========================================
-    // FORMULAR DIREKT ÖFFNEN
-    // ========================================
 
     openEditor(
         spot
@@ -871,10 +807,6 @@ function openEditor(spot) {
     `;
 
 
-    // ========================================
-    // POPUP BINDEN
-    // ========================================
-
     spot.marker.unbindPopup();
 
 
@@ -895,10 +827,6 @@ function openEditor(spot) {
         }
     );
 
-
-    // ========================================
-    // POPUP ÖFFNEN
-    // ========================================
 
     spot.marker.once(
         'popupopen',
@@ -1064,6 +992,104 @@ function markerPopup(
 
 
     spot.marker.openPopup();
+
+}
+
+
+// ========================================
+// E-MAIL ÜBER EDGE FUNCTION SENDEN
+// ========================================
+
+async function sendSpotEmail(
+    spot,
+    position
+) {
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.functions.invoke(
+                'send-email',
+                {
+                    body: {
+
+                        spot: {
+
+                            id:
+                                spot.id,
+
+                            name:
+                                spot.name,
+
+                            description:
+                                spot.description,
+
+                            category:
+                                spot.category,
+
+                            latitude:
+                                position.lat,
+
+                            longitude:
+                                position.lng
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+        if (
+            error
+        ) {
+
+            console.error(
+                'Fehler beim Versenden der Spot-Mail:',
+                error
+            );
+
+            return false;
+
+        }
+
+
+        if (
+            data &&
+            data.success === true
+        ) {
+
+            console.log(
+                'Spot-Mail erfolgreich versendet:',
+                data
+            );
+
+            return true;
+
+        }
+
+
+        console.warn(
+            'Spot-Mail: Unerwartete Antwort der Edge Function:',
+            data
+        );
+
+        return false;
+
+    } catch (error) {
+
+        console.error(
+            'Unerwarteter Fehler beim Versenden der Spot-Mail:',
+            error
+        );
+
+        return false;
+
+    }
 
 }
 
@@ -1336,6 +1362,35 @@ async function saveSpot(spot) {
 
         spot.id =
             data.id;
+
+
+        // ========================================
+        // E-MAIL VERSENDEN
+        // ========================================
+        //
+        // Der Spot wurde bereits erfolgreich
+        // gespeichert.
+        //
+        // Falls der Mailversand fehlschlägt,
+        // bleibt der Spot trotzdem gespeichert.
+        //
+
+        const emailSent =
+            await sendSpotEmail(
+                spot,
+                position
+            );
+
+
+        if (
+            !emailSent
+        ) {
+
+            console.warn(
+                'Der Spot wurde gespeichert, aber die Benachrichtigungs-Mail konnte nicht versendet werden.'
+            );
+
+        }
 
 
         // ========================================
@@ -1613,10 +1668,6 @@ function setupRating(
                 );
 
 
-            // ========================================
-            // VORHANDENE BEWERTUNG
-            // ========================================
-
             if (
                 rating <=
                 spot.rating
@@ -1632,10 +1683,6 @@ function setupRating(
 
             }
 
-
-            // ========================================
-            // BEWERTUNG AUSWÄHLEN
-            // ========================================
 
             button.addEventListener(
                 'click',
