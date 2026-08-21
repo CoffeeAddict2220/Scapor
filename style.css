@@ -115,6 +115,20 @@ body {
 
 
 /* ========================================
+   LEAFLET POPUP BREITE
+   ======================================== */
+
+.leaflet-popup-content {
+
+    width: 300px !important;
+
+    max-width: 300px !important;
+
+    box-sizing: border-box;
+}
+
+
+/* ========================================
    LEAFLET KARTENAUSWAHL
    ======================================== */
 
