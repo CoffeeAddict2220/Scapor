@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SCAPOR Spots</title>
+
+</head>
+
+
+<body>
+
+
+    <!-- ========================================
+         SPOT EDITOR
+         ======================================== -->
+
+    <template id="spot-editor-template">
+
+        <div class="marker-form">
+
+            <label>
+                Name
+            </label>
+
+            <input
+                class="spot-name"
+                type="text"
+                placeholder="Name eingeben"
+                autocomplete="off"
+            >
+
+
+            <label>
+                Beschreibung
+            </label>
+
+            <textarea
+                class="spot-description"
+                placeholder="Beschreibung eingeben"
+            ></textarea>
+
+
+            <label>
+                Kategorie
+            </label>
+
+            <select
+                class="spot-category"
+            >
+
+                <option value="Architecture">
+                    Architecture
+                </option>
+
+                <option value="Astro">
+                    Astro
+                </option>
+
+                <option value="Carshooting">
+                    Carshooting
+                </option>
+
+                <option value="Carspotting">
+                    Carspotting
+                </option>
+
+                <option value="Landscape">
+                    Landscape
+                </option>
+
+                <option value="Nature">
+                    Nature
+                </option>
+
+                <option value="Planespotting">
+                    Planespotting
+                </option>
+
+                <option value="Portrait">
+                    Portrait
+                </option>
+
+                <option value="Trainspotting">
+                    Trainspotting
+                </option>
+
+                <option value="Wildlife">
+                    Wildlife
+                </option>
+
+            </select>
+
+
+            <button
+                type="button"
+                class="spot-save"
+            >
+                Speichern
+            </button>
+
+        </div>
+
+    </template>
+
+
+    <!-- ========================================
+         GESPEICHERTER SPOT
+         ======================================== -->
+
+    <template id="spot-info-template">
+
+        <div class="marker-info">
+
+            <h3 class="spot-title"></h3>
+
+
+            <p>
+
+                <strong>
+                    Kategorie:
+                </strong>
+
+                <br>
+
+                <span class="spot-category-value"></span>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Beschreibung:
+                </strong>
+
+                <br>
+
+                <span class="spot-description-value"></span>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Position:
+                </strong>
+
+                <br>
+
+                <span class="spot-position-value"></span>
+
+            </p>
+
+
+            <div class="spot-rating">
+
+                <strong>
+                    Bewertung:
+                </strong>
+
+
+                <div class="rating-stars">
+
+                    <button
+                        type="button"
+                        data-rating="1"
+                        aria-label="1 von 5 Sternen"
+                    >
+                        ☆
+                    </button>
+
+
+                    <button
+                        type="button"
+                        data-rating="2"
+                        aria-label="2 von 5 Sternen"
+                    >
+                        ☆
+                    </button>
+
+
+                    <button
+                        type="button"
+                        data-rating="3"
+                        aria-label="3 von 5 Sternen"
+                    >
+                        ☆
+                    </button>
+
+
+                    <button
+                        type="button"
+                        data-rating="4"
+                        aria-label="4 von 5 Sternen"
+                    >
+                        ☆
+                    </button>
+
+
+                    <button
+                        type="button"
+                        data-rating="5"
+                        aria-label="5 von 5 Sternen"
+                    >
+                        ☆
+                    </button>
+
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="spot-report"
+            >
+                Melden
+            </button>
+
+        </div>
+
+    </template>
+
+
+</body>
+
+</html>
+

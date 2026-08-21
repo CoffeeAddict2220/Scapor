@@ -1,0 +1,438 @@
+/* ========================================
+   WILLKOMMENS-OVERLAY
+   ======================================== */
+
+#welcome-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 5000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding:
+        20px;
+
+    padding-top:
+        calc(20px + env(safe-area-inset-top));
+
+    padding-bottom:
+        calc(20px + env(safe-area-inset-bottom));
+
+    box-sizing: border-box;
+
+    background:
+        rgba(8, 25, 40, 0.45);
+
+    backdrop-filter:
+        blur(5px);
+
+    -webkit-backdrop-filter:
+        blur(5px);
+}
+
+
+/* ========================================
+   WILLKOMMENS-POPUP
+   ======================================== */
+
+#welcome-popup {
+
+    position: relative;
+
+    width: 100%;
+
+    max-width: 480px;
+
+    max-height:
+        calc(100vh - 40px);
+
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    background: #ffffff;
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 25px 60px
+        rgba(0, 0, 0, 0.25);
+}
+
+
+/* ========================================
+   WILLKOMMENS-INHALT
+   ======================================== */
+
+.welcome-content {
+
+    padding: 34px;
+}
+
+
+.welcome-logo {
+
+    display: inline-block;
+
+    margin-bottom: 18px;
+
+    padding:
+        8px 12px;
+
+    border-radius: 8px;
+
+    background: #102A43;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+}
+
+
+.welcome-content h1 {
+
+    margin:
+        0 35px 12px 0;
+
+    color: #102A43;
+
+    font-size: 28px;
+
+    line-height: 1.15;
+
+    font-weight: 750;
+
+    letter-spacing: -0.6px;
+}
+
+
+.welcome-intro {
+
+    margin:
+        0 0 28px 0;
+
+    color: #52606D;
+
+    font-size: 16px;
+
+    line-height: 1.55;
+}
+
+
+.welcome-section {
+
+    margin-top: 24px;
+}
+
+
+.welcome-section h2 {
+
+    margin:
+        0 0 9px 0;
+
+    color: #243B53;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+
+.welcome-section p {
+
+    margin:
+        7px 0;
+
+    color: #52606D;
+
+    font-size: 14px;
+
+    line-height: 1.55;
+}
+
+
+.welcome-section ul {
+
+    margin:
+        8px 0 0 0;
+
+    padding-left: 20px;
+
+    color: #52606D;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+.welcome-section li {
+
+    margin-bottom: 6px;
+}
+
+
+/* ========================================
+   WILLKOMMENS-HINWEIS
+   ======================================== */
+
+.welcome-note {
+
+    padding:
+        14px 16px;
+
+    background: #F4F7FA;
+
+    border-radius: 12px;
+
+    border-left:
+        3px solid #102A43;
+}
+
+
+.welcome-note strong {
+
+    color: #102A43;
+
+    font-size: 14px;
+}
+
+
+/* ========================================
+   WILLKOMMENS-BUTTON
+   ======================================== */
+
+#welcome-start {
+
+    width: 100%;
+
+    min-height: 50px;
+
+    margin-top: 28px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #102A43;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#welcome-start:active {
+
+    transform: scale(0.98);
+}
+
+
+/* ========================================
+   WILLKOMMENS-X
+   ======================================== */
+
+#welcome-close {
+
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #829AB1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 30px;
+
+    font-weight: 300;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    border-radius: 50%;
+
+    z-index: 20;
+
+    touch-action: manipulation;
+}
+
+
+#welcome-close:hover {
+
+    background: #F0F4F8;
+
+    color: #102A43;
+}
+
+
+/* ========================================
+   MOBILE
+   ======================================== */
+
+@media (max-width: 600px) {
+
+    #welcome-overlay {
+
+        padding:
+            12px;
+
+        padding-top:
+            calc(12px + env(safe-area-inset-top));
+
+        padding-bottom:
+            calc(12px + env(safe-area-inset-bottom));
+
+        align-items:
+            center;
+    }
+
+
+    #welcome-popup {
+
+        max-height:
+            calc(100vh - 24px);
+
+        border-radius:
+            19px;
+    }
+
+
+    .welcome-content {
+
+        padding:
+            26px 22px;
+    }
+
+
+    .welcome-logo {
+
+        margin-bottom:
+            14px;
+    }
+
+
+    .welcome-content h1 {
+
+        margin-right:
+            35px;
+
+        font-size:
+            24px;
+    }
+
+
+    .welcome-intro {
+
+        margin-bottom:
+            22px;
+
+        font-size:
+            15px;
+    }
+
+
+    .welcome-section {
+
+        margin-top:
+            20px;
+    }
+
+
+    .welcome-section h2 {
+
+        font-size:
+            15px;
+    }
+
+
+    .welcome-section p,
+    .welcome-section ul {
+
+        font-size:
+            13px;
+    }
+
+
+    #welcome-start {
+
+        min-height:
+            50px;
+
+        margin-top:
+            22px;
+    }
+
+
+    #welcome-close {
+
+        width:
+            42px;
+
+        height:
+            42px;
+
+        top:
+            8px;
+
+        right:
+            8px;
+    }
+
+}
+
+
+/* ========================================
+   SEHR KLEINE HANDYS
+   ======================================== */
+
+@media (max-width: 380px) {
+
+    .welcome-content {
+
+        padding:
+            22px 18px;
+    }
+
+
+    .welcome-content h1 {
+
+        font-size:
+            22px;
+    }
+
+}
