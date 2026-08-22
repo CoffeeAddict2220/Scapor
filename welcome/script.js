@@ -18,7 +18,7 @@
 
             const response =
                 await fetch(
-                    'welcome.html',
+                    './welcome/index.html',
                     {
                         cache: 'no-store'
                     }
