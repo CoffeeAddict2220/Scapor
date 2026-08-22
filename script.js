@@ -450,7 +450,7 @@ locationControl.onAdd =
         const button =
             L.DomUtil.create(
                 'button',
-                'leaflet-control-locate'
+                'leaflet-control leaflet-control-locate'
             );
 
 
@@ -471,7 +471,24 @@ locationControl.onAdd =
         );
 
         button.innerHTML =
-            '⌖';
+            `
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M2 12h3"></path>
+                <path d="M19 12h3"></path>
+                <path d="M12 2v3"></path>
+                <path d="M12 19v3"></path>
+                <circle cx="12" cy="12" r="7"></circle>
+                <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            `;
 
 
         locationControlButton =

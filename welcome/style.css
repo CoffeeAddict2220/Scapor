@@ -312,20 +312,24 @@
             12px;
 
         padding-top:
-            calc(12px + env(safe-area-inset-top));
+            calc(72px + env(safe-area-inset-top));
 
         padding-bottom:
             calc(12px + env(safe-area-inset-bottom));
 
         align-items:
-            center;
+            flex-start;
     }
 
 
     #welcome-popup {
 
         max-height:
-            calc(100vh - 24px);
+            calc(
+                100dvh - 84px -
+                env(safe-area-inset-top) -
+                env(safe-area-inset-bottom)
+            );
 
         border-radius:
             19px;

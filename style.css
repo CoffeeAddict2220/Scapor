@@ -132,6 +132,13 @@ body {
 }
 
 
+.leaflet-control-layers-toggle:hover,
+.leaflet-control-layers-toggle:focus-visible {
+    background-color: #F0F4F8;
+    outline: none;
+}
+
+
 .leaflet-control-layers-expanded {
     padding: 10px 12px;
     background: #ffffff;
@@ -173,6 +180,13 @@ body {
     font-size: 27px;
     line-height: 1;
     cursor: pointer;
+}
+
+
+.leaflet-control-locate svg {
+    display: block;
+    width: 22px;
+    height: 22px;
 }
 
 
@@ -1061,6 +1075,12 @@ body {
    ======================================== */
 
 @media (max-width: 600px) {
+
+    .leaflet-top.leaflet-right {
+        top: 72px;
+        right: 10px;
+    }
+
 
     .topbar {
         padding-left: 16px;
