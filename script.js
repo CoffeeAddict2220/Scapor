@@ -270,6 +270,240 @@ const layerControl =
 
 
 // ========================================
+// EIGENEN STANDORT ANZEIGEN
+// ========================================
+
+let userLocationMarker =
+    null;
+
+
+let locationControlButton =
+    null;
+
+
+function showUserLocation() {
+
+    if (
+        userLocationMarker &&
+        map.hasLayer(
+            userLocationMarker
+        )
+    ) {
+
+        map.removeLayer(
+            userLocationMarker
+        );
+
+
+        if (
+            locationControlButton
+        ) {
+
+            locationControlButton.setAttribute(
+                'aria-pressed',
+                'false'
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    if (
+        !navigator.geolocation
+    ) {
+
+        alert(
+            'Dein Browser unterstützt keine Standortabfrage.'
+        );
+
+        return;
+
+    }
+
+
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+
+            const latLng = [
+                position.coords.latitude,
+                position.coords.longitude
+            ];
+
+
+            if (
+                userLocationMarker
+            ) {
+
+                userLocationMarker.setLatLng(
+                    latLng
+                ).addTo(
+                    map
+                );
+
+            }
+
+            else {
+
+                userLocationMarker =
+                    L.circleMarker(
+                        latLng,
+                        {
+                            radius:
+                                9,
+
+                            color:
+                                '#ffffff',
+
+                            weight:
+                                3,
+
+                            fillColor:
+                                '#2563EB',
+
+                            fillOpacity:
+                                1
+                        }
+                    ).addTo(
+                        map
+                    ).bindTooltip(
+                        'Dein Standort',
+                        {
+                            direction:
+                                'top',
+
+                            offset:
+                                [
+                                    0,
+                                    -10
+                                ]
+                        }
+                    );
+
+            }
+
+
+            if (
+                locationControlButton
+            ) {
+
+                locationControlButton.setAttribute(
+                    'aria-pressed',
+                    'true'
+                );
+
+            }
+
+
+            map.setView(
+                latLng,
+                Math.max(
+                    map.getZoom(),
+                    15
+                )
+            );
+
+        },
+        function (error) {
+
+            const message =
+                error.code ===
+                    1
+                    ? 'Die Standortfreigabe wurde abgelehnt.'
+                    : 'Dein Standort konnte nicht ermittelt werden.';
+
+
+            alert(
+                message
+            );
+
+        },
+        {
+            enableHighAccuracy:
+                true,
+
+            timeout:
+                10000,
+
+            maximumAge:
+                30000
+        }
+    );
+
+}
+
+
+const locationControl =
+    L.control(
+        {
+            position:
+                'topright'
+        }
+    );
+
+
+locationControl.onAdd =
+    function () {
+
+        const button =
+            L.DomUtil.create(
+                'button',
+                'leaflet-control-locate'
+            );
+
+
+        button.type =
+            'button';
+
+        button.title =
+            'Meinen Standort anzeigen';
+
+        button.setAttribute(
+            'aria-label',
+            'Meinen Standort anzeigen'
+        );
+
+        button.setAttribute(
+            'aria-pressed',
+            'false'
+        );
+
+        button.innerHTML =
+            '⌖';
+
+
+        locationControlButton =
+            button;
+
+
+        L.DomEvent.disableClickPropagation(
+            button
+        );
+
+        L.DomEvent.disableScrollPropagation(
+            button
+        );
+
+        L.DomEvent.on(
+            button,
+            'click',
+            showUserLocation
+        );
+
+
+        return button;
+
+    };
+
+
+locationControl.addTo(
+    map
+);
+
+
+// ========================================
 // SATELLITEN-BESCHRIFTUNGEN
 // AUTOMATISCH EIN-/AUSSCHALTEN
 // ========================================

@@ -155,6 +155,41 @@ body {
 
 
 /* ========================================
+   EIGENER STANDORT
+   ======================================== */
+
+.leaflet-control-locate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: none;
+    border-radius: 11px;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    color: #102A43;
+    font-size: 27px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+
+.leaflet-control-locate:hover,
+.leaflet-control-locate:focus-visible {
+    background: #F0F4F8;
+    outline: none;
+}
+
+
+.leaflet-control-locate[aria-pressed="true"] {
+    background: #DCE8FF;
+    color: #1D4ED8;
+}
+
+
+/* ========================================
    LEAFLET POPUP
    ======================================== */
 
@@ -1006,6 +1041,18 @@ body {
     font-weight: 600;
     cursor: pointer;
     touch-action: manipulation;
+}
+
+
+/* ========================================
+   WERBUNG
+   ======================================== */
+
+.about-ad {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top:
+        1px solid #E5EAF0;
 }
 
 
