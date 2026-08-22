@@ -1,18 +1,18 @@
 // ========================================
-// DATABASE CONNECTION
+// SUPABASE
 // ========================================
 
 const SUPABASE_URL =
-    "https://nsvpvhftaadgerxdoukw.supabase.co";
+    'https://nsvpvhftaadgerxdoukw.supabase.co';
 
-const SUPABASE_KEY =
-    "sb_publishable_xJjyb2cuXbHV6ltaYwRF3w_WDNEknEH";
+const SUPABASE_ANON_KEY =
+    'sb_publishable_xJjyb2cuXbHV6ltaYwRF3w_WDNEknEH';
 
 
 const supabaseClient =
     supabase.createClient(
         SUPABASE_URL,
-        SUPABASE_KEY
+        SUPABASE_ANON_KEY
     );
 
 
@@ -32,21 +32,30 @@ const map =
 
             maxBounds:
                 [
-                    [-85, -180],
-                    [85, 180]
+                    [
+                        -85,
+                        -180
+                    ],
+                    [
+                        85,
+                        180
+                    ]
                 ],
 
             maxBoundsViscosity:
                 1.0
         }
     ).setView(
-        [51.1, 9.4],
-        7
+        [
+            51.1657,
+            10.4515
+        ],
+        6
     );
 
 
 // ========================================
-// MARKER ICONS
+// ICONS
 // ========================================
 
 function createActiveIcon() {
@@ -56,20 +65,30 @@ function createActiveIcon() {
         className:
             'scapor-marker-wrapper',
 
-        html: `
+        html:
+            `
             <div class="scapor-marker active-marker">
                 <div class="marker-dot"></div>
             </div>
-        `,
+            `,
 
         iconSize:
-            [36, 36],
+            [
+                30,
+                30
+            ],
 
         iconAnchor:
-            [18, 18],
+            [
+                15,
+                15
+            ],
 
         popupAnchor:
-            [0, -18]
+            [
+                0,
+                -18
+            ]
 
     });
 
@@ -83,20 +102,30 @@ function createSavedIcon() {
         className:
             'scapor-marker-wrapper',
 
-        html: `
+        html:
+            `
             <div class="scapor-marker saved-marker">
                 <div class="marker-dot"></div>
             </div>
-        `,
+            `,
 
         iconSize:
-            [36, 36],
+            [
+                30,
+                30
+            ],
 
         iconAnchor:
-            [18, 18],
+            [
+                15,
+                15
+            ],
 
         popupAnchor:
-            [0, -18]
+            [
+                0,
+                -18
+            ]
 
     });
 
@@ -106,6 +135,7 @@ function createSavedIcon() {
 // ========================================
 // KARTENLAYER
 // ========================================
+
 
 // ========================================
 // NORMALE KARTENANSICHT
@@ -301,6 +331,158 @@ let activeSpot = null;
 
 
 // ========================================
+// KATEGORIE-FILTER
+// ========================================
+
+let selectedCategory =
+    'all';
+
+
+function applyCategoryFilter() {
+
+    spots.forEach(
+        function (spot) {
+
+            if (
+                !spot ||
+                !spot.marker
+            ) {
+
+                return;
+
+            }
+
+
+            // Neue, noch nicht gespeicherte
+            // Spots bleiben sichtbar.
+
+            if (
+                !spot.saved
+            ) {
+
+                if (
+                    !map.hasLayer(
+                        spot.marker
+                    )
+                ) {
+
+                    spot.marker.addTo(
+                        map
+                    );
+
+                }
+
+                return;
+
+            }
+
+
+            const matches =
+                selectedCategory ===
+                    'all' ||
+                spot.category ===
+                    selectedCategory;
+
+
+            if (
+                matches
+            ) {
+
+                if (
+                    !map.hasLayer(
+                        spot.marker
+                    )
+                ) {
+
+                    spot.marker.addTo(
+                        map
+                    );
+
+                }
+
+            }
+
+            else {
+
+                if (
+                    map.hasLayer(
+                        spot.marker
+                    )
+                ) {
+
+                    spot.marker.closePopup();
+
+                    map.removeLayer(
+                        spot.marker
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+// ========================================
+// KATEGORIE-FILTER EINRICHTEN
+// ========================================
+
+function setupCategoryFilter() {
+
+    const filter =
+        document.getElementById(
+            'category-filter'
+        );
+
+
+    const select =
+        document.getElementById(
+            'category-filter-select'
+        );
+
+
+    if (
+        !filter ||
+        !select
+    ) {
+
+        return;
+
+    }
+
+
+    L.DomEvent.disableClickPropagation(
+        filter
+    );
+
+
+    L.DomEvent.disableScrollPropagation(
+        filter
+    );
+
+
+    select.addEventListener(
+        'change',
+        function () {
+
+            selectedCategory =
+                select.value;
+
+            applyCategoryFilter();
+
+        }
+    );
+
+
+    applyCategoryFilter();
+
+}
+
+
+// ========================================
 // SPOT HTML TEMPLATES
 // ========================================
 
@@ -419,7 +601,9 @@ async function loadSpotTemplates() {
                 );
 
 
-            } catch (error) {
+            }
+
+            catch (error) {
 
                 console.error(
                     'Fehler beim Laden der Spot-Templates:',
@@ -472,7 +656,9 @@ function createTemplateElement(
 
     return template.content
         .firstElementChild
-        ?.cloneNode(true) ||
+        ?.cloneNode(
+            true
+        ) ||
         null;
 
 }
@@ -502,7 +688,9 @@ async function loadSpots() {
                 );
 
 
-        if (error) {
+        if (
+            error
+        ) {
 
             console.error(
                 'Fehler beim Laden der Spots:',
@@ -530,7 +718,12 @@ async function loadSpots() {
             }
         );
 
-    } catch (error) {
+
+        applyCategoryFilter();
+
+    }
+
+    catch (error) {
 
         console.error(
             'Unerwarteter Fehler beim Laden der Spots:',
@@ -546,12 +739,15 @@ async function loadSpots() {
 // SPOT AUS DATENBANK ERSTELLEN
 // ========================================
 
-function createSpotFromDatabase(row) {
+function createSpotFromDatabase(
+    row
+) {
 
     const latitude =
         Number(
             row.latitude
         );
+
 
     const longitude =
         Number(
@@ -560,8 +756,12 @@ function createSpotFromDatabase(row) {
 
 
     if (
-        !Number.isFinite(latitude) ||
-        !Number.isFinite(longitude)
+        !Number.isFinite(
+            latitude
+        ) ||
+        !Number.isFinite(
+            longitude
+        )
     ) {
 
         console.error(
@@ -593,7 +793,9 @@ function createSpotFromDatabase(row) {
                 autoPan:
                     true
             }
-        ).addTo(map);
+        ).addTo(
+            map
+        );
 
 
     const spot = {
@@ -605,10 +807,12 @@ function createSpotFromDatabase(row) {
             marker,
 
         name:
-            row.name || '',
+            row.name ||
+            '',
 
         description:
-            row.description || '',
+            row.description ||
+            '',
 
         category:
             row.category ||
@@ -616,7 +820,8 @@ function createSpotFromDatabase(row) {
 
         rating:
             Number(
-                row.rating || 0
+                row.rating ||
+                0
             ),
 
         saved:
@@ -746,10 +951,6 @@ map.on(
     'click',
     function (event) {
 
-        // ========================================
-        // AKTUELL GEÖFFNETES POPUP PRÜFEN
-        // ========================================
-
         const popup =
             map._popup;
 
@@ -759,26 +960,12 @@ map.on(
             popup.isOpen()
         ) {
 
-            // ========================================
-            // NUR POPUP SCHLIESSEN
-            // ========================================
-            //
-            // Dieser Klick ist ausschließlich
-            // zum Schließen des Popups.
-            //
-            // Es wird KEIN neuer Spot erstellt.
-            //
-
             map.closePopup();
 
             return;
 
         }
 
-
-        // ========================================
-        // UNGESPEICHERTEN SPOT ENTFERNEN
-        // ========================================
 
         if (
             activeSpot !== null
@@ -788,10 +975,6 @@ map.on(
 
         }
 
-
-        // ========================================
-        // NEUEN SPOT ERSTELLEN
-        // ========================================
 
         createSpot(
             event.latlng
@@ -805,7 +988,9 @@ map.on(
 // SPOT ERSTELLEN
 // ========================================
 
-function createSpot(position) {
+function createSpot(
+    position
+) {
 
     const marker =
         L.marker(
@@ -820,7 +1005,9 @@ function createSpot(position) {
                 autoPan:
                     true
             }
-        ).addTo(map);
+        ).addTo(
+            map
+        );
 
 
     const spot = {
@@ -875,7 +1062,9 @@ function createSpot(position) {
                     spot
                 );
 
-            } else {
+            }
+
+            else {
 
                 openEditor(
                     spot
@@ -919,7 +1108,9 @@ function createSpot(position) {
 // EDITOR
 // ========================================
 
-async function openEditor(spot) {
+async function openEditor(
+    spot
+) {
 
     if (
         !spot ||
@@ -978,7 +1169,8 @@ async function openEditor(spot) {
         ) {
 
             nameInput.value =
-                spot.name || '';
+                spot.name ||
+                '';
 
         }
 
@@ -988,7 +1180,8 @@ async function openEditor(spot) {
         ) {
 
             descriptionInput.value =
-                spot.description || '';
+                spot.description ||
+                '';
 
         }
 
@@ -1020,7 +1213,10 @@ async function openEditor(spot) {
                     true,
 
                 autoPanPadding:
-                    [20, 80],
+                    [
+                        20,
+                        80
+                    ],
 
                 maxWidth:
                     340
@@ -1043,7 +1239,9 @@ async function openEditor(spot) {
 
         spot.marker.openPopup();
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             'Fehler beim Öffnen des Spot-Editors:',
@@ -1176,7 +1374,10 @@ function markerPopup(
                 true,
 
             autoPanPadding:
-                [20, 80],
+                [
+                    20,
+                    80
+                ],
 
             maxWidth:
                 340
@@ -1209,1031 +1410,6 @@ function markerPopup(
 
 
 // ========================================
-// MELDE-DIALOG STYLES
-// ========================================
-
-function addReportDialogStyles() {
-
-    if (
-        document.getElementById(
-            'scapor-report-dialog-styles'
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    const style =
-        document.createElement(
-            'style'
-        );
-
-
-    style.id =
-        'scapor-report-dialog-styles';
-
-
-    style.textContent = `
-
-        .scapor-report-overlay {
-
-            position: fixed;
-
-            inset: 0;
-
-            z-index: 10000;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            padding: 20px;
-
-            box-sizing: border-box;
-
-            background:
-                rgba(16, 42, 67, 0.38);
-
-            opacity: 0;
-
-            visibility: hidden;
-
-            transition:
-                opacity 0.15s ease,
-                visibility 0.15s ease;
-
-        }
-
-
-        .scapor-report-overlay.open {
-
-            opacity: 1;
-
-            visibility: visible;
-
-        }
-
-
-        .scapor-report-dialog {
-
-            width: 100%;
-
-            max-width: 420px;
-
-            box-sizing: border-box;
-
-            padding: 24px;
-
-            background: #ffffff;
-
-            border-radius: 18px;
-
-            box-shadow:
-                0 12px 35px
-                rgba(0, 0, 0, 0.22);
-
-            transform:
-                translateY(8px);
-
-            transition:
-                transform 0.15s ease;
-
-        }
-
-
-        .scapor-report-overlay.open
-        .scapor-report-dialog {
-
-            transform:
-                translateY(0);
-
-        }
-
-
-        .scapor-report-dialog h3 {
-
-            margin:
-                0 0 8px;
-
-            padding-right:
-                30px;
-
-            color:
-                #102A43;
-
-            font-family:
-                inherit;
-
-            font-size:
-                21px;
-
-            line-height:
-                1.2;
-
-            font-weight:
-                700;
-
-        }
-
-
-        .scapor-report-dialog .report-spot-name {
-
-            margin:
-                0 0 18px;
-
-            color:
-                #52606D;
-
-            font-family:
-                inherit;
-
-            font-size:
-                14px;
-
-            line-height:
-                1.5;
-
-        }
-
-
-        .scapor-report-dialog label {
-
-            display:
-                block;
-
-            margin-bottom:
-                7px;
-
-            color:
-                #102A43;
-
-            font-family:
-                inherit;
-
-            font-size:
-                14px;
-
-            font-weight:
-                600;
-
-        }
-
-
-        .scapor-report-dialog textarea {
-
-            width:
-                100%;
-
-            min-height:
-                120px;
-
-            box-sizing:
-                border-box;
-
-            padding:
-                11px 13px;
-
-            border:
-                1px solid #D8DEE6;
-
-            border-radius:
-                10px;
-
-            background:
-                #F8FAFC;
-
-            color:
-                #243B53;
-
-            font-family:
-                inherit;
-
-            font-size:
-                16px;
-
-            line-height:
-                1.5;
-
-            resize:
-                vertical;
-
-            outline:
-                none;
-
-        }
-
-
-        .scapor-report-dialog textarea:focus {
-
-            background:
-                #ffffff;
-
-            border-color:
-                #102A43;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(16, 42, 67, 0.10);
-
-        }
-
-
-        .scapor-report-dialog textarea::placeholder {
-
-            color:
-                #9AA5B1;
-
-        }
-
-
-        .scapor-report-actions {
-
-            display:
-                flex;
-
-            gap:
-                10px;
-
-            margin-top:
-                18px;
-
-        }
-
-
-        .scapor-report-actions button {
-
-            flex:
-                1;
-
-            min-height:
-                46px;
-
-            padding:
-                0 14px;
-
-            border:
-                none;
-
-            border-radius:
-                11px;
-
-            font-family:
-                inherit;
-
-            font-size:
-                15px;
-
-            font-weight:
-                600;
-
-            cursor:
-                pointer;
-
-            touch-action:
-                manipulation;
-
-            transition:
-                background 0.15s ease,
-                transform 0.1s ease;
-
-        }
-
-
-        .scapor-report-cancel {
-
-            background:
-                #F0F4F8;
-
-            color:
-                #52606D;
-
-        }
-
-
-        .scapor-report-cancel:hover {
-
-            background:
-                #E5EAF0;
-
-        }
-
-
-        .scapor-report-submit {
-
-            background:
-                #9B2C2C;
-
-            color:
-                #ffffff;
-
-        }
-
-
-        .scapor-report-submit:hover {
-
-            background:
-                #822727;
-
-        }
-
-
-        .scapor-report-actions button:active {
-
-            transform:
-                scale(0.98);
-
-        }
-
-
-        .scapor-report-error {
-
-            margin:
-                8px 0 0;
-
-            color:
-                #9B2C2C;
-
-            font-family:
-                inherit;
-
-            font-size:
-                13px;
-
-            line-height:
-                1.4;
-
-        }
-
-
-        @media (max-width: 600px) {
-
-            .scapor-report-overlay {
-
-                padding:
-                    16px;
-
-            }
-
-
-            .scapor-report-dialog {
-
-                padding:
-                    20px;
-
-                border-radius:
-                    17px;
-
-            }
-
-
-            .scapor-report-dialog h3 {
-
-                font-size:
-                    19px;
-
-            }
-
-
-            .scapor-report-actions button {
-
-                min-height:
-                    50px;
-
-            }
-
-        }
-
-    `;
-
-
-    document.head.appendChild(
-        style
-    );
-
-}
-
-
-// ========================================
-// MELDE-DIALOG ERSTELLEN
-// ========================================
-
-function createReportDialog() {
-
-    addReportDialogStyles();
-
-
-    let overlay =
-        document.getElementById(
-            'scapor-report-overlay'
-        );
-
-
-    if (
-        overlay
-    ) {
-
-        return overlay;
-
-    }
-
-
-    overlay =
-        document.createElement(
-            'div'
-        );
-
-
-    overlay.id =
-        'scapor-report-overlay';
-
-    overlay.className =
-        'scapor-report-overlay';
-
-
-    overlay.innerHTML = `
-
-        <div
-            class="scapor-report-dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="scapor-report-title"
-        >
-
-            <h3
-                id="scapor-report-title"
-            >
-                Spot melden
-            </h3>
-
-
-            <p
-                class="report-spot-name"
-            ></p>
-
-
-            <label
-                for="scapor-report-reason"
-            >
-                Grund für die Meldung
-            </label>
-
-
-            <textarea
-                id="scapor-report-reason"
-                placeholder="Beschreibe kurz, warum du diesen Spot melden möchtest ..."
-                maxlength="2000"
-            ></textarea>
-
-
-            <p
-                class="scapor-report-error"
-                aria-live="polite"
-                hidden
-            ></p>
-
-
-            <div
-                class="scapor-report-actions"
-            >
-
-                <button
-                    type="button"
-                    class="scapor-report-cancel"
-                >
-                    Abbrechen
-                </button>
-
-
-                <button
-                    type="button"
-                    class="scapor-report-submit"
-                >
-                    Meldung senden
-                </button>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    document.body.appendChild(
-        overlay
-    );
-
-
-    const cancelButton =
-        overlay.querySelector(
-            '.scapor-report-cancel'
-        );
-
-
-    const submitButton =
-        overlay.querySelector(
-            '.scapor-report-submit'
-        );
-
-
-    const textarea =
-        overlay.querySelector(
-            '#scapor-report-reason'
-        );
-
-
-    const errorMessage =
-        overlay.querySelector(
-            '.scapor-report-error'
-        );
-
-
-    function closeDialog() {
-
-        overlay.classList.remove(
-            'open'
-        );
-
-        textarea.value =
-            '';
-
-        errorMessage.textContent =
-            '';
-
-        errorMessage.hidden =
-            true;
-
-        overlay.dataset.spotId =
-            '';
-
-        overlay.dataset.spotName =
-            '';
-
-    }
-
-
-    cancelButton.addEventListener(
-        'click',
-        function (event) {
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-            closeDialog();
-
-        }
-    );
-
-
-    submitButton.addEventListener(
-        'click',
-        async function (event) {
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-
-            const reason =
-                textarea.value.trim();
-
-
-            // ========================================
-            // GRUND PRÜFEN
-            // ========================================
-
-            if (
-                reason === ''
-            ) {
-
-                errorMessage.textContent =
-                    'Bitte gib einen Grund für die Meldung ein.';
-
-                errorMessage.hidden =
-                    false;
-
-                textarea.focus();
-
-                return;
-
-            }
-
-
-            // ========================================
-            // SPOT ERMITTELN
-            // ========================================
-
-            const reportSpotId =
-                overlay.dataset.spotId ||
-                null;
-
-
-            const reportSpot =
-                spots.find(
-                    function (item) {
-
-                        return String(
-                            item.id
-                        ) === String(
-                            reportSpotId
-                        );
-
-                    }
-                );
-
-
-            if (
-                !reportSpot ||
-                !reportSpot.marker
-            ) {
-
-                errorMessage.textContent =
-                    'Der Spot konnte nicht gefunden werden.';
-
-                errorMessage.hidden =
-                    false;
-
-                return;
-
-            }
-
-
-            // ========================================
-            // POSITION ERMITTELN
-            // ========================================
-
-            const position =
-                reportSpot.marker.getLatLng();
-
-
-            if (
-                !position
-            ) {
-
-                errorMessage.textContent =
-                    'Die Position des Spots konnte nicht ermittelt werden.';
-
-                errorMessage.hidden =
-                    false;
-
-                return;
-
-            }
-
-
-            // ========================================
-            // MELDEDATEN
-            // ========================================
-
-            const reportData = {
-
-                spotId:
-                    reportSpot.id,
-
-                spotName:
-                    reportSpot.name ||
-                    'Unbenannter Spot',
-
-                reason:
-                    reason,
-
-                latitude:
-                    position.lat,
-
-                longitude:
-                    position.lng
-
-            };
-
-
-            // ========================================
-            // BUTTON DEAKTIVIEREN
-            // ========================================
-
-            submitButton.disabled =
-                true;
-
-            submitButton.textContent =
-                'Wird gesendet ...';
-
-
-            errorMessage.textContent =
-                '';
-
-            errorMessage.hidden =
-                true;
-
-
-            // ========================================
-            // E-MAIL ÜBER EDGE FUNCTION SENDEN
-            // ========================================
-
-            try {
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient.functions.invoke(
-                        'send-email',
-                        {
-                            body: {
-
-                                report:
-                                    reportData
-
-                            }
-
-                        }
-                    );
-
-
-                // ========================================
-                // EDGE FUNCTION FEHLER
-                // ========================================
-
-                if (
-                    error
-                ) {
-
-                    console.error(
-                        'Fehler beim Senden der Spot-Meldung:',
-                        error
-                    );
-
-                    throw error;
-
-                }
-
-
-                // ========================================
-                // ANTWORT PRÜFEN
-                // ========================================
-
-                if (
-                    !data ||
-                    data.success !== true
-                ) {
-
-                    console.error(
-                        'Unerwartete Antwort der Edge Function:',
-                        data
-                    );
-
-                    throw new Error(
-                        'Die Meldung konnte nicht bestätigt werden.'
-                    );
-
-                }
-
-
-                // ========================================
-                // ERFOLG
-                // ========================================
-
-                console.log(
-                    'Spot-Meldung erfolgreich gesendet:',
-                    data
-                );
-
-
-                closeDialog();
-
-
-                alert(
-                    'Vielen Dank. Deine Meldung wurde erfolgreich gesendet.'
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    'Fehler beim Senden der Spot-Meldung:',
-                    error
-                );
-
-
-                errorMessage.textContent =
-                    'Die Meldung konnte nicht gesendet werden. Bitte versuche es später erneut.';
-
-                errorMessage.hidden =
-                    false;
-
-
-            } finally {
-
-                // ========================================
-                // BUTTON WIEDER AKTIVIEREN
-                // ========================================
-
-                submitButton.disabled =
-                    false;
-
-                submitButton.textContent =
-                    'Meldung senden';
-
-            }
-
-        }
-    );
-
-
-    overlay.addEventListener(
-        'click',
-        function (event) {
-
-            if (
-                event.target ===
-                overlay
-            ) {
-
-                closeDialog();
-
-            }
-
-        }
-    );
-
-
-    document.addEventListener(
-        'keydown',
-        function (event) {
-
-            if (
-                event.key ===
-                'Escape' &&
-                overlay.classList.contains(
-                    'open'
-                )
-            ) {
-
-                closeDialog();
-
-            }
-
-        }
-    );
-
-
-    return overlay;
-
-}
-
-
-// ========================================
-// MELDE-DIALOG ÖFFNEN
-// ========================================
-
-function openReportDialog(spot) {
-
-    if (
-        !spot
-    ) {
-
-        return;
-
-    }
-
-
-    const overlay =
-        createReportDialog();
-
-
-    const spotName =
-        overlay.querySelector(
-            '.report-spot-name'
-        );
-
-
-    const textarea =
-        overlay.querySelector(
-            '#scapor-report-reason'
-        );
-
-
-    const errorMessage =
-        overlay.querySelector(
-            '.scapor-report-error'
-        );
-
-
-    overlay.dataset.spotId =
-        spot.id ||
-        '';
-
-    overlay.dataset.spotName =
-        spot.name ||
-        'Unbenannter Spot';
-
-
-    spotName.textContent =
-        `Du möchtest den Spot „${spot.name || 'Unbenannter Spot'}“ melden.`;
-
-
-    textarea.value =
-        '';
-
-
-    errorMessage.textContent =
-        '';
-
-    errorMessage.hidden =
-        true;
-
-
-    overlay.classList.add(
-        'open'
-    );
-
-
-    window.setTimeout(
-        function () {
-
-            textarea.focus();
-
-        },
-        50
-    );
-
-}
-
-
-// ========================================
-// MELDE-BUTTON EINRICHTEN
-// ========================================
-
-function setupReport(
-    spot,
-    popup
-) {
-
-    if (
-        !spot ||
-        !spot.saved ||
-        !popup
-    ) {
-
-        return;
-
-    }
-
-
-    const popupElement =
-        popup.getElement();
-
-
-    if (
-        !popupElement
-    ) {
-
-        return;
-
-    }
-
-
-    const reportButton =
-        popupElement.querySelector(
-            '.spot-report'
-        );
-
-
-    if (
-        !reportButton
-    ) {
-
-        console.warn(
-            'Melden-Button wurde im gespeicherten Spot nicht gefunden.'
-        );
-
-        return;
-
-    }
-
-
-    reportButton.addEventListener(
-        'click',
-        function (event) {
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-
-            openReportDialog(
-                spot
-            );
-
-        }
-    );
-
-}
-
-
-// ========================================
 // E-MAIL ÜBER EDGE FUNCTION SENDEN
 // ========================================
 
@@ -2248,37 +1424,39 @@ async function sendSpotEmail(
             data,
             error
         } =
-            await supabaseClient.functions.invoke(
-                'send-email',
-                {
-                    body: {
+            await supabaseClient
+                .functions
+                .invoke(
+                    'send-email',
+                    {
+                        body: {
 
-                        spot: {
+                            spot: {
 
-                            id:
-                                spot.id,
+                                id:
+                                    spot.id,
 
-                            name:
-                                spot.name,
+                                name:
+                                    spot.name,
 
-                            description:
-                                spot.description,
+                                description:
+                                    spot.description,
 
-                            category:
-                                spot.category,
+                                category:
+                                    spot.category,
 
-                            latitude:
-                                position.lat,
+                                latitude:
+                                    position.lat,
 
-                            longitude:
-                                position.lng
+                                longitude:
+                                    position.lng
+
+                            }
 
                         }
 
                     }
-
-                }
-            );
+                );
 
 
         if (
@@ -2297,7 +1475,8 @@ async function sendSpotEmail(
 
         if (
             data &&
-            data.success === true
+            data.success ===
+                true
         ) {
 
             console.log(
@@ -2317,7 +1496,9 @@ async function sendSpotEmail(
 
         return false;
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             'Unerwarteter Fehler beim Versenden der Spot-Mail:',
@@ -2335,7 +1516,9 @@ async function sendSpotEmail(
 // SPOT SPEICHERN
 // ========================================
 
-async function saveSpot(spot) {
+async function saveSpot(
+    spot
+) {
 
     if (
         !spot ||
@@ -2526,10 +1709,6 @@ async function saveSpot(spot) {
                 .single();
 
 
-        // ========================================
-        // FEHLER
-        // ========================================
-
         if (
             error
         ) {
@@ -2604,13 +1783,6 @@ async function saveSpot(spot) {
         // ========================================
         // E-MAIL VERSENDEN
         // ========================================
-        //
-        // Der Spot wurde bereits erfolgreich
-        // gespeichert.
-        //
-        // Falls der Mailversand fehlschlägt,
-        // bleibt der Spot trotzdem gespeichert.
-        //
 
         const emailSent =
             await sendSpotEmail(
@@ -2675,6 +1847,13 @@ async function saveSpot(spot) {
 
 
         // ========================================
+        // KATEGORIE-FILTER ANWENDEN
+        // ========================================
+
+        applyCategoryFilter();
+
+
+        // ========================================
         // GESPEICHERTEN SPOT ANZEIGEN
         // ========================================
 
@@ -2683,7 +1862,9 @@ async function saveSpot(spot) {
         );
 
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             'Unerwarteter Fehler beim Speichern:',
@@ -2714,10 +1895,18 @@ async function saveSpot(spot) {
 
 
 // ========================================
+// INITIALISIERUNG
+// ========================================
+
+setupCategoryFilter();
+loadSpots();
+// ========================================
 // GESPEICHERTEN SPOT ANZEIGEN
 // ========================================
 
-async function showSpot(spot) {
+async function showSpot(
+    spot
+) {
 
     if (
         !spot ||
@@ -2824,36 +2013,30 @@ async function showSpot(spot) {
         // POSITION
         // ========================================
 
-        const positionValue =
+        const positionElement =
             info.querySelector(
                 '.spot-position-value'
             );
 
 
         if (
-            positionValue
+            positionElement
         ) {
 
-            positionValue.textContent =
+            positionElement.textContent =
                 `${position.lat.toFixed(6)}, ${position.lng.toFixed(6)}`;
 
         }
 
 
         // ========================================
-        // POPUP ÖFFNEN
+        // POPUP
         // ========================================
 
         markerPopup(
             spot,
             info,
             function (popup) {
-
-                setupRating(
-                    spot,
-                    popup
-                );
-
 
                 setupReport(
                     spot,
@@ -2863,7 +2046,9 @@ async function showSpot(spot) {
             }
         );
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             'Fehler beim Anzeigen des Spots:',
@@ -2876,15 +2061,644 @@ async function showSpot(spot) {
 
 
 // ========================================
-// BEWERTUNG EINRICHTEN
+// MELDE-DIALOG
 // ========================================
 
-function setupRating(
+function createReportDialog() {
+
+    const overlay =
+        document.createElement(
+            'div'
+        );
+
+
+    overlay.className =
+        'scapor-report-overlay';
+
+
+    overlay.innerHTML = `
+
+        <div
+            class="scapor-report-dialog"
+        >
+
+            <div
+                class="scapor-report-header"
+            >
+
+                <h3>
+                    Spot melden
+                </h3>
+
+
+                <button
+                    type="button"
+                    class="scapor-report-close"
+                    aria-label="Dialog schließen"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div
+                class="scapor-report-content"
+            >
+
+                <p
+                    class="report-spot-name"
+                ></p>
+
+
+                <label
+                    for="scapor-report-reason"
+                >
+                    Grund der Meldung
+                </label>
+
+
+                <textarea
+                    id="scapor-report-reason"
+                    class="scapor-report-reason"
+                    placeholder="Warum möchtest du diesen Spot melden?"
+                ></textarea>
+
+
+                <p
+                    class="scapor-report-error"
+                    hidden
+                ></p>
+
+
+                <div
+                    class="scapor-report-actions"
+                >
+
+                    <button
+                        type="button"
+                        class="scapor-report-cancel"
+                    >
+                        Abbrechen
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="scapor-report-submit"
+                    >
+                        Meldung senden
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        overlay
+    );
+
+
+    const closeButton =
+        overlay.querySelector(
+            '.scapor-report-close'
+        );
+
+
+    const cancelButton =
+        overlay.querySelector(
+            '.scapor-report-cancel'
+        );
+
+
+    const submitButton =
+        overlay.querySelector(
+            '.scapor-report-submit'
+        );
+
+
+    const textarea =
+        overlay.querySelector(
+            '#scapor-report-reason'
+        );
+
+
+    const errorMessage =
+        overlay.querySelector(
+            '.scapor-report-error'
+        );
+
+
+    // ========================================
+    // DIALOG SCHLIESSEN
+    // ========================================
+
+    function closeDialog() {
+
+        overlay.classList.remove(
+            'open'
+        );
+
+
+        window.setTimeout(
+            function () {
+
+                if (
+                    overlay.parentNode
+                ) {
+
+                    overlay.parentNode.removeChild(
+                        overlay
+                    );
+
+                }
+
+            },
+            200
+        );
+
+    }
+
+
+    // ========================================
+    // SCHLIESSEN BUTTON
+    // ========================================
+
+    closeButton.addEventListener(
+        'click',
+        function () {
+
+            closeDialog();
+
+        }
+    );
+
+
+    // ========================================
+    // ABBRECHEN BUTTON
+    // ========================================
+
+    cancelButton.addEventListener(
+        'click',
+        function () {
+
+            closeDialog();
+
+        }
+    );
+
+
+    // ========================================
+    // MELDUNG SENDEN
+    // ========================================
+
+    submitButton.addEventListener(
+        'click',
+        async function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            const reason =
+                textarea.value.trim();
+
+
+            // ========================================
+            // GRUND PRÜFEN
+            // ========================================
+
+            if (
+                reason === ''
+            ) {
+
+                errorMessage.textContent =
+                    'Bitte gib einen Grund für die Meldung an.';
+
+                errorMessage.hidden =
+                    false;
+
+                textarea.focus();
+
+                return;
+
+            }
+
+
+            // ========================================
+            // SPOT ERMITTELN
+            // ========================================
+
+            const reportSpotId =
+                overlay.dataset.spotId ||
+                null;
+
+
+            const reportSpot =
+                spots.find(
+                    function (item) {
+
+                        return String(
+                            item.id
+                        ) ===
+                        String(
+                            reportSpotId
+                        );
+
+                    }
+                );
+
+
+            if (
+                !reportSpot ||
+                !reportSpot.marker
+            ) {
+
+                errorMessage.textContent =
+                    'Der Spot konnte nicht gefunden werden.';
+
+                errorMessage.hidden =
+                    false;
+
+                return;
+
+            }
+
+
+            // ========================================
+            // POSITION ERMITTELN
+            // ========================================
+
+            const position =
+                reportSpot.marker.getLatLng();
+
+
+            if (
+                !position
+            ) {
+
+                errorMessage.textContent =
+                    'Die Position des Spots konnte nicht ermittelt werden.';
+
+                errorMessage.hidden =
+                    false;
+
+                return;
+
+            }
+
+
+            // ========================================
+            // MELDEDATEN
+            // ========================================
+
+            const reportData = {
+
+                spotId:
+                    reportSpot.id,
+
+                spotName:
+                    reportSpot.name ||
+                    'Unbenannter Spot',
+
+                reason:
+                    reason,
+
+                latitude:
+                    position.lat,
+
+                longitude:
+                    position.lng
+
+            };
+
+
+            // ========================================
+            // BUTTON DEAKTIVIEREN
+            // ========================================
+
+            submitButton.disabled =
+                true;
+
+
+            submitButton.textContent =
+                'Wird gesendet ...';
+
+
+            errorMessage.textContent =
+                '';
+
+
+            errorMessage.hidden =
+                true;
+
+
+            // ========================================
+            // E-MAIL ÜBER EDGE FUNCTION SENDEN
+            // ========================================
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient.functions.invoke(
+                        'send-email',
+                        {
+                            body: {
+
+                                report:
+                                    reportData
+
+                            }
+
+                        }
+                    );
+
+
+                // ========================================
+                // EDGE FUNCTION FEHLER
+                // ========================================
+
+                if (
+                    error
+                ) {
+
+                    console.error(
+                        'Fehler beim Senden der Spot-Meldung:',
+                        error
+                    );
+
+                    throw error;
+
+                }
+
+
+                // ========================================
+                // ANTWORT PRÜFEN
+                // ========================================
+
+                if (
+                    !data ||
+                    data.success !== true
+                ) {
+
+                    console.error(
+                        'Unerwartete Antwort der Edge Function:',
+                        data
+                    );
+
+                    throw new Error(
+                        'Die Meldung konnte nicht bestätigt werden.'
+                    );
+
+                }
+
+
+                // ========================================
+                // SPOT ALS GEMELDET MARKIEREN
+                // ========================================
+
+                const {
+                    error:
+                        reportUpdateError
+                } =
+                    await supabaseClient
+                        .from('spots')
+                        .update({
+                            reported:
+                                true
+                        })
+                        .eq(
+                            'id',
+                            reportSpot.id
+                        );
+
+
+                if (
+                    reportUpdateError
+                ) {
+
+                    console.error(
+                        'Fehler beim Markieren des Spots als gemeldet:',
+                        reportUpdateError
+                    );
+
+                    throw reportUpdateError;
+
+                }
+
+
+                // ========================================
+                // ERFOLG
+                // ========================================
+
+                console.log(
+                    'Spot-Meldung erfolgreich gesendet:',
+                    data
+                );
+
+
+                closeDialog();
+
+
+                alert(
+                    'Vielen Dank. Deine Meldung wurde erfolgreich gesendet.'
+                );
+
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    'Fehler beim Senden der Spot-Meldung:',
+                    error
+                );
+
+
+                errorMessage.textContent =
+                    'Die Meldung konnte nicht gesendet werden. Bitte versuche es später erneut.';
+
+
+                errorMessage.hidden =
+                    false;
+
+            }
+
+            finally {
+
+                // ========================================
+                // BUTTON WIEDER AKTIVIEREN
+                // ========================================
+
+                submitButton.disabled =
+                    false;
+
+
+                submitButton.textContent =
+                    'Meldung senden';
+
+            }
+
+        }
+    );
+
+
+    // ========================================
+    // KLICK AUF OVERLAY
+    // ========================================
+
+    overlay.addEventListener(
+        'click',
+        function (event) {
+
+            if (
+                event.target ===
+                overlay
+            ) {
+
+                closeDialog();
+
+            }
+
+        }
+    );
+
+
+    // ========================================
+    // ESCAPE
+    // ========================================
+
+    document.addEventListener(
+        'keydown',
+        function (event) {
+
+            if (
+                event.key ===
+                    'Escape' &&
+                overlay.classList.contains(
+                    'open'
+                )
+            ) {
+
+                closeDialog();
+
+            }
+
+        }
+    );
+
+
+    return overlay;
+
+}
+
+
+// ========================================
+// MELDE-DIALOG ÖFFNEN
+// ========================================
+
+function openReportDialog(
+    spot
+) {
+
+    if (
+        !spot
+    ) {
+
+        return;
+
+    }
+
+
+    const overlay =
+        createReportDialog();
+
+
+    const spotName =
+        overlay.querySelector(
+            '.report-spot-name'
+        );
+
+
+    const textarea =
+        overlay.querySelector(
+            '#scapor-report-reason'
+        );
+
+
+    const errorMessage =
+        overlay.querySelector(
+            '.scapor-report-error'
+        );
+
+
+    overlay.dataset.spotId =
+        spot.id ||
+        '';
+
+
+    overlay.dataset.spotName =
+        spot.name ||
+        'Unbenannter Spot';
+
+
+    spotName.textContent =
+        `Du möchtest den Spot „${
+            spot.name ||
+            'Unbenannter Spot'
+        }“ melden.`;
+
+
+    textarea.value =
+        '';
+
+
+    errorMessage.textContent =
+        '';
+
+
+    errorMessage.hidden =
+        true;
+
+
+    overlay.classList.add(
+        'open'
+    );
+
+
+    window.setTimeout(
+        function () {
+
+            textarea.focus();
+
+        },
+        50
+    );
+
+}
+
+
+// ========================================
+// MELDE-BUTTON EINRICHTEN
+// ========================================
+
+function setupReport(
     spot,
     popup
 ) {
 
     if (
+        !spot ||
+        !spot.saved ||
         !popup
     ) {
 
@@ -2906,56 +2720,36 @@ function setupRating(
     }
 
 
-    const ratingButtons =
-        popupElement.querySelectorAll(
-            '.rating-stars button'
+    const reportButton =
+        popupElement.querySelector(
+            '.spot-report'
         );
 
 
-    ratingButtons.forEach(
-        function (button) {
+    if (
+        !reportButton
+    ) {
 
-            const rating =
-                Number(
-                    button.dataset.rating
-                );
+        console.warn(
+            'Melden-Button wurde im gespeicherten Spot nicht gefunden.'
+        );
 
+        return;
 
-            if (
-                rating <=
-                spot.rating
-            ) {
-
-                button.textContent =
-                    '★';
-
-            } else {
-
-                button.textContent =
-                    '☆';
-
-            }
+    }
 
 
-            button.addEventListener(
-                'click',
-                function (event) {
+    reportButton.addEventListener(
+        'click',
+        function (event) {
 
-                    event.preventDefault();
+            event.preventDefault();
 
-                    event.stopPropagation();
-
-
-                    spot.rating =
-                        rating;
+            event.stopPropagation();
 
 
-                    updateRatingStars(
-                        ratingButtons,
-                        spot.rating
-                    );
-
-                }
+            openReportDialog(
+                spot
             );
 
         }
@@ -2965,46 +2759,100 @@ function setupRating(
 
 
 // ========================================
-// BEWERTUNGSSTERNE AKTUALISIEREN
+// E-MAIL ÜBER EDGE FUNCTION SENDEN
 // ========================================
 
-function updateRatingStars(
-    buttons,
-    rating
+async function sendSpotEmail(
+    spot,
+    position
 ) {
 
-    buttons.forEach(
-        function (button) {
+    try {
 
-            const starRating =
-                Number(
-                    button.dataset.rating
-                );
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.functions.invoke(
+                'send-email',
+                {
+                    body: {
+
+                        spot: {
+
+                            id:
+                                spot.id,
+
+                            name:
+                                spot.name,
+
+                            description:
+                                spot.description,
+
+                            category:
+                                spot.category,
+
+                            latitude:
+                                position.lat,
+
+                            longitude:
+                                position.lng
+
+                        }
+
+                    }
+
+                }
+            );
 
 
-            if (
-                starRating <=
-                rating
-            ) {
+        if (
+            error
+        ) {
 
-                button.textContent =
-                    '★';
+            console.error(
+                'Fehler beim Versenden der Spot-Mail:',
+                error
+            );
 
-            } else {
-
-                button.textContent =
-                    '☆';
-
-            }
+            return false;
 
         }
-    );
+
+
+        if (
+            data &&
+            data.success === true
+        ) {
+
+            console.log(
+                'Spot-Mail erfolgreich versendet:',
+                data
+            );
+
+            return true;
+
+        }
+
+
+        console.warn(
+            'Spot-Mail: Unerwartete Antwort der Edge Function:',
+            data
+        );
+
+        return false;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            'Unerwarteter Fehler beim Versenden der Spot-Mail:',
+            error
+        );
+
+        return false;
+
+    }
 
 }
-
-
-// ========================================
-// SUPABASE STARTEN
-// ========================================
-
-loadSpots();

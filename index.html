@@ -41,6 +41,108 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3869267919028665"
          crossorigin="anonymous"></script>
 
+
+    <!-- ========================================
+         KATEGORIE-FILTER CSS
+         ======================================== -->
+
+    <style>
+
+        .category-filter {
+
+            position: fixed;
+
+            top: 74px;
+            left: 10px;
+
+            z-index: 1000;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 5px;
+
+            padding: 9px 10px;
+
+            background: #ffffff;
+
+            border: 1px solid #D9E2EC;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(16, 42, 67, 0.15);
+
+        }
+
+
+        .category-filter label {
+
+            color: #102A43;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+        }
+
+
+        .category-filter select {
+
+            min-width: 170px;
+
+            height: 38px;
+
+            padding: 0 10px;
+
+            border: 1px solid #BCCCDC;
+
+            border-radius: 8px;
+
+            background: #ffffff;
+
+            color: #243B53;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+        }
+
+
+        .category-filter select:focus {
+
+            outline: none;
+
+            border-color: #102A43;
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .category-filter {
+
+                top: 64px;
+
+                left: 10px;
+
+            }
+
+
+            .category-filter select {
+
+                min-width: 150px;
+
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
@@ -94,6 +196,75 @@
          ======================================== -->
 
     <div id="map"></div>
+
+
+    <!-- ========================================
+         KATEGORIE-FILTER
+         ======================================== -->
+
+    <div
+        id="category-filter"
+        class="category-filter"
+    >
+
+        <label
+            for="category-filter-select"
+        >
+            Kategorie
+        </label>
+
+
+        <select
+            id="category-filter-select"
+        >
+
+            <option value="all">
+                Alle Kategorien
+            </option>
+
+            <option value="Architecture">
+                Architecture
+            </option>
+
+            <option value="Astro">
+                Astro
+            </option>
+
+            <option value="Carshooting">
+                Carshooting
+            </option>
+
+            <option value="Carspotting">
+                Carspotting
+            </option>
+
+            <option value="Landscape">
+                Landscape
+            </option>
+
+            <option value="Nature">
+                Nature
+            </option>
+
+            <option value="Planespotting">
+                Planespotting
+            </option>
+
+            <option value="Portrait">
+                Portrait
+            </option>
+
+            <option value="Trainspotting">
+                Trainspotting
+            </option>
+
+            <option value="Wildlife">
+                Wildlife
+            </option>
+
+        </select>
+
+    </div>
 
 
     <!-- ========================================
