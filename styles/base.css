@@ -104,4 +104,8 @@ body {
     user-select: none;
 }
 
+.logo span {
+    color: #7dd3fc;
+}
+
 
