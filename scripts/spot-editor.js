@@ -33,8 +33,8 @@ function positionSpotPopupOnMobile(
                     map.getSize().y / 2 +
                         (
                             spot.saved
-                                ? 90
-                                : 110
+                                ? 135
+                                : 155
                         )
                 );
 
