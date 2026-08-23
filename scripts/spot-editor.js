@@ -103,6 +103,64 @@ function positionSpotPopupOnMobile(
 
 
 // ========================================
+// UNGESPEICHERTEN SPOT BEIM SCHLIESSEN ENTFERNEN
+// ========================================
+
+function setupUnsavedSpotCloseButton(
+    spot,
+    popup
+) {
+
+    if (
+        !spot ||
+        spot.saved ||
+        !popup
+    ) {
+
+        return;
+
+    }
+
+
+    const closeButton =
+        popup.getElement()?.querySelector(
+            ".leaflet-popup-close-button"
+        );
+
+
+    if (
+        !closeButton
+    ) {
+
+        return;
+
+    }
+
+
+    closeButton.addEventListener(
+        "click",
+        function () {
+
+            if (
+                !spot.saved &&
+                activeSpot === spot
+            ) {
+
+                removeActiveSpot();
+
+            }
+
+        },
+        {
+            once:
+                true
+        }
+    );
+
+}
+
+
+// ========================================
 // EDITOR
 // ========================================
 
@@ -255,6 +313,12 @@ async function openEditor(
 
 
                 setupEditorPopup(
+                    spot,
+                    event.popup
+                );
+
+
+                setupUnsavedSpotCloseButton(
                     spot,
                     event.popup
                 );
