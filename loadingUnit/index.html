@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <meta name="color-scheme" content="dark">
+    <title>Spots werden geladen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main
+        class="loader"
+        role="status"
+        aria-live="polite"
+        aria-label="SCAPOR lädt die Spots"
+    >
+        <div class="loader__glow loader__glow--one"></div>
+        <div class="loader__glow loader__glow--two"></div>
+
+        <div class="loader__content">
+            <div class="loader__brand" aria-label="SCAPOR.de">
+                SCAPOR<span>.de</span>
+            </div>
+
+            <div class="loader__map" aria-hidden="true">
+                <svg
+                    class="loader__route"
+                    viewBox="0 0 280 190"
+                    fill="none"
+                >
+                    <path
+                        d="M28 142C67 109 76 42 137 66C180 83 190 142 253 42"
+                        pathLength="1"
+                    />
+                </svg>
+
+                <span class="loader__pin loader__pin--start"></span>
+                <span class="loader__pin loader__pin--middle"></span>
+
+                <span class="loader__pin loader__pin--active">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2.5a7 7 0 0 0-7 7c0 5.25 7 12 7 12s7-6.75 7-12a7 7 0 0 0-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/>
+                    </svg>
+                </span>
+            </div>
+
+            <div class="loader__copy">
+                <div id="loading-state">
+                    <h1>Die besten Spots sind gleich da.</h1>
+                    <p id="loading-message">Spots werden geladen</p>
+
+                    <div class="loader__progress" aria-hidden="true">
+                        <span></span>
+                    </div>
+                </div>
+
+                <div id="error-state" class="loader__error" hidden>
+                    <h1>Spots konnten nicht geladen werden.</h1>
+                    <p>Bitte überprüfe deine Verbindung und versuche es erneut.</p>
+                    <button id="retry-button" type="button">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 4v5h5m-5 4a8.1 8.1 0 0 0 15.5 2M20 20v-5h-5"/>
+                        </svg>
+                        Erneut versuchen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

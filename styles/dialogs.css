@@ -1,0 +1,113 @@
+/* ========================================
+   SCAPOR HINWEISDIALOG
+   ======================================== */
+
+.scapor-alert-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 12000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(8, 25, 40, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition:
+        opacity 180ms ease,
+        visibility 180ms ease;
+}
+
+.scapor-alert-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scapor-alert-dialog {
+    width: min(100%, 390px);
+    padding: 28px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 22px 55px rgba(16, 42, 67, 0.32);
+    text-align: center;
+    transform: translateY(8px) scale(0.98);
+    transition: transform 180ms ease;
+}
+
+.scapor-alert-overlay.open .scapor-alert-dialog {
+    transform: translateY(0) scale(1);
+}
+
+.scapor-alert-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #E5EAF0;
+    color: #102A43;
+    font-size: 24px;
+    font-weight: 800;
+    font-family: Georgia, serif;
+}
+
+.scapor-alert-dialog h2 {
+    margin: 0;
+    color: #102A43;
+    font-size: 22px;
+    line-height: 1.25;
+}
+
+.scapor-alert-dialog p {
+    margin: 12px 0 24px;
+    color: #52606D;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.scapor-alert-confirm {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 11px;
+    background: #102A43;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.scapor-alert-confirm:hover,
+.scapor-alert-confirm:focus-visible {
+    background: #243B53;
+    outline: none;
+}
+
+.scapor-alert-confirm:focus-visible {
+    box-shadow: 0 0 0 4px rgba(16, 42, 67, 0.18);
+}
+
+.scapor-alert-confirm:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 600px) {
+    .scapor-alert-dialog {
+        padding: 24px 22px;
+        border-radius: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scapor-alert-overlay,
+    .scapor-alert-dialog {
+        transition-duration: 1ms;
+    }
+}

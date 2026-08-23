@@ -210,6 +210,22 @@
 
 
 /* ========================================
+   WILLKOMMENS-WERBUNG
+   ======================================== */
+
+.welcome-ad {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #E5EAF0;
+}
+
+.welcome-ad.is-empty,
+.welcome-ad:has(.adsbygoogle[data-ad-status="unfilled"]) {
+    display: none;
+}
+
+
+/* ========================================
    WILLKOMMENS-BUTTON
    ======================================== */
 

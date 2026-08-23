@@ -1,0 +1,322 @@
+/* ========================================
+   NAVIGATION
+   ======================================== */
+
+.logo {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+
+
+.navigation {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+
+.navigation a {
+    display: flex;
+    align-items: center;
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 9px;
+    color: rgba(255, 255, 255, 0.78);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+
+.navigation a:hover {
+    color: #ffffff;
+    background:
+        rgba(255, 255, 255, 0.10);
+}
+
+
+.navigation a.active {
+    color: #ffffff;
+    background:
+        rgba(255, 255, 255, 0.14);
+}
+
+
+/* ========================================
+   SEITENLAYOUT
+   ======================================== */
+
+.page {
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding:
+        110px 24px 50px;
+    background:
+        #F4F7FA;
+    display: flex;
+    justify-content: center;
+}
+
+
+/* ========================================
+   CONTENT CARD
+   ======================================== */
+
+.content-card {
+    width: 100%;
+    max-width: 760px;
+    align-self: flex-start;
+    box-sizing: border-box;
+    padding: 48px;
+    background: #ffffff;
+    border-radius: 22px;
+    box-shadow:
+        0 10px 35px
+        rgba(16, 42, 67, 0.08);
+}
+
+
+/* ========================================
+   LABEL
+   ======================================== */
+
+.page-label {
+    display: inline-block;
+    margin-bottom: 14px;
+    padding:
+        7px 10px;
+    border-radius: 7px;
+    background: #102A43;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+
+/* ========================================
+   ÜBERSCHRIFT
+   ======================================== */
+
+.content-card h1 {
+    margin:
+        0 0 14px;
+    color: #102A43;
+    font-size: 38px;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+
+.lead {
+    margin:
+        0 0 38px;
+    color: #52606D;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+
+/* ========================================
+   ABSCHNITTE
+   ======================================== */
+
+.contact-section,
+.about-section {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top:
+        1px solid #E5EAF0;
+}
+
+
+.contact-section h2,
+.about-section h2 {
+    margin:
+        0 0 10px;
+    color: #243B53;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+.contact-section p,
+.about-section p {
+    margin:
+        8px 0;
+    color: #52606D;
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+
+/* ========================================
+   KONTAKT LINK
+   ======================================== */
+
+.contact-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: #102A43;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+
+.contact-link:hover {
+    text-decoration: underline;
+}
+
+
+/* ========================================
+   ÜBER SCAPOR HIGHLIGHT
+   ======================================== */
+
+.about-highlight {
+    margin-top: 38px;
+    padding:
+        22px 24px;
+    border-radius: 14px;
+    background: #102A43;
+    color: #ffffff;
+}
+
+
+.about-highlight strong {
+    display: block;
+    font-size: 20px;
+    letter-spacing: -0.3px;
+}
+
+
+.about-highlight p {
+    margin:
+        5px 0 0;
+    color:
+        rgba(255, 255, 255, 0.75);
+    font-size: 14px;
+}
+
+
+.marker-info .spot-report {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border: none;
+    border-top: 1px solid #E5EAF0;
+    border-radius: 0;
+    background: transparent;
+    color: #9B2C2C;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+
+/* ========================================
+   WERBUNG
+   ======================================== */
+
+.about-ad {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top:
+        1px solid #E5EAF0;
+}
+
+
+/* ========================================
+   MOBILE
+   ======================================== */
+
+@media (max-width: 600px) {
+
+    .leaflet-top.leaflet-right {
+        top: 72px;
+        right: 10px;
+    }
+
+
+    .topbar {
+        padding-left: 16px;
+        padding-right: 16px;
+        height: 58px;
+    }
+
+
+    .logo {
+        font-size: 19px;
+    }
+
+
+    .navigation {
+        gap: 2px;
+    }
+
+
+    .navigation a {
+        height: 36px;
+        padding:
+            0 8px;
+        font-size: 12px;
+    }
+
+
+    .page {
+        padding:
+            82px 12px 30px;
+    }
+
+
+    .content-card {
+        padding:
+            28px 22px;
+        border-radius:
+            18px;
+    }
+
+
+    .content-card h1 {
+        font-size:
+            30px;
+    }
+
+
+    .lead {
+        font-size:
+            15px;
+        margin-bottom:
+            28px;
+    }
+
+}
+
+
+@media (max-width: 380px) {
+
+    .navigation a {
+        padding:
+            0 6px;
+        font-size:
+            11px;
+    }
+
+
+    .content-card {
+        padding:
+            24px 18px;
+    }
+
+}
+

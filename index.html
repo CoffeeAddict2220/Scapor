@@ -12,6 +12,12 @@
 
     <title>SCAPOR.de</title>
 
+    <link rel="icon" href="/favicon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+
 
     <!-- ========================================
          LEAFLET CSS
@@ -27,10 +33,13 @@
          SCAPOR CSS
          ======================================== -->
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    <link rel="stylesheet" href="./styles/base.css">
+    <link rel="stylesheet" href="./styles/map.css">
+    <link rel="stylesheet" href="./styles/spots.css">
+    <link rel="stylesheet" href="./styles/markers.css">
+    <link rel="stylesheet" href="./styles/pages.css">
+    <link rel="stylesheet" href="./styles/navigation.css">
+    <link rel="stylesheet" href="./styles/dialogs.css">
 
     <link
         rel="stylesheet"
@@ -81,7 +90,7 @@
 
             color: #102A43;
 
-            font-size: 11px;
+            font-size: 15px;
 
             font-weight: 700;
 
@@ -106,7 +115,7 @@
 
             font-family: inherit;
 
-            font-size: 14px;
+            font-size: 15px;
 
             cursor: pointer;
 
@@ -152,6 +161,14 @@
 
 <body>
 
+    <iframe
+        id="spots-loading-screen"
+        class="spots-loading-screen"
+        src="./loadingUnit/index.html"
+        title="Spots werden geladen"
+        aria-label="Spots werden geladen"
+    ></iframe>
+
 
     <!-- ========================================
          NAVIGATION
@@ -167,30 +184,17 @@
         </a>
 
 
-        <nav class="navigation">
-
-            <a
-                href="./index.html"
-                class="active"
-            >
-                Map
-            </a>
-
-
-            <a
-                href="./contact/index.html"
-            >
-                Kontakt
-            </a>
-
-
-            <a
-                href="./about/index.html"
-            >
-                Über SCAPOR
-            </a>
-
-        </nav>
+        <details class="navigation-menu">
+            <summary aria-label="Navigation öffnen">
+                <span>Menü</span>
+                <span class="navigation-menu-icon" aria-hidden="true"></span>
+            </summary>
+            <nav class="navigation" aria-label="Hauptnavigation">
+                <a href="./index.html" class="active" aria-current="page">Karte</a>
+                <a href="./contact/index.html">Kontakt</a>
+                <a href="./about/index.html">Über SCAPOR</a>
+            </nav>
+        </details>
 
     </header>
 
@@ -286,10 +290,22 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script src="script.js"></script>
+    <script src="./scripts/config.js"></script>
+    <script src="./scripts/alert-dialog.js"></script>
+    <script src="./scripts/map.js"></script>
+    <script src="./scripts/spots-data.js"></script>
+    <script src="./scripts/spot-creation.js"></script>
+    <script src="./scripts/spot-editor.js"></script>
+    <script src="./scripts/spot-save.js"></script>
+    <script src="./scripts/spot-details.js"></script>
+    <script src="./scripts/report-dialog.js"></script>
+    <script src="./scripts/report-actions.js"></script>
+    <script src="./scripts/app.js"></script>
 
     <script src="./welcome/script.js"></script>
 
+
+    <script src="./navigation.js"></script>
 
 </body>
 

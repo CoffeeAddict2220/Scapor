@@ -1,0 +1,235 @@
+/* ========================================
+   LEAFLET GRUNDANPASSUNG
+   ======================================== */
+
+.leaflet-container {
+    font-family: inherit;
+}
+
+
+/* ========================================
+   LEAFLET POPUP SCHRIFT
+   ======================================== */
+
+.leaflet-popup-content,
+.marker-info {
+    font-family: inherit;
+}
+
+
+/* ========================================
+   LEAFLET POPUP BREITE
+   ======================================== */
+
+.leaflet-popup-content {
+    width: 300px !important;
+    max-width: 300px !important;
+    box-sizing: border-box;
+}
+
+
+/* ========================================
+   LEAFLET KARTENAUSWAHL
+   ======================================== */
+
+.leaflet-top.leaflet-right {
+    top: 78px;
+    right: 14px;
+}
+
+
+.leaflet-control-layers {
+    border: none;
+    border-radius: 11px;
+    box-shadow:
+        0 6px 18px
+        rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+    font-family: inherit;
+}
+
+
+.leaflet-control-layers-toggle {
+    width: 44px;
+    height: 44px;
+    background-color: #ffffff;
+    background-size: 22px 22px;
+}
+
+
+.leaflet-control-layers-toggle:hover,
+.leaflet-control-layers-toggle:focus-visible {
+    background-color: #F0F4F8;
+    outline: none;
+}
+
+
+.leaflet-control-layers-expanded {
+    padding: 10px 12px;
+    background: #ffffff;
+    color: #243B53;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+
+.leaflet-control-layers label {
+    margin: 0;
+    padding: 3px 0;
+    cursor: pointer;
+}
+
+
+.leaflet-control-layers input {
+    margin-right: 7px;
+    accent-color: #102A43;
+}
+
+
+/* ========================================
+   EIGENER STANDORT
+   ======================================== */
+
+.leaflet-control-locate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: none;
+    border-radius: 11px;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    color: #102A43;
+    font-size: 27px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+
+.leaflet-control-locate svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+}
+
+
+.leaflet-control-locate:hover,
+.leaflet-control-locate:focus-visible {
+    background: #F0F4F8;
+    outline: none;
+}
+
+
+.leaflet-control-locate[aria-pressed="true"] {
+    background: #DCE8FF;
+    color: #1D4ED8;
+}
+
+
+/* ========================================
+   LEAFLET POPUP
+   ======================================== */
+
+.leaflet-popup-content-wrapper {
+    padding: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.22);
+}
+
+
+/* Popup-Pfeil */
+
+.leaflet-popup-tip {
+    box-shadow:
+        3px 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ========================================
+   POPUP SCHLIESSEN
+   ======================================== */
+
+.leaflet-container a.leaflet-popup-close-button {
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: #829AB1;
+    font-family: Arial, sans-serif;
+    font-size: 27px;
+    font-weight: 300;
+    line-height: 36px;
+    border-radius: 50%;
+    z-index: 20;
+}
+
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+    background: #F0F4F8;
+    color: #102A43;
+}
+
+
+
+
+/* ========================================
+   KARTENANSICHT ZURÜCKSETZEN
+   ======================================== */
+
+.leaflet-control-reset-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: none;
+    border-radius: 11px;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    color: #102A43;
+    cursor: pointer;
+}
+
+.leaflet-control-reset-view svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+}
+
+.leaflet-control-reset-view:hover,
+.leaflet-control-reset-view:focus-visible {
+    background: #F0F4F8;
+    outline: none;
+}
+
+.leaflet-control-locate {
+    margin-top: 18px;
+}
+
+
+/* ========================================
+   EINHEITLICHE SPOT-POPUPS
+   ======================================== */
+
+.scapor-popup .leaflet-popup-content {
+    margin: 0;
+}
+
+.scapor-popup-editor .leaflet-popup-content {
+    width: min(300px, calc(100vw - 34px)) !important;
+    max-width: calc(100vw - 34px) !important;
+}
+
+.scapor-popup-info .leaflet-popup-content {
+    width: min(270px, calc(100vw - 34px)) !important;
+    max-width: calc(100vw - 34px) !important;
+}

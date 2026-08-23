@@ -1,0 +1,495 @@
+/* ========================================
+   MARKER FORMULAR
+   ======================================== */
+
+.marker-form {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+
+/* ========================================
+   LABELS
+   ======================================== */
+
+.marker-form .spot-editor-title {
+    margin: 0 30px 22px 0;
+    color: #102A43;
+    font-size: 20px;
+    line-height: 1.25;
+    font-weight: 750;
+    letter-spacing: -0.3px;
+}
+
+
+.marker-form label {
+    display: block;
+    margin-top: 7px;
+    color: #243B53;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* ========================================
+   INPUT / TEXTAREA / SELECT
+   ======================================== */
+
+.marker-form input,
+.marker-form textarea,
+.marker-form select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #D8DEE6;
+    border-radius: 10px;
+    background: #F8FAFC;
+    color: #243B53;
+    font-family: inherit;
+    font-size: 16px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+
+/* ========================================
+   INPUT
+   ======================================== */
+
+.marker-form input {
+    height: 48px;
+    padding:
+        0 13px;
+}
+
+
+/* ========================================
+   TEXTAREA
+   ======================================== */
+
+.marker-form textarea {
+    min-height: 90px;
+    padding:
+        11px 13px;
+    resize: vertical;
+}
+
+
+/* ========================================
+   SELECT
+   ======================================== */
+
+.marker-form select {
+    height: 48px;
+    padding:
+        0 13px;
+    cursor: pointer;
+}
+
+
+/* ========================================
+   FOCUS
+   ======================================== */
+
+.marker-form input:focus,
+.marker-form textarea:focus,
+.marker-form select:focus {
+    background: #ffffff;
+    border-color: #102A43;
+    box-shadow:
+        0 0 0 3px
+        rgba(16, 42, 67, 0.10);
+}
+
+
+/* ========================================
+   PLACEHOLDER
+   ======================================== */
+
+.marker-form input::placeholder,
+.marker-form textarea::placeholder {
+    color: #9AA5B1;
+}
+
+
+/* ========================================
+   SPEICHERN
+   ======================================== */
+
+.marker-form button {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 12px;
+    padding:
+        0 16px;
+    border: none;
+    border-radius: 11px;
+    background: #102A43;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition:
+        background 0.15s ease,
+        transform 0.1s ease;
+}
+
+
+.marker-form button:hover {
+    background: #163B5C;
+}
+
+
+.marker-form button:active {
+    transform: scale(0.98);
+}
+
+
+/* ========================================
+   GESPEICHERTER SPOT
+   ======================================== */
+
+.marker-info {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 24px;
+    color: #243B53;
+}
+
+
+.marker-info h3 {
+    margin:
+        0 0 18px 0;
+    padding-right: 30px;
+    color: #102A43;
+    font-size: 21px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+
+.marker-info p {
+    margin:
+        10px 0;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+
+.marker-info strong {
+    color: #102A43;
+}
+
+
+/* ========================================
+   BEARBEITEN
+   ======================================== */
+
+.marker-info .spot-edit {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 16px;
+    border: none;
+    border-radius: 11px;
+    background: #102A43;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+
+.marker-info .spot-edit:active {
+    transform: scale(0.98);
+}
+
+
+/* ========================================
+   MELDE-DIALOG
+   ======================================== */
+
+.scapor-report-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(16, 42, 67, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+
+.scapor-report-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.scapor-report-dialog {
+    width: min(100%, 460px);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 18px 48px rgba(16, 42, 67, 0.3);
+}
+
+
+.scapor-report-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 22px;
+    border-bottom: 1px solid #E5EAF0;
+}
+
+
+.scapor-report-header h3 {
+    margin: 0;
+    color: #102A43;
+    font-size: 20px;
+}
+
+
+.scapor-report-close {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #F0F4F8;
+    color: #243B53;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+
+.scapor-report-content {
+    padding: 22px;
+}
+
+
+.report-spot-name,
+.scapor-report-content label {
+    display: block;
+    margin: 0 0 10px;
+    color: #243B53;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+.scapor-report-content label {
+    margin-top: 18px;
+    font-weight: 700;
+}
+
+
+.scapor-report-reason {
+    width: 100%;
+    min-height: 120px;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #BCCCDC;
+    border-radius: 10px;
+    color: #243B53;
+    font: inherit;
+    resize: vertical;
+}
+
+
+.scapor-report-error {
+    margin: 10px 0 0;
+    color: #9B2C2C;
+    font-size: 14px;
+}
+
+
+.scapor-report-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+
+.scapor-report-actions button {
+    min-height: 42px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 9px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+.scapor-report-cancel {
+    background: #E5EAF0;
+    color: #243B53;
+}
+
+
+.scapor-report-submit {
+    background: #9B2C2C;
+    color: #ffffff;
+}
+
+
+/* ========================================
+   MOBILE
+   ======================================== */
+
+@media (max-width: 600px) {
+
+    /* ------------------------------------
+       TOPBAR
+       ------------------------------------ */
+
+    .topbar {
+        height: 58px;
+        padding-left:
+            18px;
+        padding-right:
+            18px;
+        border-radius:
+            0 0 16px 16px;
+    }
+
+
+    .logo {
+        font-size: 20px;
+        letter-spacing:
+            -0.5px;
+    }
+
+
+    /* ------------------------------------
+       LEAFLET POPUP
+       ------------------------------------ */
+
+    .leaflet-popup-content {
+        width:
+            min(300px, calc(100vw - 48px))
+        !important;
+        max-width:
+            calc(100vw - 48px);
+    }
+
+
+    .leaflet-popup-content-wrapper {
+        border-radius:
+            17px;
+    }
+
+
+    /* ------------------------------------
+       FORMULAR
+       ------------------------------------ */
+
+    .marker-form {
+        padding:
+            20px;
+    }
+
+
+    .marker-form label {
+        font-size:
+            13px;
+        margin-top:
+            6px;
+    }
+
+
+    .marker-form input {
+        height:
+            48px;
+    }
+
+
+    .marker-form textarea {
+        min-height:
+            90px;
+    }
+
+
+    .marker-form select {
+        height:
+            48px;
+    }
+
+
+    .marker-form button {
+        min-height:
+            50px;
+        margin-top:
+            14px;
+    }
+
+
+    /* ------------------------------------
+       GESPEICHERTER SPOT
+       ------------------------------------ */
+
+    .marker-info {
+        padding:
+            20px;
+    }
+
+
+    .marker-info h3 {
+        font-size:
+            19px;
+    }
+
+
+    .marker-info .spot-edit {
+        min-height:
+            50px;
+    }
+
+}
+
+
+/* ========================================
+   SEHR KLEINE HANDYS
+   ======================================== */
+
+@media (max-width: 380px) {
+
+    .leaflet-popup-content {
+        width:
+            calc(100vw - 34px)
+        !important;
+        max-width:
+            calc(100vw - 34px);
+    }
+
+
+    .marker-form {
+        padding:
+            18px;
+    }
+
+
+    .marker-info {
+        padding:
+            18px;
+    }
+
+}
+
+

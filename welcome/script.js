@@ -72,6 +72,11 @@
             );
 
 
+            setupWelcomeAd(
+                overlay
+            );
+
+
             setupWelcome(
                 overlay
             );
@@ -88,6 +93,103 @@
 
     }
 
+
+
+// ========================================
+// WILLKOMMENS-WERBUNG
+// ========================================
+
+function setupWelcomeAd(
+    overlay
+) {
+
+    const adSlot =
+        overlay.querySelector(
+            '.welcome-ad .adsbygoogle'
+        );
+
+
+    const adContainer =
+        adSlot?.closest(
+            '.welcome-ad'
+        );
+
+
+    if (
+        !adSlot ||
+        !adContainer
+    ) {
+
+        return;
+
+    }
+
+
+    function updateAdVisibility() {
+
+        adContainer.classList.toggle(
+            'is-empty',
+            adSlot.dataset.adStatus ===
+                'unfilled'
+        );
+
+    }
+
+
+    new MutationObserver(
+        updateAdVisibility
+    ).observe(
+        adSlot,
+        {
+            attributes: true,
+            attributeFilter: [
+                'data-ad-status'
+            ]
+        }
+    );
+
+
+    window.setTimeout(
+        function () {
+
+            if (
+                !adSlot.dataset.adStatus
+            ) {
+
+                adContainer.classList.add(
+                    'is-empty'
+                );
+
+            }
+
+        },
+        3000
+    );
+
+
+    try {
+
+        (
+            window.adsbygoogle =
+                window.adsbygoogle ||
+                []
+        ).push({});
+
+    } catch (error) {
+
+        adContainer.classList.add(
+            'is-empty'
+        );
+
+
+        console.warn(
+            'Willkommensanzeige konnte nicht geladen werden.',
+            error
+        );
+
+    }
+
+}
 
     // ========================================
     // WILLKOMMEN EINRICHTEN
