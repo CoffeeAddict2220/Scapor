@@ -212,7 +212,7 @@
 }
 
 .leaflet-control-locate {
-    margin-top: 18px;
+    margin-top: 0;
 }
 
 
@@ -232,4 +232,30 @@
 .scapor-popup-info .leaflet-popup-content {
     width: min(270px, calc(100vw - 34px)) !important;
     max-width: calc(100vw - 34px) !important;
+}
+
+
+/* ========================================
+   KARTENSTEUERUNG RECHTS UNTEN
+   ======================================== */
+
+.leaflet-bottom.leaflet-right {
+    right: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.leaflet-bottom.leaflet-right .leaflet-control {
+    float: none;
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .leaflet-bottom.leaflet-right {
+        right: 10px;
+        bottom: calc(18px + env(safe-area-inset-bottom));
+        gap: 9px;
+    }
 }

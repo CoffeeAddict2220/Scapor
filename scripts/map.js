@@ -36,6 +36,11 @@ const map =
     );
 
 
+map.attributionControl.setPosition(
+    "bottomleft"
+);
+
+
 // ========================================
 // ICONS
 // ========================================
@@ -244,7 +249,7 @@ const layerControl =
                 true,
 
             position:
-                'topright'
+                'bottomright'
         }
     ).addTo(
         map
@@ -259,7 +264,7 @@ const resetViewControl =
     L.control(
         {
             position:
-                "topright"
+                "bottomright"
         }
     );
 
@@ -494,7 +499,7 @@ const locationControl =
     L.control(
         {
             position:
-                'topright'
+                'bottomright'
         }
     );
 

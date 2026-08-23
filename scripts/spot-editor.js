@@ -1,4 +1,65 @@
 // ========================================
+// MOBILE POPUP-POSITION
+// ========================================
+
+function positionSpotPopupOnMobile(
+    spot
+) {
+
+    if (
+        !spot?.marker ||
+        !window.matchMedia(
+            "(max-width: 600px)"
+        ).matches
+    ) {
+
+        return;
+
+    }
+
+
+    window.setTimeout(
+        function () {
+
+            const markerPoint =
+                map.latLngToContainerPoint(
+                    spot.marker.getLatLng()
+                );
+
+
+            const targetPoint =
+                L.point(
+                    map.getSize().x / 2,
+                    map.getSize().y / 2 +
+                        (
+                            spot.saved
+                                ? 90
+                                : 110
+                        )
+                );
+
+
+            map.panBy(
+                markerPoint.subtract(
+                    targetPoint
+                ),
+                {
+                    animate:
+                        true,
+
+                    duration:
+                        0.28
+                }
+            );
+
+        },
+        0
+    );
+
+}
+
+
+// ========================================
 // EDITOR
 // ========================================
 
@@ -142,6 +203,11 @@ async function openEditor(
         spot.marker.once(
             'popupopen',
             function (event) {
+
+                positionSpotPopupOnMobile(
+                    spot
+                );
+
 
                 setupEditorPopup(
                     spot,
@@ -311,6 +377,11 @@ function markerPopup(
         spot.marker.once(
             'popupopen',
             function (event) {
+
+                positionSpotPopupOnMobile(
+                    spot
+                );
+
 
                 onOpen(
                     event.popup
