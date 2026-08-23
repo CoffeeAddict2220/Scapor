@@ -1,4 +1,101 @@
 // ========================================
+// KARTENLINKS EINRICHTEN
+// ========================================
+
+function setupSpotMapLinks(
+    spot,
+    info
+) {
+
+    const position =
+        spot.marker.getLatLng();
+
+    const openButton =
+        info.querySelector(
+            '.spot-map-open'
+        );
+
+    const options =
+        info.querySelector(
+            '.spot-map-options'
+        );
+
+    const appleLink =
+        info.querySelector(
+            '.spot-map-apple'
+        );
+
+    const googleLink =
+        info.querySelector(
+            '.spot-map-google'
+        );
+
+
+    if (
+        !position ||
+        !openButton ||
+        !options ||
+        !appleLink ||
+        !googleLink
+    ) {
+
+        return;
+
+    }
+
+
+    const coordinates =
+        position.lat +
+        ',' +
+        position.lng;
+
+    const label =
+        encodeURIComponent(
+            spot.name ||
+            'SCAPOR Spot'
+        );
+
+
+    appleLink.href =
+        'https://maps.apple.com/?ll=' +
+        coordinates +
+        '&q=' +
+        label;
+
+    googleLink.href =
+        'https://www.google.com/maps/search/?api=1&query=' +
+        coordinates;
+
+
+    openButton.addEventListener(
+        'click',
+        function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+
+            const willOpen =
+                options.hidden;
+
+
+            options.hidden =
+                !willOpen;
+
+            openButton.setAttribute(
+                'aria-expanded',
+                String(
+                    willOpen
+                )
+            );
+
+        }
+    );
+
+}
+
+
+// ========================================
 // GESPEICHERTEN SPOT ANZEIGEN
 // ========================================
 
@@ -125,6 +222,12 @@ async function showSpot(
                 `${position.lat.toFixed(6)}, ${position.lng.toFixed(6)}`;
 
         }
+
+
+        setupSpotMapLinks(
+            spot,
+            info
+        );
 
 
         // ========================================

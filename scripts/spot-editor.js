@@ -3,13 +3,15 @@
 // ========================================
 
 function positionSpotPopupOnMobile(
-    spot
+    spot,
+    popup
 ) {
 
     if (
         !spot?.marker ||
+        !popup ||
         !window.matchMedia(
-            "(max-width: 600px)"
+            '(max-width: 600px)'
         ).matches
     ) {
 
@@ -21,21 +23,62 @@ function positionSpotPopupOnMobile(
     window.setTimeout(
         function () {
 
+            const popupElement =
+                popup.getElement();
+
+
+            if (
+                !popupElement
+            ) {
+
+                return;
+
+            }
+
+
+            const popupContent =
+                popupElement.querySelector(
+                    '.leaflet-popup-content-wrapper'
+                );
+
+
+            const popupHeight =
+                (
+                    popupContent ||
+                    popupElement
+                ).getBoundingClientRect().height;
+
+
+            const mapSize =
+                map.getSize();
+
+
             const markerPoint =
                 map.latLngToContainerPoint(
                     spot.marker.getLatLng()
                 );
 
 
+            const centeredPopupPosition =
+                mapSize.y / 2 +
+                popupHeight / 2 +
+                12;
+
+
+            const targetY =
+                Math.min(
+                    mapSize.y - 80,
+                    Math.max(
+                        mapSize.y / 2 + 40,
+                        centeredPopupPosition
+                    )
+                );
+
+
             const targetPoint =
                 L.point(
-                    map.getSize().x / 2,
-                    map.getSize().y / 2 +
-                        (
-                            spot.saved
-                                ? 135
-                                : 155
-                        )
+                    mapSize.x / 2,
+                    targetY
                 );
 
 
@@ -62,6 +105,7 @@ function positionSpotPopupOnMobile(
 // ========================================
 // EDITOR
 // ========================================
+
 
 async function openEditor(
     spot
@@ -205,7 +249,8 @@ async function openEditor(
             function (event) {
 
                 positionSpotPopupOnMobile(
-                    spot
+                    spot,
+                    event.popup
                 );
 
 
@@ -379,7 +424,8 @@ function markerPopup(
             function (event) {
 
                 positionSpotPopupOnMobile(
-                    spot
+                    spot,
+                    event.popup
                 );
 
 

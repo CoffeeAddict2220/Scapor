@@ -493,3 +493,75 @@
 }
 
 
+
+/* ========================================
+   GESPEICHERTE SPOT-AKTIONEN
+   ======================================== */
+
+.marker-info .spot-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr);
+    gap: 8px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #E5EAF0;
+}
+
+.marker-info .spot-actions button {
+    min-height: 44px;
+    padding: 0 9px;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.marker-info .spot-map-open {
+    background: #102A43;
+    color: #ffffff;
+}
+
+.marker-info .spot-actions .spot-report {
+    width: auto;
+    min-height: 44px;
+    margin: 0;
+    padding: 0 9px;
+    border: none;
+    border-radius: 10px;
+    background: #FDECEC;
+    color: #9B2C2C;
+    font-size: 13px;
+}
+
+.marker-info .spot-map-options {
+    display: grid;
+    gap: 7px;
+    margin-top: 9px;
+}
+
+.marker-info .spot-map-options[hidden] {
+    display: none;
+}
+
+.marker-info .spot-map-options a {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: #F0F4F8;
+    color: #102A43;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+}
+
+.marker-info .spot-map-options a:hover,
+.marker-info .spot-map-options a:focus-visible {
+    background: #E5EAF0;
+    outline: none;
+}
