@@ -257,6 +257,69 @@ const layerControl =
 
 
 // ========================================
+// KARTENAUSWAHL NUR PER KLICK ÖFFNEN
+// ========================================
+
+const layerControlContainer =
+    layerControl.getContainer();
+
+
+L.DomEvent.off(
+    layerControlContainer,
+    'mouseenter',
+    layerControl._expandSafely,
+    layerControl
+);
+
+
+// Kompatibilität mit Leaflet-Versionen,
+// die direkt expand statt _expandSafely verwenden.
+
+L.DomEvent.off(
+    layerControlContainer,
+    'mouseenter',
+    layerControl.expand,
+    layerControl
+);
+
+
+L.DomEvent.off(
+    layerControlContainer,
+    'mouseleave',
+    layerControl.collapse,
+    layerControl
+);
+
+
+layerControlContainer.addEventListener(
+    'click',
+    function (event) {
+
+        if (
+            !event.target.matches(
+                '.leaflet-control-layers-selector'
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        window.setTimeout(
+            function () {
+
+                layerControl.collapse();
+
+            },
+            0
+        );
+
+    }
+);
+
+
+// ========================================
 // KARTENANSICHT ZURÜCKSETZEN
 // ========================================
 
