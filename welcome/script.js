@@ -306,20 +306,40 @@ function setupWelcomeAd(
     // START
     // ========================================
 
-    if (
-        document.readyState ===
-        'loading'
-    ) {
+    window.scaporWelcomeReady =
+        new Promise(
+            function (resolve) {
 
-        document.addEventListener(
-            'DOMContentLoaded',
-            loadWelcome
+                function startWelcome() {
+
+                    loadWelcome().finally(
+                        resolve
+                    );
+
+                }
+
+
+                if (
+                    document.readyState ===
+                    'loading'
+                ) {
+
+                    document.addEventListener(
+                        'DOMContentLoaded',
+                        startWelcome,
+                        {
+                            once:
+                                true
+                        }
+                    );
+
+                } else {
+
+                    startWelcome();
+
+                }
+
+            }
         );
-
-    } else {
-
-        loadWelcome();
-
-    }
 
 })();

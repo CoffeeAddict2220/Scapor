@@ -351,9 +351,6 @@ function createTemplateElement(
 
 async function loadSpots() {
 
-    let loadingFailed =
-        false;
-
     try {
 
         const {
@@ -376,15 +373,12 @@ async function loadSpots() {
             error
         ) {
 
-            loadingFailed =
-                true;
-
             console.error(
                 'Fehler beim Laden der Spots:',
                 error
             );
 
-            return;
+            return false;
 
         }
 
@@ -408,67 +402,20 @@ async function loadSpots() {
 
         applyCategoryFilter();
 
+
+        return true;
+
     }
 
     catch (error) {
-
-        loadingFailed =
-            true;
 
         console.error(
             'Unerwarteter Fehler beim Laden der Spots:',
             error
         );
 
-    }
 
-    finally {
-
-        const loadingScreen =
-            document.getElementById(
-                'spots-loading-screen'
-            );
-
-
-        if (
-            loadingScreen
-        ) {
-
-            if (
-                loadingFailed
-            ) {
-
-                loadingScreen.contentWindow?.postMessage(
-                    {
-                        type: 'scapor:loading-error'
-                    },
-                    window.location.origin
-                );
-
-                return;
-
-            }
-
-            loadingScreen.classList.add(
-                'is-hidden'
-            );
-
-            loadingScreen.setAttribute(
-                'aria-hidden',
-                'true'
-            );
-
-
-            window.setTimeout(
-                function () {
-
-                    loadingScreen.remove();
-
-                },
-                500
-            );
-
-        }
+        return false;
 
     }
 
