@@ -76,9 +76,101 @@ function removeActiveSpot() {
 // KLICK AUF DIE KARTE
 // ========================================
 
+let spotCreationModeActive =
+    false;
+
+
+function setSpotCreationMode(
+    isActive
+) {
+
+    spotCreationModeActive =
+        isActive;
+
+
+    window.setAddSpotCreationModeActive?.(
+        isActive
+    );
+
+
+    if (
+        isActive
+    ) {
+
+        if (
+            activeSpot !==
+            null
+        ) {
+
+            removeActiveSpot();
+
+        }
+
+
+        map.closePopup();
+        window.showScaporCreationHint?.();
+
+    }
+
+    else {
+
+        window.hideScaporCreationHint?.();
+
+    }
+
+}
+
+
+window.toggleSpotCreationMode =
+    function () {
+
+        setSpotCreationMode(
+            !spotCreationModeActive
+        );
+
+    };
+
+
+window.cancelSpotCreationMode =
+    function () {
+
+        if (
+            !spotCreationModeActive
+        ) {
+
+            return;
+
+        }
+
+
+        setSpotCreationMode(
+            false
+        );
+
+    };
+
 map.on(
     'click',
     function (event) {
+
+        if (
+            window.closeOpenScaporPanelsBeforeMapAction?.()
+        ) {
+
+            return;
+
+        }
+
+        if (
+            activeSpot !== null
+        ) {
+
+            removeActiveSpot();
+
+            return;
+
+        }
+
 
         const popup =
             map._popup;
@@ -97,12 +189,17 @@ map.on(
 
 
         if (
-            activeSpot !== null
+            !spotCreationModeActive
         ) {
 
-            removeActiveSpot();
+            return;
 
         }
+
+
+        setSpotCreationMode(
+            false
+        );
 
 
         createSpot(
@@ -231,5 +328,3 @@ function createSpot(
     );
 
 }
-
-

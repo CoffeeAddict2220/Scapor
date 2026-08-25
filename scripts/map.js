@@ -264,6 +264,158 @@ const layerControlContainer =
     layerControl.getContainer();
 
 
+function closeScaporMapPanels(
+    exceptPanel
+) {
+
+    if (
+        exceptPanel !==
+        'filter'
+    ) {
+
+        setCategoryFilterOpen(
+            false
+        );
+
+    }
+
+
+    if (
+        exceptPanel !==
+        'layers'
+    ) {
+
+        layerControl.collapse();
+
+    }
+
+
+    if (
+        exceptPanel !==
+        'navigation'
+    ) {
+
+        window.closeScaporNavigationMenus?.();
+
+    }
+
+}
+
+
+window.closeScaporMapPanels =
+    closeScaporMapPanels;
+
+
+let scaporPanelWasOpenOnPointerDown =
+    false;
+
+
+function closeOpenScaporPanelsBeforeMapAction() {
+
+    const filterIsOpen =
+        document.getElementById(
+            'category-filter'
+        )?.classList.contains(
+            'category-filter-open'
+        ) ||
+        false;
+
+
+    const layersAreOpen =
+        layerControlContainer.classList.contains(
+            'leaflet-control-layers-expanded'
+        );
+
+
+    const navigationIsOpen =
+        Array.from(
+            document.querySelectorAll(
+                '.navigation-menu'
+            )
+        ).some(
+            function (menu) {
+
+                return menu.open;
+
+            }
+        );
+
+
+    const panelWasOpen =
+        scaporPanelWasOpenOnPointerDown;
+
+
+    scaporPanelWasOpenOnPointerDown =
+        false;
+
+
+    if (
+        !filterIsOpen &&
+        !layersAreOpen &&
+        !navigationIsOpen &&
+        !panelWasOpen
+    ) {
+
+        return false;
+
+    }
+
+
+    closeScaporMapPanels();
+
+    return true;
+
+}
+
+
+window.closeOpenScaporPanelsBeforeMapAction =
+    closeOpenScaporPanelsBeforeMapAction;
+
+
+map.getContainer().addEventListener(
+    'pointerdown',
+    function (event) {
+
+        if (
+            event.target.closest(
+                '.leaflet-control, .leaflet-popup'
+            )
+        ) {
+
+            scaporPanelWasOpenOnPointerDown =
+                false;
+
+            return;
+
+        }
+
+
+        scaporPanelWasOpenOnPointerDown =
+            document.getElementById(
+                'category-filter'
+            )?.classList.contains(
+                'category-filter-open'
+            ) ||
+            layerControlContainer.classList.contains(
+                'leaflet-control-layers-expanded'
+            ) ||
+            Array.from(
+                document.querySelectorAll(
+                    '.navigation-menu'
+                )
+            ).some(
+                function (menu) {
+
+                    return menu.open;
+
+                }
+            );
+
+    },
+    true
+);
+
+
 L.DomEvent.off(
     layerControlContainer,
     'mouseenter',
@@ -294,6 +446,12 @@ L.DomEvent.off(
 layerControlContainer.addEventListener(
     'click',
     function (event) {
+
+        window.cancelSpotCreationMode?.();
+
+        closeScaporMapPanels(
+            'layers'
+        );
 
         if (
             !event.target.matches(
@@ -369,6 +527,8 @@ resetViewControl.onAdd =
             button,
             "click",
             function () {
+
+                closeScaporMapPanels();
 
                 map.setView(
                     [
@@ -629,7 +789,12 @@ locationControl.onAdd =
         L.DomEvent.on(
             button,
             'click',
-            showUserLocation
+            function () {
+
+                closeScaporMapPanels();
+                showUserLocation();
+
+            }
         );
 
 
@@ -639,6 +804,283 @@ locationControl.onAdd =
 
 
 locationControl.addTo(
+    map
+);
+
+
+// ========================================
+// KATEGORIE-FILTER EIN-/AUSBLENDEN
+// ========================================
+
+let categoryFilterControlButton =
+    null;
+
+
+function setCategoryFilterOpen(
+    isOpen
+) {
+
+    const filter =
+        document.getElementById(
+            'category-filter'
+        );
+
+
+    if (
+        !filter
+    ) {
+
+        return;
+
+    }
+
+
+    filter.classList.toggle(
+        'category-filter-open',
+        isOpen
+    );
+
+
+    filter.setAttribute(
+        'aria-hidden',
+        String(!isOpen)
+    );
+
+
+    if (
+        categoryFilterControlButton
+    ) {
+
+        categoryFilterControlButton.setAttribute(
+            'aria-expanded',
+            String(isOpen)
+        );
+
+    }
+
+}
+
+
+const categoryFilterControl =
+    L.control(
+        {
+            position:
+                'bottomright'
+        }
+    );
+
+
+categoryFilterControl.onAdd =
+    function () {
+
+        const button =
+            L.DomUtil.create(
+                'button',
+                'leaflet-control leaflet-control-category-filter'
+            );
+
+
+        button.type =
+            'button';
+
+        button.title =
+            'Spot-Kategorien filtern';
+
+        button.setAttribute(
+            'aria-label',
+            'Spot-Kategorien filtern'
+        );
+
+        button.setAttribute(
+            'aria-controls',
+            'category-filter'
+        );
+
+        button.setAttribute(
+            'aria-expanded',
+            'false'
+        );
+
+        button.innerHTML =
+            `
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M4 5h16"></path>
+                <path d="M7 12h10"></path>
+                <path d="M10 19h4"></path>
+            </svg>
+            `;
+
+
+        categoryFilterControlButton =
+            button;
+
+
+        L.DomEvent.disableClickPropagation(
+            button
+        );
+
+        L.DomEvent.disableScrollPropagation(
+            button
+        );
+
+        L.DomEvent.on(
+            button,
+            'click',
+            function () {
+
+                window.cancelSpotCreationMode?.();
+
+                closeScaporMapPanels(
+                    'filter'
+                );
+
+                const filter =
+                    document.getElementById(
+                        'category-filter'
+                    );
+
+
+                setCategoryFilterOpen(
+                    !filter?.classList.contains(
+                        'category-filter-open'
+                    )
+                );
+
+            }
+        );
+
+
+        return button;
+
+    };
+
+
+categoryFilterControl.addTo(
+    map
+);
+
+
+// ========================================
+// SPOT-ERSTELLMODUS AKTIVIEREN
+// ========================================
+
+let addSpotControlButton =
+    null;
+
+
+function setAddSpotCreationModeActive(
+    isActive
+) {
+
+    if (
+        !addSpotControlButton
+    ) {
+
+        return;
+
+    }
+
+
+    addSpotControlButton.setAttribute(
+        'aria-pressed',
+        String(isActive)
+    );
+
+}
+
+
+window.setAddSpotCreationModeActive =
+    setAddSpotCreationModeActive;
+
+const addSpotControl =
+    L.control(
+        {
+            position:
+                'bottomleft'
+        }
+    );
+
+
+addSpotControl.onAdd =
+    function () {
+
+        const button =
+            L.DomUtil.create(
+                'button',
+                'leaflet-control leaflet-control-add-spot'
+            );
+
+
+        button.type =
+            'button';
+
+        button.title =
+            'Neuen Spot erstellen';
+
+        button.setAttribute(
+            'aria-label',
+            'Neuen Spot erstellen'
+        );
+
+        button.setAttribute(
+            'aria-pressed',
+            'false'
+        );
+
+        button.innerHTML =
+            `
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+            >
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+            </svg>
+            `;
+
+
+        addSpotControlButton =
+            button;
+
+
+        L.DomEvent.disableClickPropagation(
+            button
+        );
+
+        L.DomEvent.disableScrollPropagation(
+            button
+        );
+
+        L.DomEvent.on(
+            button,
+            'click',
+            function () {
+
+                closeScaporMapPanels();
+                window.toggleSpotCreationMode?.();
+
+            }
+        );
+
+
+        return button;
+
+    };
+
+
+addSpotControl.addTo(
     map
 );
 

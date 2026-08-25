@@ -184,6 +184,16 @@ async function openEditor(
         await loadSpotTemplates();
 
 
+        if (
+            !spot.saved &&
+            activeSpot !== spot
+        ) {
+
+            return;
+
+        }
+
+
         const form =
             createTemplateElement(
                 spotEditorTemplate

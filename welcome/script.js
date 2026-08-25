@@ -8,6 +8,14 @@
         'scaporWelcomeShown';
 
 
+    let creationHintHideTimer =
+        null;
+
+
+    let creationHintRemoveTimer =
+        null;
+
+
     // ========================================
     // WILLKOMMENS-HTML LADEN
     // ========================================
@@ -199,6 +207,152 @@
         }
 
     }
+
+
+    // ========================================
+    // HINWEIS IM SPOT-ERSTELLMODUS
+    // ========================================
+
+    function hideCreationHint() {
+
+        const hint =
+            document.querySelector(
+                '.creation-hint'
+            );
+
+
+        window.clearTimeout(
+            creationHintHideTimer
+        );
+
+        window.clearTimeout(
+            creationHintRemoveTimer
+        );
+
+
+        if (
+            !hint
+        ) {
+
+            return;
+
+        }
+
+
+        hint.classList.remove(
+            'creation-hint-visible'
+        );
+
+
+        creationHintRemoveTimer =
+            window.setTimeout(
+                function () {
+
+                    hint.remove();
+
+                },
+                250
+            );
+
+    }
+
+
+    function showCreationHint(
+        persistent = false
+    ) {
+
+        window.clearTimeout(
+            creationHintHideTimer
+        );
+
+        window.clearTimeout(
+            creationHintRemoveTimer
+        );
+
+        const existingHint =
+            document.querySelector(
+                '.creation-hint'
+            );
+
+
+        if (
+            existingHint
+        ) {
+
+            existingHint.remove();
+
+        }
+
+
+        const hint =
+            document.createElement(
+                'div'
+            );
+
+
+        hint.className =
+            'creation-hint';
+
+
+        hint.setAttribute(
+            'role',
+            'status'
+        );
+
+
+        hint.setAttribute(
+            'aria-live',
+            'polite'
+        );
+
+
+        hint.textContent =
+            'Zum Erstellen eines Spots auf die Karte tippen';
+
+
+        document.body.appendChild(
+            hint
+        );
+
+
+        window.requestAnimationFrame(
+            function () {
+
+                hint.classList.add(
+                    'creation-hint-visible'
+                );
+
+            }
+        );
+
+
+        if (
+            !persistent
+        ) {
+
+            creationHintHideTimer =
+                window.setTimeout(
+                    hideCreationHint,
+                    3200
+                );
+
+        }
+
+    }
+
+
+    window.showScaporCreationHint =
+        function () {
+
+            showCreationHint(
+                true
+            );
+
+        };
+
+
+    window.hideScaporCreationHint =
+        hideCreationHint;
 
 
     // ========================================

@@ -90,7 +90,8 @@
    EIGENER STANDORT
    ======================================== */
 
-.leaflet-control-locate {
+.leaflet-control-locate,
+.leaflet-control-category-filter {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -108,7 +109,8 @@
 }
 
 
-.leaflet-control-locate svg {
+.leaflet-control-locate svg,
+.leaflet-control-category-filter svg {
     display: block;
     width: 22px;
     height: 22px;
@@ -116,15 +118,95 @@
 
 
 .leaflet-control-locate:hover,
-.leaflet-control-locate:focus-visible {
+.leaflet-control-locate:focus-visible,
+.leaflet-control-category-filter:hover,
+.leaflet-control-category-filter:focus-visible {
     background: #F0F4F8;
     outline: none;
+}
+
+
+.leaflet-control-category-filter[aria-expanded="true"] {
+    background: #DCE8FF;
+    color: #1D4ED8;
 }
 
 
 .leaflet-control-locate[aria-pressed="true"] {
     background: #DCE8FF;
     color: #1D4ED8;
+}
+
+
+/* ========================================
+   NEUEN SPOT ERSTELLEN
+   ======================================== */
+
+.leaflet-control-add-spot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #102A43;
+    box-shadow: 0 8px 22px rgba(8, 25, 40, 0.32);
+    color: #ffffff;
+    cursor: pointer;
+    transition:
+        background-color 300ms ease,
+        transform 300ms ease,
+        box-shadow 300ms ease;
+}
+
+.leaflet-control-add-spot svg {
+    display: block;
+    width: 30px;
+    height: 30px;
+    transition: transform 300ms ease;
+}
+
+.leaflet-control-add-spot:hover,
+.leaflet-control-add-spot:focus-visible {
+    background: #243B53;
+    box-shadow:
+        0 8px 24px rgba(8, 25, 40, 0.38),
+        0 0 0 3px rgba(255, 255, 255, 0.45);
+    outline: none;
+}
+
+.leaflet-control-add-spot:active {
+    transform: scale(0.94);
+}
+
+.leaflet-control-add-spot[aria-pressed="true"] {
+    background: #7F1D1D;
+    box-shadow: 0 8px 24px rgba(127, 29, 29, 0.4);
+}
+
+.leaflet-control-add-spot[aria-pressed="true"] svg {
+    transform: rotate(135deg);
+}
+
+.leaflet-control-add-spot[aria-pressed="true"]:hover,
+.leaflet-control-add-spot[aria-pressed="true"]:focus-visible {
+    background: #991B1B;
+}
+
+@media (max-width: 600px) {
+    .leaflet-control-add-spot {
+        width: 62px;
+        height: 62px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .leaflet-control-add-spot,
+    .leaflet-control-add-spot svg {
+        transition: none;
+    }
 }
 
 

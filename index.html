@@ -85,8 +85,9 @@
             position: fixed;
 
             top: auto;
-            bottom: 14px;
-            left: 14px;
+            right: 14px;
+            bottom:
+                calc(76px + env(safe-area-inset-bottom));
 
             z-index: 1000;
 
@@ -106,6 +107,52 @@
             box-shadow:
                 0 6px 18px
                 rgba(0, 0, 0, 0.18);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            pointer-events: none;
+
+            transform:
+                translateY(10px)
+                scale(0.98);
+
+            transform-origin:
+                bottom right;
+
+            transition:
+                opacity 0.18s ease,
+                transform 0.18s ease,
+                visibility 0s linear 0.18s;
+
+        }
+
+
+        .category-filter.category-filter-open {
+
+            opacity: 1;
+
+            visibility: visible;
+
+            pointer-events: auto;
+
+            transform:
+                translateY(0)
+                scale(1);
+
+            transition-delay: 0s;
+
+        }
+
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .category-filter {
+
+                transition: none;
+
+            }
 
         }
 
@@ -164,9 +211,9 @@
             .category-filter {
 
                 top: auto;
-                bottom: calc(20px + env(safe-area-inset-bottom));
-
-                left: 10px;
+                right: 10px;
+                bottom:
+                    calc(72px + env(safe-area-inset-bottom));
 
             }
 
@@ -240,9 +287,11 @@
         id="category-filter"
         class="category-filter"
         data-nosnippet
+        aria-hidden="true"
     >
 
         <label
+            id="category-filter-label"
             for="category-filter-select"
         >
             Filter:

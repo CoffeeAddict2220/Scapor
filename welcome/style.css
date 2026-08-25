@@ -248,6 +248,79 @@
 
 
 /* ========================================
+   KURZER ERSTELL-HINWEIS
+   ======================================== */
+
+.creation-hint {
+
+    position: fixed;
+
+    top:
+        calc(76px + env(safe-area-inset-top));
+
+    left: 50%;
+
+    z-index: 4500;
+
+    max-width:
+        calc(100vw - 32px);
+
+    padding:
+        11px 17px;
+
+    border-radius: 12px;
+
+    background: #102A43;
+
+    color: #ffffff;
+
+    box-shadow:
+        0 8px 24px
+        rgba(8, 25, 40, 0.28);
+
+    font-size: 15px;
+
+    font-weight: 650;
+
+    line-height: 1.35;
+
+    text-align: center;
+
+    white-space: nowrap;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    transform:
+        translate(-50%, -8px);
+
+    transition:
+        opacity 0.22s ease,
+        transform 0.22s ease;
+}
+
+
+.creation-hint-visible {
+
+    opacity: 1;
+
+    transform:
+        translate(-50%, 0);
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    .creation-hint {
+
+        transition: none;
+    }
+
+}
+
+
+/* ========================================
    WILLKOMMENS-X
    ======================================== */
 

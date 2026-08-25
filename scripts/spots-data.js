@@ -154,6 +154,10 @@ function setupCategoryFilter() {
 
             applyCategoryFilter();
 
+            setCategoryFilterOpen(
+                false
+            );
+
         }
     );
 
