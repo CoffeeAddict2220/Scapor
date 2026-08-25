@@ -352,6 +352,58 @@
 
 
     <!-- ========================================
+         ORTSSUCHE
+         ======================================== -->
+
+    <section
+        id="place-search"
+        class="place-search"
+        data-nosnippet
+        aria-hidden="true"
+        aria-labelledby="place-search-label"
+    >
+
+        <form id="place-search-form" class="place-search-form">
+
+            <label id="place-search-label" for="place-search-input">
+                Ort suchen
+            </label>
+
+            <div class="place-search-row">
+                <input
+                    id="place-search-input"
+                    name="place"
+                    type="search"
+                    placeholder="Stadt, Ort oder Adresse"
+                    autocomplete="off"
+                    minlength="2"
+                    maxlength="120"
+                    required
+                >
+
+                <button type="submit">
+                    Suchen
+                </button>
+            </div>
+
+        </form>
+
+        <p id="place-search-status" class="place-search-status" aria-live="polite"></p>
+        <div id="place-search-results" class="place-search-results"></div>
+
+        <a
+            class="place-search-attribution"
+            href="https://www.openstreetmap.org/copyright"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            Suche © OpenStreetMap-Mitwirkende
+        </a>
+
+    </section>
+
+
+    <!-- ========================================
          LEAFLET JAVASCRIPT
          ======================================== -->
 
