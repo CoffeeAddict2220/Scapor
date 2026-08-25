@@ -1,0 +1,169 @@
+.leaflet-control-spot-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    color: #102A43;
+    cursor: pointer;
+}
+
+.leaflet-control-spot-list svg {
+    width: 24px;
+    height: 24px;
+}
+
+.leaflet-control-spot-list:hover,
+.leaflet-control-spot-list:focus-visible {
+    background: #F0F4F8;
+    outline: none;
+}
+
+.leaflet-control-spot-list[aria-expanded="true"] {
+    background: #DCE8FF;
+    color: #1D4ED8;
+}
+
+.spot-list-panel {
+    position: fixed;
+    right: 14px;
+    bottom: calc(94px + env(safe-area-inset-bottom));
+    z-index: 1000;
+    width: min(370px, calc(100vw - 28px));
+    max-height: min(560px, calc(100vh - 190px));
+    box-sizing: border-box;
+    padding: 16px;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.22);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(10px) scale(0.98);
+    transform-origin: bottom right;
+    transition:
+        opacity 180ms ease,
+        transform 180ms ease,
+        visibility 0s linear 180ms;
+}
+
+.spot-list-panel-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    transition-delay: 0s;
+}
+
+.spot-list-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 8px 10px;
+}
+
+.spot-list-header h2 {
+    grid-column: 1 / -1;
+    margin: 0 0 4px;
+    color: #102A43;
+    font-size: 19px;
+    line-height: 1.2;
+}
+
+.spot-list-header label {
+    color: #486581;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.spot-list-header select {
+    height: 38px;
+    padding: 0 30px 0 10px;
+    border: 1px solid #BCCCDC;
+    border-radius: 9px;
+    background: #F8FAFC;
+    color: #102A43;
+    font: inherit;
+    font-size: 14px;
+}
+
+.spot-list-status {
+    margin: 10px 0;
+    color: #627D98;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+.spot-list {
+    display: grid;
+    gap: 7px;
+    max-height: min(390px, calc(100vh - 330px));
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.spot-list-item {
+    display: grid;
+    gap: 3px;
+    width: 100%;
+    padding: 11px 12px;
+    border: none;
+    border-radius: 10px;
+    background: #F0F4F8;
+    color: #102A43;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.spot-list-item:hover,
+.spot-list-item:focus-visible {
+    background: #DCE8FF;
+    outline: none;
+}
+
+.spot-list-item strong {
+    overflow: hidden;
+    font-size: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.spot-list-item-details {
+    color: #627D98;
+    font-size: 13px;
+}
+
+.spot-list-empty {
+    padding: 18px 10px;
+    color: #627D98;
+    font-size: 14px;
+    line-height: 1.45;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .spot-list-panel {
+        right: 10px;
+        bottom: calc(102px + env(safe-area-inset-bottom));
+        width: calc(100vw - 20px);
+        max-height: calc(100vh - 185px - env(safe-area-inset-bottom));
+    }
+
+    .spot-list {
+        max-height: calc(100vh - 340px - env(safe-area-inset-bottom));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .spot-list-panel {
+        transition: none;
+    }
+}

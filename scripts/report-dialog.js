@@ -436,12 +436,6 @@ function createReportDialog() {
                 // ERFOLG
                 // ========================================
 
-                console.log(
-                    'Spot-Meldung erfolgreich gesendet:',
-                    data
-                );
-
-
                 closeDialog();
 
 

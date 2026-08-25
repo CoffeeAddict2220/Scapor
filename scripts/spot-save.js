@@ -67,12 +67,6 @@ async function sendSpotEmail(
             data.success ===
                 true
         ) {
-
-            console.log(
-                'Spot-Mail erfolgreich versendet:',
-                data
-            );
-
             return true;
 
         }

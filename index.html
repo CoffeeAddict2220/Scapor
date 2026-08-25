@@ -63,6 +63,8 @@
 
     <link rel="stylesheet" href="./styles/base.css">
     <link rel="stylesheet" href="./styles/map.css">
+    <link rel="stylesheet" href="./styles/map-tools-menu.css">
+    <link rel="stylesheet" href="./styles/spot-list.css">
     <link rel="stylesheet" href="./styles/spots.css">
     <link rel="stylesheet" href="./styles/markers.css">
     <link rel="stylesheet" href="./styles/pages.css">
@@ -352,6 +354,35 @@
 
 
     <!-- ========================================
+         SPOT-LISTE
+         ======================================== -->
+
+    <section
+        id="spot-list-panel"
+        class="spot-list-panel"
+        data-nosnippet
+        aria-hidden="true"
+        aria-labelledby="spot-list-title"
+    >
+        <div class="spot-list-header">
+            <h2 id="spot-list-title">Gespeicherte Spots</h2>
+            <label for="spot-list-sort">Sortieren:</label>
+            <select id="spot-list-sort">
+                <option value="name">Name</option>
+                <option value="category">Kategorie</option>
+                <option value="distance" disabled>Entfernung</option>
+            </select>
+        </div>
+
+        <p id="spot-list-status" class="spot-list-status" aria-live="polite">
+            Standort freigeben, um nach Entfernung zu sortieren.
+        </p>
+
+        <ul id="spot-list" class="spot-list"></ul>
+    </section>
+
+
+    <!-- ========================================
          ORTSSUCHE
          ======================================== -->
 
@@ -420,8 +451,16 @@
 
     <script src="./scripts/config.js"></script>
     <script src="./scripts/alert-dialog.js"></script>
-    <script src="./scripts/map.js"></script>
+    <script src="./scripts/map-core.js"></script>
+    <script src="./scripts/map-layers.js"></script>
+    <script src="./scripts/map-reset.js"></script>
+    <script src="./scripts/map-location.js"></script>
+    <script src="./scripts/map-filter.js"></script>
+    <script src="./scripts/map-search.js"></script>
+    <script src="./scripts/map-add-spot.js"></script>
+    <script src="./scripts/map-tools-menu.js"></script>
     <script src="./scripts/spots-data.js"></script>
+    <script src="./scripts/spot-list.js"></script>
     <script src="./scripts/spot-creation.js"></script>
     <script src="./scripts/spot-editor.js"></script>
     <script src="./scripts/spot-spam-filter.js"></script>

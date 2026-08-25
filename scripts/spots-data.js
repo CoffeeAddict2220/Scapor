@@ -104,6 +104,9 @@ function applyCategoryFilter() {
         }
     );
 
+
+    window.renderSpotList?.();
+
 }
 
 
@@ -280,12 +283,6 @@ async function loadSpotTemplates() {
                 spotInfoTemplate =
                     infoTemplate.innerHTML.trim();
 
-
-                console.log(
-                    'Spot-Templates erfolgreich geladen.'
-                );
-
-
             }
 
             catch (error) {
@@ -389,13 +386,6 @@ async function loadSpots() {
             return false;
 
         }
-
-
-        console.log(
-            'Spots aus Supabase geladen:',
-            data
-        );
-
 
         data.forEach(
             function (row) {
