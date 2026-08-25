@@ -160,9 +160,9 @@ Deno.serve(async (request) => {
                 category,
                 latitude,
                 longitude,
-                status: 'pending'
+                active: false
             })
-            .select('id, name, description, category, latitude, longitude, status')
+            .select('id, name, description, category, latitude, longitude, active')
             .single();
 
         if (insertError) {

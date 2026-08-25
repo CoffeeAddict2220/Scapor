@@ -361,8 +361,8 @@ async function loadSpots() {
                 .from('spots')
                 .select('*')
                 .eq(
-                    'status',
-                    'active'
+                    'active',
+                    true
                 )
                 .order(
                     'created_at',

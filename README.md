@@ -23,14 +23,14 @@ Die JavaScript-Dateien werden in index.html bewusst in Abhängigkeitsreihenfolge
 
 ## Spamschutz für neue Spots
 
-Neue Spots werden über die Supabase Edge Function `create-spot` geprüft und mit dem Status `pending` gespeichert. Auf der Karte erscheinen ausschließlich Einträge mit dem Status `active`.
+Neue Spots werden über die Supabase Edge Function `create-spot` geprüft und mit `active = false` gespeichert. Auf der Karte erscheinen ausschließlich Einträge mit `active = true`.
 
 Vor der Nutzung:
 
 1. Die Migration `supabase/migrations/20260825_spot_spam_protection.sql` im Supabase SQL Editor ausführen.
 2. Für die Edge Function ein langes, zufälliges Secret namens `SPAM_HASH_SECRET` hinterlegen.
 3. Die Funktion `supabase/functions/create-spot` zu Supabase deployen.
-4. Eingereichte Spots im Supabase Table Editor prüfen und für die Veröffentlichung den Status auf `active` setzen.
+4. Eingereichte Spots im Supabase Table Editor prüfen und für die Veröffentlichung `active` auf `true` setzen.
 
 ## Datenschutz vor Veröffentlichung
 
