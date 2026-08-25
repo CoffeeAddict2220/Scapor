@@ -360,6 +360,10 @@ async function loadSpots() {
             await supabaseClient
                 .from('spots')
                 .select('*')
+                .eq(
+                    'status',
+                    'active'
+                )
                 .order(
                     'created_at',
                     {

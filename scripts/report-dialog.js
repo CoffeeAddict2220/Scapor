@@ -62,7 +62,6 @@ function createReportDialog() {
                     placeholder="Warum möchtest du diesen Spot melden?"
                 ></textarea>
 
-
                 <p
                     class="scapor-report-error"
                     hidden
@@ -206,7 +205,6 @@ function createReportDialog() {
 
             const reason =
                 textarea.value.trim();
-
 
             // ========================================
             // GRUND PRÜFEN

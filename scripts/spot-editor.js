@@ -203,6 +203,12 @@ async function openEditor(
         }
 
 
+        form.dataset.openedAt =
+            String(
+                Date.now()
+            );
+
+
         const editorTitle =
             form.querySelector(
                 '.spot-editor-title'

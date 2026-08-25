@@ -4,6 +4,7 @@
 <head>
 
     <meta charset="UTF-8">
+    <meta name="google-adsense-account" content="ca-pub-3869267919028665">
 
     <meta
         name="viewport"
@@ -21,10 +22,6 @@
     <link rel="stylesheet" href="../styles/base.css">
     <link rel="stylesheet" href="../styles/pages.css">
     <link rel="stylesheet" href="../styles/navigation.css">
-
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3869267919028665"
-         crossorigin="anonymous"></script>
 
 </head>
 
@@ -152,9 +149,11 @@
                 </p>
 
                 <p>
-                    Deine Standortdaten werden nicht gespeichert und nicht an
-                    Dritte weitergegeben. Du entscheidest jederzeit selbst,
-                    ob du SCAPOR den Zugriff auf deinen Standort erlauben möchtest.
+                    Dein exakter Standort wird nicht in der Spot-Datenbank gespeichert.
+                    Durch das Zentrieren der Karte werden jedoch Kartenkacheln für
+                    den angezeigten Bereich bei den in der Datenschutzerklärung
+                    genannten Kartenanbietern abgerufen. Du entscheidest jederzeit
+                    selbst, ob du SCAPOR den Standortzugriff erlauben möchtest.
                 </p>
 
             </div>
@@ -163,76 +162,24 @@
             <div class="about-section">
 
                 <h2>
-                    Warum Werbung?
+                    Privates Projekt
                 </h2>
 
                 <p>
                     SCAPOR ist ein privates Projekt eines Hobbyfotografen und
                     Programmierers. Für den Betrieb und die Weiterentwicklung
-                    der Website entstehen laufende Kosten. Durch Werbeanzeigen
-                    sollen diese Kosten zumindest teilweise gedeckt werden.
+                    der Website entstehen laufende Kosten.
                 </p>
 
                 <p>
-                    Die Werbeanzeigen sind bewusst nicht auf der Hauptseite und
-                    insbesondere nicht auf der Karte platziert. Dadurch möchten
-                    wir sicherstellen, dass SCAPOR übersichtlich bleibt und du
-                    die Karte möglichst ungestört nutzen kannst.
+                    SCAPOR enthält derzeit keine personalisierte Werbung und lädt
+                    keine Werbenetzwerke.
                 </p>
 
                 <p>
                     Vielen Dank für dein Verständnis und viel Freude beim
                     Entdecken neuer Orte mit SCAPOR!
                 </p>
-
-            </div>
-
-
-            <!-- ========================================
-                 GOOGLE ADSENSE
-                 ======================================== -->
-
-            <div class="about-ad">
-
-                <ins
-                    class="adsbygoogle"
-                    style="display:block"
-                    data-ad-client="ca-pub-3869267919028665"
-                    data-ad-slot="1316074337"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"
-                ></ins>
-
-<script>
-    const adSlot = document.currentScript.previousElementSibling;
-    const adContainer = adSlot.closest(".about-ad");
-
-    function updateAdVisibility() {
-        adContainer.classList.toggle(
-            "is-empty",
-            adSlot.dataset.adStatus === "unfilled"
-        );
-    }
-
-    new MutationObserver(updateAdVisibility).observe(
-        adSlot,
-        {
-            attributes: true,
-            attributeFilter: ["data-ad-status"]
-        }
-    );
-
-    window.setTimeout(
-        function () {
-            if (!adSlot.dataset.adStatus) {
-                adContainer.classList.add("is-empty");
-            }
-        },
-        3000
-    );
-
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
 
             </div>
 
@@ -252,6 +199,12 @@
         </section>
 
     </main>
+
+    <footer class="legal-links" aria-label="Rechtliche Informationen">
+        <a href="../privacy/index.html">Datenschutz</a>
+        <a href="../imprint/index.html">Impressum</a>
+        <a href="../terms/index.html">Nutzungsregeln</a>
+    </footer>
 
 
     <script src="../navigation.js"></script>

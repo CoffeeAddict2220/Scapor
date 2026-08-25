@@ -163,6 +163,11 @@ async function saveSpot(
         );
 
 
+    const websiteInput =
+        popupElement.querySelector(
+            '.spot-website'
+        );
+
     if (
         !nameInput ||
         !descriptionInput ||
@@ -177,27 +182,44 @@ async function saveSpot(
 
     }
 
-
-    // ========================================
-    // NAME PRÜFEN
-    // ========================================
-
     const name =
         nameInput.value.trim();
 
 
+    const description =
+        descriptionInput.value.trim();
+
+
+    const spamCheck =
+        validateNewSpotSubmission({
+            name:
+                name,
+
+            description:
+                description,
+
+            category:
+                categoryInput.value,
+
+            website:
+                websiteInput?.value || '',
+
+            openedAt:
+                Number(
+                    popupElement.querySelector(
+                        '.marker-form'
+                    )?.dataset.openedAt ||
+                    0
+                )
+        });
+
+
     if (
-        name === ''
+        !spamCheck.valid
     ) {
 
         showScaporAlert(
-            'Bitte gib einen Namen für den Spot ein.'
-        ).then(
-            function () {
-
-                nameInput.focus();
-
-            }
+            spamCheck.message
         );
 
         return;
@@ -214,7 +236,7 @@ async function saveSpot(
 
 
     spot.description =
-        descriptionInput.value.trim();
+        description;
 
 
     spot.category =
@@ -276,30 +298,28 @@ async function saveSpot(
             error
         } =
             await supabaseClient
-                .from('spots')
-                .insert({
+                .functions
+                .invoke(
+                    'create-spot',
+                    {
+                        body: {
+                            name:
+                                spot.name,
 
-                    name:
-                        spot.name,
+                            description:
+                                spot.description,
 
-                    description:
-                        spot.description,
+                            category:
+                                spot.category,
 
-                    category:
-                        spot.category,
+                            latitude:
+                                position.lat,
 
-                    latitude:
-                        position.lat,
-
-                    longitude:
-                        position.lng,
-
-                    status:
-                        'active'
-
-                })
-                .select()
-                .single();
+                            longitude:
+                                position.lng
+                        }
+                    }
+                );
 
 
         if (
@@ -335,7 +355,7 @@ async function saveSpot(
 
 
         if (
-            !data
+            !data?.spot
         ) {
 
             console.error(
@@ -370,7 +390,10 @@ async function saveSpot(
         // ========================================
 
         spot.id =
-            data.id;
+            data.spot.id;
+
+
+        rememberSpotSubmission();
 
 
         // ========================================
@@ -395,63 +418,11 @@ async function saveSpot(
         }
 
 
-        // ========================================
-        // SPOT ALS GESPEICHERT MARKIEREN
-        // ========================================
-
-        spot.saved =
-            true;
+        removeActiveSpot();
 
 
-        // ========================================
-        // MARKER NICHT MEHR VERSCHIEBBAR
-        // ========================================
-
-        if (
-            spot.marker.dragging
-        ) {
-
-            spot.marker.dragging.disable();
-
-        }
-
-
-        // ========================================
-        // MARKER VON ROT AUF BLAU WECHSELN
-        // ========================================
-
-        spot.marker.setIcon(
-            createSavedIcon()
-        );
-
-
-        // ========================================
-        // AKTIVEN SPOT FREIGEBEN
-        // ========================================
-
-        if (
-            activeSpot === spot
-        ) {
-
-            activeSpot =
-                null;
-
-        }
-
-
-        // ========================================
-        // KATEGORIE-FILTER ANWENDEN
-        // ========================================
-
-        applyCategoryFilter();
-
-
-        // ========================================
-        // GESPEICHERTEN SPOT ANZEIGEN
-        // ========================================
-
-        showSpot(
-            spot
+        showScaporAlert(
+            'Danke! Dein Spot wurde zur Prüfung eingereicht und erscheint nach der Freigabe auf der Karte.'
         );
 
 

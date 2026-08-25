@@ -4,6 +4,7 @@
 <head>
 
     <meta charset="UTF-8">
+    <meta name="google-adsense-account" content="ca-pub-3869267919028665">
 
     <meta
         name="viewport"
@@ -25,7 +26,7 @@
 
     <link
         rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        href="./vendor/leaflet/leaflet.css"
     >
 
 
@@ -45,11 +46,6 @@
         rel="stylesheet"
         href="./welcome/style.css"
     >
-
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3869267919028665"
-         crossorigin="anonymous"></script>
-
 
     <!-- ========================================
          KATEGORIE-FILTER CSS
@@ -282,7 +278,7 @@
          ======================================== -->
 
     <script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+        src="./vendor/leaflet/leaflet.js">
     </script>
 
 
@@ -290,7 +286,7 @@
          SCAPOR JAVASCRIPT & DATABASE
          ======================================== -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./vendor/supabase/supabase.js"></script>
 
     <script src="./scripts/config.js"></script>
     <script src="./scripts/alert-dialog.js"></script>
@@ -298,6 +294,7 @@
     <script src="./scripts/spots-data.js"></script>
     <script src="./scripts/spot-creation.js"></script>
     <script src="./scripts/spot-editor.js"></script>
+    <script src="./scripts/spot-spam-filter.js"></script>
     <script src="./scripts/spot-save.js"></script>
     <script src="./scripts/spot-details.js"></script>
     <script src="./scripts/report-dialog.js"></script>

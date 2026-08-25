@@ -12,7 +12,34 @@ SCAPOR ist eine webbasierte Karte, auf der Fotografen interessante Spots entdeck
 - **contact/** – Kontaktseite
 - **about/** – Informationen über SCAPOR
 - **favicon/** – Favicons und Apple-Touch-Icon
+- **vendor/** – lokal ausgelieferte Leaflet- und Supabase-Bibliotheken
+- **privacy/** – Datenschutzerklärung mit vor Veröffentlichung auszufüllenden Pflichtangaben
+- **imprint/** – Impressum mit vor Veröffentlichung auszufüllenden Pflichtangaben
+- **terms/** – Nutzungs- und Community-Regeln
 - **navigation.js** – gemeinsames Verhalten des Navigationsmenüs
 - **spots.html** – HTML-Vorlagen für Spot-Editor und Spot-Details
 
 Die JavaScript-Dateien werden in index.html bewusst in Abhängigkeitsreihenfolge geladen. scripts/app.js steht zuletzt und startet die Anwendung, nachdem alle benötigten Funktionen definiert wurden.
+
+## Spamschutz für neue Spots
+
+Neue Spots werden über die Supabase Edge Function `create-spot` geprüft und mit dem Status `pending` gespeichert. Auf der Karte erscheinen ausschließlich Einträge mit dem Status `active`.
+
+Vor der Nutzung:
+
+1. Die Migration `supabase/migrations/20260825_spot_spam_protection.sql` im Supabase SQL Editor ausführen.
+2. Für die Edge Function ein langes, zufälliges Secret namens `SPAM_HASH_SECRET` hinterlegen.
+3. Die Funktion `supabase/functions/create-spot` zu Supabase deployen.
+4. Eingereichte Spots im Supabase Table Editor prüfen und für die Veröffentlichung den Status auf `active` setzen.
+
+## Datenschutz vor Veröffentlichung
+
+- Alle markierten Platzhalter in `privacy/index.html` und `imprint/index.html` ausfüllen.
+- Mit Hosting-, E-Mail- und Datenbankanbieter die tatsächlichen Speicherfristen und Vertragsbedingungen abgleichen.
+- Mit Supabase einen Auftragsverarbeitungsvertrag abschließen und Projektregion dokumentieren.
+- Google AdSense wurde entfernt. Werbung oder Tracking erst nach rechtlicher Prüfung und mit einem geeigneten Einwilligungsmechanismus wieder aktivieren.
+- Die Supabase Row-Level-Security-Regeln und die serverseitige Löschroutine müssen separat im Supabase-Projekt geprüft werden.
+- Betreiber: Maurice Hildenhagen. Eine ladungsfähige Anschrift ist vor Veröffentlichung noch einzutragen.
+- Hosting: GitHub Pages; E-Mail: IONOS; Supabase-Region: EU Central 1 (Frankfurt).
+- Kontakt- und Meldungs-E-Mails werden grundsätzlich sechs Monate nach Abschluss der Bearbeitung gelöscht.
+- Einfache Spot-Meldungen sind anonym; formelle Rechtsmeldungen erfolgen über die Kontaktadresse.

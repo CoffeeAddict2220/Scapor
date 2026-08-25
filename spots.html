@@ -4,6 +4,7 @@
 <head>
 
     <meta charset="UTF-8">
+    <meta name="google-adsense-account" content="ca-pub-3869267919028665">
 
     <meta
         name="viewport"
@@ -39,6 +40,8 @@
                 type="text"
                 placeholder="Name eingeben"
                 autocomplete="off"
+                minlength="3"
+                maxlength="80"
             >
 
 
@@ -49,7 +52,20 @@
             <textarea
                 class="spot-description"
                 placeholder="Beschreibung eingeben"
+                maxlength="1000"
             ></textarea>
+
+            <div class="spot-website-field" aria-hidden="true">
+                <label for="spot-website">Website</label>
+                <input
+                    id="spot-website"
+                    class="spot-website"
+                    type="text"
+                    name="website"
+                    tabindex="-1"
+                    autocomplete="off"
+                >
+            </div>
 
 
             <label>
@@ -101,7 +117,6 @@
                 </option>
 
             </select>
-
 
             <button
                 type="button"

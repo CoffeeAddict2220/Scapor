@@ -107,11 +107,6 @@
     font-weight: 700;
 }
 
-.about-ad.is-empty,
-.about-ad:has(.adsbygoogle[data-ad-status="unfilled"]) {
-    display: none;
-}
-
 @media (max-width: 600px) {
     .navigation-menu summary {
         height: 38px;
