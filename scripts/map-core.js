@@ -37,7 +37,7 @@ const map =
 
 
 map.attributionControl.setPosition(
-    "bottomleft"
+    "topright"
 );
 
 

@@ -475,10 +475,51 @@
     margin: 0;
 }
 
+/* ========================================
+   KARTENQUELLE OBEN RECHTS
+   ======================================== */
+
+.leaflet-top.leaflet-right {
+    top: 78px;
+    right: 0;
+}
+
+.leaflet-top.leaflet-right
+.leaflet-control-attribution {
+    margin: 0;
+    padding: 8px 5px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 3px 10px rgba(8, 25, 40, 0.14);
+    color: #486581;
+    font-size: 10px;
+    line-height: 1.25;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+}
+
+.leaflet-top.leaflet-right
+.leaflet-control-attribution a {
+    color: #334E68;
+    text-decoration: none;
+}
+
+.leaflet-top.leaflet-right
+.leaflet-control-attribution a:hover,
+.leaflet-top.leaflet-right
+.leaflet-control-attribution a:focus-visible {
+    color: #102A43;
+    text-decoration: underline;
+}
+
 @media (max-width: 600px) {
     .leaflet-bottom.leaflet-right {
         right: 10px;
         bottom: calc(18px + env(safe-area-inset-bottom));
         gap: 9px;
+    }
+    .leaflet-top.leaflet-right {
+        top: 72px;
+        right: 0;
     }
 }

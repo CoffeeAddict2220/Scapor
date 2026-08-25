@@ -3,6 +3,27 @@
 // ========================================
 
 
+const tileLoadingOptions = {
+
+    // Sichtbare Kacheln bereits während des Verschiebens anfordern.
+    updateWhenIdle:
+        false,
+
+    // Beim stufenlosen Zoom jede erreichte Zoomstufe direkt aktualisieren.
+    updateWhenZooming:
+        true,
+
+    // Kartenaktualisierung beim Verschieben schneller anstoßen.
+    updateInterval:
+        100,
+
+    // Mehr bereits geladene Nachbarkacheln im Speicher behalten.
+    keepBuffer:
+        5
+
+};
+
+
 // ========================================
 // NORMALE KARTENANSICHT
 // ========================================
@@ -11,6 +32,8 @@ const streetMap =
     L.tileLayer(
         'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
         {
+            ...tileLoadingOptions,
+
             attribution:
                 '&copy; OpenStreetMap contributors',
 
@@ -28,6 +51,8 @@ const satelliteMap =
     L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         {
+            ...tileLoadingOptions,
+
             attribution:
                 'Tiles &copy; Esri',
 
@@ -62,6 +87,8 @@ const satelliteLabels =
     L.tileLayer(
         'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
         {
+            ...tileLoadingOptions,
+
             subdomains:
                 [
                     'a',

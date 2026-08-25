@@ -45,6 +45,12 @@
     margin: 0;
 }
 
+/* Die vier Werkzeugbuttons unter der Kartenauswahl leicht links ausrichten. */
+.map-tools-items >
+.leaflet-control:not(.leaflet-control-layers) {
+    right: 2px;
+}
+
 .leaflet-bottom.leaflet-right.map-tools-open >
 .map-tools-items {
     opacity: 1;
