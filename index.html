@@ -11,10 +11,37 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>SCAPOR.de</title>
+    <title>SCAPOR – Fotospots entdecken und teilen</title>
+
+    <meta
+        name="description"
+        content="Entdecke besondere Fotospots für Landschaft, Architektur, Porträt, Autos und mehr. Finde neue Orte auf der Karte und teile deine Empfehlungen."
+    >
+
+    <link rel="canonical" href="https://scapor.de/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:site_name" content="SCAPOR">
+    <meta property="og:title" content="SCAPOR – Fotospots entdecken und teilen">
+    <meta
+        property="og:description"
+        content="Entdecke besondere Fotospots auf einer interaktiven Karte und teile deine Empfehlungen mit anderen Fotografiebegeisterten."
+    >
+    <meta property="og:url" content="https://scapor.de/">
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "SCAPOR",
+            "alternateName": "SCAPOR.de",
+            "url": "https://scapor.de/"
+        }
+    </script>
 
     <link rel="icon" href="/favicon/favicon.ico" sizes="any">
-    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
@@ -165,6 +192,7 @@
         src="./loadingUnit/index.html"
         title="Spots werden geladen"
         aria-label="Spots werden geladen"
+        data-nosnippet
     ></iframe>
 
 
@@ -172,7 +200,7 @@
          NAVIGATION
          ======================================== -->
 
-    <header class="topbar">
+    <header class="topbar" data-nosnippet>
 
         <a
             href="index.html"
@@ -201,7 +229,7 @@
          KARTE
          ======================================== -->
 
-    <div id="map"></div>
+    <div id="map" data-nosnippet></div>
 
 
     <!-- ========================================
@@ -211,6 +239,7 @@
     <div
         id="category-filter"
         class="category-filter"
+        data-nosnippet
     >
 
         <label
