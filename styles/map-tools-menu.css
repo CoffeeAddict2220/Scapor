@@ -19,7 +19,7 @@
 .map-tools-items {
     position: absolute;
     right: 7px;
-    bottom: 68px;
+    bottom: 76px;
     display: flex;
     flex-direction: column-reverse;
     align-items: flex-end;
@@ -68,8 +68,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 58px;
-    height: 58px;
+    width: 62px;
+    height: 62px;
     padding: 0;
     border: none;
     border-radius: 50%;
@@ -141,7 +141,7 @@
 
 .leaflet-bottom.leaflet-right >
 .leaflet-control-spot-list {
-    right: 68px;
+    right: 76px;
     bottom: 5px;
     z-index: 3;
 }
@@ -154,12 +154,12 @@
 
     .leaflet-bottom.leaflet-right >
     .leaflet-control-spot-list {
-        right: 65px;
+        right: 73px;
     }
 
     .map-tools-items {
         right: 8px;
-        bottom: 66px;
+        bottom: 74px;
         gap: 7px;
     }
 
