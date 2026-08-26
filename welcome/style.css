@@ -12,6 +12,16 @@
 
     display: flex;
 
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity 180ms ease,
+        visibility 0s linear 180ms;
+
     align-items: center;
 
     justify-content: center;
@@ -36,6 +46,18 @@
     -webkit-backdrop-filter:
         blur(5px);
 }
+
+#welcome-overlay.welcome-overlay-visible {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+    transition-delay: 0s;
+}
+
 
 
 /* ========================================
@@ -64,7 +86,19 @@
     box-shadow:
         0 25px 60px
         rgba(0, 0, 0, 0.25);
+
+    transform: translateY(8px) scale(0.985);
+
+    transition:
+        transform 180ms ease;
 }
+
+#welcome-overlay.welcome-overlay-visible
+#welcome-popup {
+
+    transform: translateY(0) scale(1);
+}
+
 
 
 /* ========================================
@@ -312,6 +346,8 @@
 
 @media (prefers-reduced-motion: reduce) {
 
+    #welcome-overlay,
+    #welcome-popup,
     .creation-hint {
 
         transition: none;

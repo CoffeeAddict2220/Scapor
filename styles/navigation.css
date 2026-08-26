@@ -140,7 +140,98 @@
     font-weight: 700;
 }
 
+
+/* ========================================
+   NEU-HIER-BUTTON
+   ======================================== */
+
+.new-here-button {
+    height: 40px;
+    margin-left: auto;
+    padding: 0 14px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.10);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    touch-action: manipulation;
+    position: relative;
+    overflow: hidden;
+}
+
+.new-here-button +
+.navigation-menu {
+    margin-left: 8px;
+}
+
+.new-here-button:hover,
+.new-here-button:focus-visible,
+.new-here-button[aria-expanded="true"] {
+    background: rgba(255, 255, 255, 0.18);
+    outline: none;
+}
+
+.new-here-button:focus-visible {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.28);
+}
+
+.new-here-button::after {
+    content: "";
+    position: absolute;
+    top: -45%;
+    bottom: -45%;
+    left: -65%;
+    width: 38%;
+    background: linear-gradient(
+        100deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.08) 18%,
+        rgba(255, 255, 255, 0.72) 50%,
+        rgba(125, 211, 252, 0.22) 72%,
+        transparent 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(0) skewX(-18deg);
+}
+
+.new-here-button-highlight::after {
+    animation:
+        new-here-button-shine
+        1.8s ease-in-out 2;
+}
+
+@keyframes new-here-button-shine {
+    0% {
+        opacity: 0;
+        transform: translateX(0) skewX(-18deg);
+    }
+
+    12% {
+        opacity: 0.9;
+    }
+
+    78% {
+        opacity: 0.72;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(500%) skewX(-18deg);
+    }
+}
+
 @media (max-width: 600px) {
+    .new-here-button {
+        height: 38px;
+        padding: 0 11px;
+        font-size: 15px;
+    }
+
     .navigation-menu summary {
         height: 38px;
         padding: 0 12px;
@@ -159,6 +250,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .new-here-button-highlight {
+        background: rgba(255, 255, 255, 0.18);
+    }
+
+    .new-here-button-highlight::after {
+        animation: none;
+    }
+
     .navigation-menu[open] .navigation,
     .navigation-menu.navigation-menu-closing .navigation {
         animation: none;

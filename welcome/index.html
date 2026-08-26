@@ -11,7 +11,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Willkommen | SCAPOR.de</title>
+    <title>Neu hier? | SCAPOR.de</title>
 
 </head>
 
@@ -20,17 +20,22 @@
 
 
     <!-- ========================================
-         WILLKOMMENS-POPUP
+         NEU-HIER-DIALOG
          ======================================== -->
 
-    <div id="welcome-overlay">
+    <div id="welcome-overlay" aria-hidden="true">
 
-        <div id="welcome-popup">
+        <div
+            id="welcome-popup"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="welcome-title"
+        >
 
             <button
                 id="welcome-close"
                 type="button"
-                aria-label="Schließen"
+                aria-label="Neu-hier-Ansicht schließen"
             >
                 ×
             </button>
@@ -43,34 +48,27 @@
                 </div>
 
 
-                <h1>
-                    Willkommen bei SCAPOR
+                <h1 id="welcome-title">
+                    Neu hier?
                 </h1>
 
 
                 <p class="welcome-intro">
-                    Entdecke interessante Orte für
-                    Carshootings, Landschaftsfotografie
-                    und mehr.
+                    Schön, dass du da bist. Hier erfährst du kurz,
+                    wie du mit SCAPOR Fotospots entdecken und teilen kannst.
                 </p>
 
 
                 <div class="welcome-section">
 
                     <h2>
-                        📍 So funktioniert's
+                        🗺️ Spots entdecken
                     </h2>
 
                     <p>
-                        Tippe zuerst auf den Plus-Button
-                        und danach auf die gewünschte Stelle
-                        der Karte, um einen neuen Spot zu erstellen.
-                    </p>
-
-                    <p>
-                        Du kannst den Marker zunächst
-                        verschieben und anschließend
-                        Informationen zum Spot hinzufügen.
+                        Bewege die Karte oder nutze Suche, Filter und Liste,
+                        um passende Fotospots zu finden. Tippe einen Marker an,
+                        um die gespeicherten Informationen zu öffnen.
                     </p>
 
                 </div>
@@ -79,35 +77,31 @@
                 <div class="welcome-section">
 
                     <h2>
-                        📋 Regeln
+                        📍 Eigenen Spot teilen
+                    </h2>
+
+                    <p>
+                        Tippe auf den Plus-Button und anschließend auf die
+                        gewünschte Stelle der Karte. Danach kannst du den Marker
+                        verschieben und Informationen zum Spot hinzufügen.
+                    </p>
+
+                </div>
+
+
+                <div class="welcome-section">
+
+                    <h2>
+                        📋 Gemeinsam fair bleiben
                     </h2>
 
                     <ul>
 
-                        <li>
-                            Teile nur Orte, die du auch
-                            wirklich empfehlen kannst.
-                        </li>
-
-                        <li>
-                            Respektiere Privateigentum und
-                            bestehende Verbote.
-                        </li>
-
-                        <li>
-                            Hinterlasse keine sensiblen
-                            oder privaten Informationen.
-                        </li>
-
-                        <li>
-                            Respektiere Natur, Menschen
-                            und die Umgebung.
-                        </li>
-
-                        <li>
-                            Kommt dir ein Spot verdächtig vor,
-                            melde ihn bitte.
-                        </li>
+                        <li>Teile nur Orte, die du wirklich empfehlen kannst.</li>
+                        <li>Respektiere Privateigentum und bestehende Verbote.</li>
+                        <li>Hinterlasse keine sensiblen oder privaten Informationen.</li>
+                        <li>Respektiere Natur, Menschen und die Umgebung.</li>
+                        <li>Melde einen Spot, wenn dir etwas verdächtig vorkommt.</li>
 
                     </ul>
 
@@ -121,20 +115,18 @@
                     </strong>
 
                     <p>
-                        SCAPOR zeigt Orte auf einer Karte.
-                        Die Verantwortung für die Nutzung
-                        eines Spots liegt bei dir.
+                        SCAPOR zeigt Empfehlungen auf einer Karte.
+                        Die Verantwortung für die Nutzung eines Spots liegt bei dir.
                     </p>
 
                 </div>
-
 
 
                 <button
                     id="welcome-start"
                     type="button"
                 >
-                    Los geht's
+                    Karte entdecken
                 </button>
 
             </div>

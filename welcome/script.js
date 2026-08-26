@@ -1,11 +1,15 @@
 // ========================================
-// SCAPOR WELCOME
+// SCAPOR NEU HIER
 // ========================================
 
 (function () {
 
-    const WELCOME_STORAGE_KEY =
-        'scaporWelcomeShown';
+    let welcomeOverlay =
+        null;
+
+
+    let welcomeLoadPromise =
+        null;
 
 
     let creationHintHideTimer =
@@ -17,79 +21,188 @@
 
 
     // ========================================
-    // WILLKOMMENS-HTML LADEN
+    // NEU-HIER-HTML LADEN
     // ========================================
 
-    async function loadWelcome() {
+    function loadWelcome() {
 
-        try {
+        if (
+            welcomeOverlay
+        ) {
 
-            const response =
-                await fetch(
-                    './welcome/index.html',
-                    {
-                        cache: 'no-store'
+            return Promise.resolve(
+                welcomeOverlay
+            );
+
+        }
+
+
+        if (
+            welcomeLoadPromise
+        ) {
+
+            return welcomeLoadPromise;
+
+        }
+
+
+        welcomeLoadPromise =
+            fetch(
+                './welcome/index.html'
+            )
+                .then(
+                    function (response) {
+
+                        if (
+                            !response.ok
+                        ) {
+
+                            throw new Error(
+                                `Neu-hier-Ansicht konnte nicht geladen werden (${response.status}).`
+                            );
+
+                        }
+
+
+                        return response.text();
+
+                    }
+                )
+                .then(
+                    function (html) {
+
+                        const template =
+                            document.createElement(
+                                'template'
+                            );
+
+
+                        template.innerHTML =
+                            html.trim();
+
+
+                        const overlay =
+                            template.content.querySelector(
+                                '#welcome-overlay'
+                            );
+
+
+                        if (
+                            !overlay
+                        ) {
+
+                            throw new Error(
+                                'Das Element #welcome-overlay wurde nicht gefunden.'
+                            );
+
+                        }
+
+
+                        document.body.appendChild(
+                            overlay
+                        );
+
+
+                        welcomeOverlay =
+                            overlay;
+
+
+                        setupWelcome(
+                            overlay
+                        );
+
+
+                        return overlay;
+
+                    }
+                )
+                .catch(
+                    function (error) {
+
+                        welcomeLoadPromise =
+                            null;
+
+
+                        console.error(
+                            'Fehler beim Laden der Neu-hier-Ansicht:',
+                            error
+                        );
+
+
+                        showScaporAlert?.(
+                            'Die Neu-hier-Ansicht konnte nicht geladen werden. Bitte lade die Seite neu.',
+                            {
+                                title:
+                                    'Ansicht nicht verfügbar'
+                            }
+                        );
+
+
+                        throw error;
+
                     }
                 );
 
 
-            if (
-                !response.ok
-            ) {
+        return welcomeLoadPromise;
 
-                throw new Error(
-                    `welcome.html konnte nicht geladen werden (${response.status}).`
-                );
-
-            }
+    }
 
 
-            const html =
-                await response.text();
+    // ========================================
+    // NEU-HIER-ANSICHT ÖFFNEN
+    // ========================================
+
+    async function openWelcomePopup() {
+
+        const openButton =
+            document.getElementById(
+                'new-here-button'
+            );
 
 
-            const template =
-                document.createElement(
-                    'template'
-                );
+        window.cancelSpotCreationMode?.();
 
 
-            template.innerHTML =
-                html.trim();
+        window.closeScaporMapPanels?.(
+            'welcome'
+        );
 
+
+        try {
 
             const overlay =
-                template.content.querySelector(
-                    '#welcome-overlay'
-                );
+                await loadWelcome();
 
 
-            if (
-                !overlay
-            ) {
-
-                throw new Error(
-                    'Das Element #welcome-overlay wurde in welcome.html nicht gefunden.'
-                );
-
-            }
-
-
-            document.body.appendChild(
-                overlay
+            overlay.classList.add(
+                'welcome-overlay-visible'
             );
 
 
-            setupWelcome(
-                overlay
+            overlay.setAttribute(
+                'aria-hidden',
+                'false'
             );
 
 
-        } catch (error) {
+            openButton?.setAttribute(
+                'aria-expanded',
+                'true'
+            );
 
-            console.error(
-                'Fehler beim Laden des Welcome-Popups:',
-                error
+
+            overlay.querySelector(
+                '#welcome-close'
+            )?.focus();
+
+        }
+
+        catch {
+
+            openButton?.setAttribute(
+                'aria-expanded',
+                'false'
             );
 
         }
@@ -97,88 +210,82 @@
     }
 
 
-
     // ========================================
-    // WILLKOMMEN EINRICHTEN
+    // NEU-HIER-ANSICHT SCHLIESSEN
     // ========================================
 
-    function setupWelcome(
-        overlay
-    ) {
-
-        const welcomeStart =
-            overlay.querySelector(
-                '#welcome-start'
-            );
-
-
-        const welcomeClose =
-            overlay.querySelector(
-                '#welcome-close'
-            );
-
-
-        const welcomeShown =
-            sessionStorage.getItem(
-                WELCOME_STORAGE_KEY
-            );
-
+    function closeWelcomePopup() {
 
         if (
-            welcomeShown ===
-            'true'
+            !welcomeOverlay?.classList.contains(
+                'welcome-overlay-visible'
+            )
         ) {
-
-            overlay.remove();
 
             return;
 
         }
 
 
-        // ========================================
-        // START-BUTTON
-        // ========================================
+        welcomeOverlay.classList.remove(
+            'welcome-overlay-visible'
+        );
 
-        if (
-            welcomeStart
-        ) {
 
-            welcomeStart.addEventListener(
-                'click',
-                closeWelcomePopup
+        welcomeOverlay.setAttribute(
+            'aria-hidden',
+            'true'
+        );
+
+
+        const openButton =
+            document.getElementById(
+                'new-here-button'
             );
 
-        }
+
+        openButton?.setAttribute(
+            'aria-expanded',
+            'false'
+        );
 
 
-        // ========================================
-        // X-BUTTON
-        // ========================================
+        openButton?.focus();
 
-        if (
-            welcomeClose
-        ) {
-
-            welcomeClose.addEventListener(
-                'click',
-                closeWelcomePopup
-            );
-
-        }
+    }
 
 
-        // ========================================
-        // ESC-TASTE
-        // ========================================
+    // ========================================
+    // NEU-HIER-ANSICHT EINRICHTEN
+    // ========================================
 
-        document.addEventListener(
-            'keydown',
+    function setupWelcome(
+        overlay
+    ) {
+
+        overlay.querySelector(
+            '#welcome-start'
+        )?.addEventListener(
+            'click',
+            closeWelcomePopup
+        );
+
+
+        overlay.querySelector(
+            '#welcome-close'
+        )?.addEventListener(
+            'click',
+            closeWelcomePopup
+        );
+
+
+        overlay.addEventListener(
+            'pointerdown',
             function (event) {
 
                 if (
-                    event.key ===
-                    'Escape'
+                    event.target ===
+                    overlay
                 ) {
 
                     closeWelcomePopup();
@@ -188,25 +295,79 @@
             }
         );
 
-
-        // ========================================
-        // WILLKOMMEN SCHLIESSEN
-        // ========================================
-
-        function closeWelcomePopup() {
-
-            overlay.style.display =
-                'none';
+    }
 
 
-            sessionStorage.setItem(
-                WELCOME_STORAGE_KEY,
-                'true'
+    function setupNewHereButton() {
+
+        document.getElementById(
+            'new-here-button'
+        )?.addEventListener(
+            'click',
+            openWelcomePopup
+        );
+
+    }
+
+
+    function highlightNewHereButton() {
+
+        const button =
+            document.getElementById(
+                'new-here-button'
             );
+
+
+        if (
+            !button
+        ) {
+
+            return;
 
         }
 
+
+        button.classList.add(
+            'new-here-button-highlight'
+        );
+
+
+        window.setTimeout(
+            function () {
+
+                button.classList.remove(
+                    'new-here-button-highlight'
+                );
+
+            },
+            3900
+        );
+
     }
+
+    document.addEventListener(
+        'keydown',
+        function (event) {
+
+            if (
+                event.key ===
+                'Escape'
+            ) {
+
+                closeWelcomePopup();
+
+            }
+
+        }
+    );
+
+
+    window.openScaporWelcome =
+        openWelcomePopup;
+
+
+    window.highlightScaporNewHereButton =
+        highlightNewHereButton;
 
 
     // ========================================
@@ -224,6 +385,7 @@
         window.clearTimeout(
             creationHintHideTimer
         );
+
 
         window.clearTimeout(
             creationHintRemoveTimer
@@ -265,9 +427,11 @@
             creationHintHideTimer
         );
 
+
         window.clearTimeout(
             creationHintRemoveTimer
         );
+
 
         const existingHint =
             document.querySelector(
@@ -365,9 +529,8 @@
 
                 function startWelcome() {
 
-                    loadWelcome().finally(
-                        resolve
-                    );
+                    setupNewHereButton();
+                    resolve();
 
                 }
 
@@ -386,7 +549,9 @@
                         }
                     );
 
-                } else {
+                }
+
+                else {
 
                     startWelcome();
 

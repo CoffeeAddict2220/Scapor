@@ -67,6 +67,9 @@ function hideLoadingScreen() {
 
             loadingScreen.remove();
 
+
+            window.highlightScaporNewHereButton?.();
+
         },
         500
     );
