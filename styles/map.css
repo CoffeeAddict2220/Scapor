@@ -153,7 +153,7 @@
 .place-search {
     position: fixed;
     right: 14px;
-    bottom: calc(76px + env(safe-area-inset-bottom));
+    bottom: calc(94px + env(safe-area-inset-bottom));
     z-index: 1000;
     width: min(370px, calc(100vw - 28px));
     box-sizing: border-box;
@@ -264,6 +264,13 @@
     margin-top: 9px;
     color: #627D98;
     font-size: 11px;
+}
+
+@media (max-width: 600px) {
+    .place-search {
+        right: 10px;
+        bottom: calc(102px + env(safe-area-inset-bottom));
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
