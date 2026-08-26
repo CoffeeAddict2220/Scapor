@@ -12,6 +12,10 @@
         null;
 
 
+    let updateWelcomeScrollHint =
+        null;
+
+
     let creationHintHideTimer =
         null;
 
@@ -186,6 +190,31 @@
             );
 
 
+            const scrollContent =
+                overlay.querySelector(
+                    '.welcome-content'
+                );
+
+
+            if (
+                scrollContent
+            ) {
+
+                scrollContent.scrollTop =
+                    0;
+
+            }
+
+
+            window.requestAnimationFrame(
+                function () {
+
+                    updateWelcomeScrollHint?.();
+
+                }
+            );
+
+
             openButton?.setAttribute(
                 'aria-expanded',
                 'true'
@@ -238,6 +267,13 @@
         );
 
 
+        welcomeOverlay.querySelector(
+            '#welcome-scroll-hint'
+        )?.classList.remove(
+            'welcome-scroll-hint-visible'
+        );
+
+
         const openButton =
             document.getElementById(
                 'new-here-button'
@@ -277,6 +313,85 @@
             'click',
             closeWelcomePopup
         );
+
+
+        const scrollContent =
+            overlay.querySelector(
+                '.welcome-content'
+            );
+
+
+        const scrollHint =
+            overlay.querySelector(
+                '#welcome-scroll-hint'
+            );
+
+
+        if (
+            scrollContent &&
+            scrollHint
+        ) {
+
+            updateWelcomeScrollHint =
+                function () {
+
+                    const remainingScroll =
+                        scrollContent.scrollHeight -
+                        scrollContent.clientHeight -
+                        scrollContent.scrollTop;
+
+
+                    const showHint =
+                        scrollContent.scrollHeight >
+                            scrollContent.clientHeight + 2 &&
+                        remainingScroll > 12;
+
+
+                    scrollHint.classList.toggle(
+                        'welcome-scroll-hint-visible',
+                        showHint
+                    );
+
+
+                    scrollHint.setAttribute(
+                        'aria-hidden',
+                        String(
+                            !showHint
+                        )
+                    );
+
+                };
+
+
+            scrollContent.addEventListener(
+                'scroll',
+                updateWelcomeScrollHint,
+                {
+                    passive:
+                        true
+                }
+            );
+
+
+            window.addEventListener(
+                'resize',
+                updateWelcomeScrollHint
+            );
+
+
+            if (
+                'ResizeObserver' in window
+            ) {
+
+                new ResizeObserver(
+                    updateWelcomeScrollHint
+                ).observe(
+                    scrollContent
+                );
+
+            }
+
+        }
 
 
         overlay.addEventListener(

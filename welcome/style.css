@@ -75,9 +75,11 @@
     max-height:
         calc(100vh - 40px);
 
-    overflow-y: auto;
+    display: flex;
 
-    -webkit-overflow-scrolling: touch;
+    flex-direction: column;
+
+    overflow: hidden;
 
     background: #ffffff;
 
@@ -101,13 +103,108 @@
 
 
 
+
+/* ========================================
+   SCROLL-HINWEIS
+   ======================================== */
+
+.welcome-scroll-hint {
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 12px;
+
+    z-index: 25;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 8px 12px;
+
+    border: 1px solid rgba(255, 255, 255, 0.42);
+
+    border-radius: 999px;
+
+    background: rgba(16, 42, 67, 0.92);
+
+    color: #ffffff;
+
+    box-shadow: 0 5px 16px rgba(8, 25, 40, 0.22);
+
+    font-size: 12px;
+
+    font-weight: 650;
+
+    white-space: nowrap;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transform: translate(-50%, 6px);
+
+    transition:
+        opacity 160ms ease,
+        transform 160ms ease,
+        visibility 0s linear 160ms;
+}
+
+.welcome-scroll-hint-visible {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translate(-50%, 0);
+
+    transition-delay: 0s;
+}
+
+.welcome-scroll-hint-arrow {
+
+    font-size: 15px;
+
+    line-height: 1;
+
+    animation:
+        welcome-scroll-hint-arrow
+        1.3s ease-in-out infinite;
+}
+
+@keyframes welcome-scroll-hint-arrow {
+
+    0%,
+    100% {
+
+        transform: translateY(-1px);
+    }
+
+    50% {
+
+        transform: translateY(2px);
+    }
+}
+
+
 /* ========================================
    WILLKOMMENS-INHALT
    ======================================== */
 
 .welcome-content {
 
+    min-height: 0;
+
     padding: 34px;
+
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
 }
 
 
@@ -348,6 +445,8 @@
 
     #welcome-overlay,
     #welcome-popup,
+    .welcome-scroll-hint,
+    .welcome-scroll-hint-arrow,
     .creation-hint {
 
         transition: none;
