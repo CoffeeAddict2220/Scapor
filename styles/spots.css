@@ -37,12 +37,18 @@
    ======================================== */
 
 .marker-form .spot-editor-title {
-    margin: 0 30px 22px 0;
+    margin: 0;
+    padding: 0 30px 10px 0;
+    border-bottom: 1px solid #E5EAF0;
     color: #102A43;
     font-size: 20px;
     line-height: 1.25;
     font-weight: 750;
     letter-spacing: -0.3px;
+}
+
+.marker-form .spot-editor-title + label {
+    margin-top: 0;
 }
 
 

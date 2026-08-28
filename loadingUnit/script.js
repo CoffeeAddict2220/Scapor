@@ -1,9 +1,3 @@
-const loadingMessage =
-    document.getElementById(
-        'loading-message'
-    );
-
-
 const loadingState =
     document.getElementById(
         'loading-state'
@@ -20,59 +14,6 @@ const retryButton =
     document.getElementById(
         'retry-button'
     );
-
-
-const messages = [
-    'Spots werden geladen',
-    'Karte wird vorbereitet',
-    'Entdeckungen werden eingezeichnet'
-];
-
-
-let messageIndex =
-    0;
-
-
-if (
-    loadingMessage &&
-    !window.matchMedia(
-        '(prefers-reduced-motion: reduce)'
-    ).matches
-) {
-
-    window.setInterval(
-        function () {
-
-            loadingMessage.classList.add(
-                'is-changing'
-            );
-
-
-            window.setTimeout(
-                function () {
-
-                    messageIndex =
-                        (messageIndex + 1) %
-                        messages.length;
-
-
-                    loadingMessage.textContent =
-                        messages[messageIndex];
-
-
-                    loadingMessage.classList.remove(
-                        'is-changing'
-                    );
-
-                },
-                170
-            );
-
-        },
-        1800
-    );
-
-}
 
 
 function showLoadingState() {

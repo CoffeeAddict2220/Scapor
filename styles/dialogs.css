@@ -54,7 +54,7 @@
     color: #102A43;
     font-size: 24px;
     font-weight: 800;
-    font-family: Georgia, serif;
+    font-family: inherit;
 }
 
 .scapor-alert-dialog h2 {

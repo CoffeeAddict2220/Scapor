@@ -1,13 +1,6 @@
 :root {
     color-scheme: dark;
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
-        sans-serif;
+    font-family: var(--scapor-font);
 }
 
 * {
@@ -77,6 +70,10 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
+}
+
+.loader-font-pending .loader__content {
+    visibility: hidden;
 }
 
 .loader__brand {
@@ -183,11 +180,6 @@ body {
     margin: 13px 0 18px;
     color: #b8cad9;
     font-size: 14px;
-    transition: opacity 160ms ease;
-}
-
-.loader__copy p.is-changing {
-    opacity: 0;
 }
 
 .loader__error p {

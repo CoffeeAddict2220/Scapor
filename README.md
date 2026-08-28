@@ -21,6 +21,19 @@ SCAPOR ist eine webbasierte Karte, auf der Fotografen interessante Spots entdeck
 
 Die JavaScript-Dateien werden in index.html bewusst in Abhängigkeitsreihenfolge geladen. scripts/app.js steht zuletzt und startet die Anwendung, nachdem alle benötigten Funktionen definiert wurden.
 
+## Einheitliche Schrift
+
+Alle eigenen Oberflächen verwenden die lokal ausgelieferte Schrift Inter.
+`styles/fonts.css` definiert die Schriftdateien und die Variable `--scapor-font`.
+Die normalen und kursiven WOFF2-Dateien liegen einschließlich Lizenz in `fonts/`.
+Dieser Ordner muss zusammen mit der Website veröffentlicht werden. Es gibt keine
+externen Schriftanfragen und keine Abhängigkeit von einer lokalen Installation.
+Die reguläre Datei wird auf der Karte und im Ladebildschirm vorgeladen;
+Kursiv wird nur geladen, wenn benötigt. Bei einem Ladefehler bleibt Text durch
+eine Sans-Serif-Ersatzschrift lesbar.
+Kartennamen in externen Bildkacheln und native Betriebssystem-Auswahlfenster
+sind davon ausgenommen; auch die Schriftglättung kann je nach Gerät variieren.
+
 ## Spamschutz für neue Spots
 
 Neue Spots werden über die Supabase Edge Function `create-spot` geprüft und mit `active = false` gespeichert. Auf der Karte erscheinen ausschließlich Einträge mit `active = true`.

@@ -6,6 +6,11 @@
     font-family: inherit;
 }
 
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+    font-family: inherit;
+}
+
 
 /* ========================================
    LEAFLET POPUP SCHRIFT
@@ -393,7 +398,7 @@
     justify-content: center;
     padding: 0;
     color: #829AB1;
-    font-family: Arial, sans-serif;
+    font-family: inherit;
     font-size: 27px;
     font-weight: 300;
     line-height: 36px;

@@ -1,0 +1,30 @@
+/* Inter, lokal ausgeliefert. Lizenz und Herkunft: ../fonts/ */
+@font-face {
+    font-family: "Inter";
+    src: url("../fonts/InterVariable.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("../fonts/InterVariable-Italic.woff2") format("woff2");
+    font-style: italic;
+    font-weight: 100 900;
+    font-display: swap;
+}
+
+:root {
+    --scapor-font: "Inter", sans-serif;
+    font-family: var(--scapor-font);
+    font-synthesis: none;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+    font-family: var(--scapor-font);
+}
