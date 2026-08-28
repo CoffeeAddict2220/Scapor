@@ -68,55 +68,33 @@
             </div>
 
 
-            <label>
-                Kategorie
-            </label>
+            <div class="spot-extra-categories" role="group"
+                aria-labelledby="spot-extra-categories-label">
+                <div class="spot-extra-categories-heading">
+                    <label id="spot-extra-categories-label" for="spot-category-picker">Kategorien</label>
+                    <span class="spot-category-count" role="status" aria-live="polite"
+                        aria-atomic="true">0 von 3</span>
+                </div>
+                <select id="spot-category-picker" class="spot-category-picker">
+                    <option value="">Kategorie auswählen</option>
+                    <option value="Architecture">Architecture</option>
+                    <option value="Astro">Astro</option>
+                    <option value="Carshooting">Carshooting</option>
+                    <option value="Carspotting">Carspotting</option>
+                    <option value="Landscape">Landscape</option>
+                    <option value="Nature">Nature</option>
+                    <option value="Planespotting">Planespotting</option>
+                    <option value="Portrait">Portrait</option>
+                    <option value="Trainspotting">Trainspotting</option>
+                    <option value="Wildlife">Wildlife</option>
+                </select>
 
-            <select
-                class="spot-category"
-            >
+                <div class="spot-category-chips" hidden></div>
+            </div>
 
-                <option value="Architecture">
-                    Architecture
-                </option>
-
-                <option value="Astro">
-                    Astro
-                </option>
-
-                <option value="Carshooting">
-                    Carshooting
-                </option>
-
-                <option value="Carspotting">
-                    Carspotting
-                </option>
-
-                <option value="Landscape">
-                    Landscape
-                </option>
-
-                <option value="Nature">
-                    Nature
-                </option>
-
-                <option value="Planespotting">
-                    Planespotting
-                </option>
-
-                <option value="Portrait">
-                    Portrait
-                </option>
-
-                <option value="Trainspotting">
-                    Trainspotting
-                </option>
-
-                <option value="Wildlife">
-                    Wildlife
-                </option>
-
-            </select>
+            <input type="hidden" class="spot-category">
+            <input type="hidden" class="spot-category-extra">
+            <input type="hidden" class="spot-category-extra">
 
             <button
                 type="button"
@@ -144,7 +122,7 @@
             <p>
 
                 <strong>
-                    Kategorie:
+                    Kategorien:
                 </strong>
 
                 <br>

@@ -249,12 +249,6 @@ async function openEditor(
             );
 
 
-        const categoryInput =
-            form.querySelector(
-                '.spot-category'
-            );
-
-
         if (
             nameInput
         ) {
@@ -277,15 +271,7 @@ async function openEditor(
         }
 
 
-        if (
-            categoryInput
-        ) {
-
-            categoryInput.value =
-                spot.category ||
-                'Architecture';
-
-        }
+        setupSpotCategoryInputs(form, spot);
 
 
         spot.marker.unbindPopup();
@@ -363,6 +349,82 @@ async function openEditor(
 // EDITOR POPUP EINRICHTEN
 // ========================================
 
+function setupSpotCategoryInputs(form, spot) {
+    const primary = form.querySelector('.spot-category');
+    const extras = [...form.querySelectorAll('.spot-category-extra')];
+    const chips = form.querySelector('.spot-category-chips');
+    const count = form.querySelector('.spot-category-count');
+    const picker = form.querySelector('.spot-category-picker');
+    if (!primary || !chips || !count || !picker) return;
+
+    const categories = [...picker.options].map(option => option.value).filter(Boolean);
+    const additional = Array.isArray(spot.additionalCategories) ? spot.additionalCategories : [];
+    let selected = [...new Set([spot.category, ...additional])]
+        .filter(category => categories.includes(category)).slice(0, 3);
+    const buttons = new Map();
+
+    function updateSelection() {
+        // Die gemeinsame Auswahl bleibt mit dem bisherigen Datenformat kompatibel.
+        primary.value = selected[0] || '';
+        spot.category = primary.value;
+        spot.additionalCategories = selected.slice(1);
+        // Die bestehenden Speicher- und Validierungsfunktionen lesen diese Felder.
+        extras.forEach((input, index) => { input.value = selected[index + 1] || ''; });
+        count.textContent = `${selected.length} von 3`;
+        picker.value = '';
+        picker.hidden = selected.length === 3;
+        picker.options[0].textContent = selected.length
+            ? 'Kategorie hinzufügen (optional)'
+            : 'Kategorie auswählen';
+        [...picker.options].forEach(function (option) {
+            option.disabled = Boolean(option.value &&
+                selected.includes(option.value));
+        });
+        chips.hidden = selected.length === 0;
+        buttons.forEach(function (button, category) {
+            button.hidden = !selected.includes(category);
+        });
+    }
+
+    function updateCategoryPopup() {
+        const popup = spot.marker?.getPopup();
+        if (popup) {
+            popup.update();
+            positionSpotPopupOnMobile(spot, popup);
+        }
+    }
+
+    chips.replaceChildren();
+    categories.forEach(function (category) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'spot-category-chip';
+        button.textContent = category;
+        button.setAttribute('aria-label', `${category} entfernen`);
+        button.title = `${category} entfernen`;
+        button.addEventListener('click', function () {
+            selected = selected.filter(value => value !== category);
+            updateSelection();
+            updateCategoryPopup();
+            picker.focus();
+        });
+        buttons.set(category, button);
+        chips.append(button);
+    });
+
+    picker.addEventListener('change', function () {
+        const category = picker.value;
+        if (categories.includes(category) && !selected.includes(category) && selected.length < 3) {
+            selected.push(category);
+        }
+        updateSelection();
+        updateCategoryPopup();
+        if (picker.hidden) buttons.get(selected[selected.length - 1])?.focus();
+    });
+
+    updateSelection();
+}
+
 function setupEditorPopup(
     spot,
     popup
@@ -386,22 +448,6 @@ function setupEditorPopup(
     ) {
 
         return;
-
-    }
-
-
-    const category =
-        popupElement.querySelector(
-            '.spot-category'
-        );
-
-
-    if (
-        category
-    ) {
-
-        category.value =
-            spot.category;
 
     }
 
@@ -522,5 +568,3 @@ function markerPopup(
     spot.marker.openPopup();
 
 }
-
-

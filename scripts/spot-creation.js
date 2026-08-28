@@ -251,7 +251,10 @@ function createSpot(
             '',
 
         category:
-            'Architecture',
+            '',
+
+        additionalCategories:
+            [],
 
         rating:
             0,

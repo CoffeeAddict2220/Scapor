@@ -32,7 +32,7 @@ async function sendSpotEmail(
                                     spot.description,
 
                                 category:
-                                    spot.category,
+                                    getSpotCategories(spot).join(', '),
 
                                 latitude:
                                     position.lat,
@@ -183,6 +183,10 @@ async function saveSpot(
     const description =
         descriptionInput.value.trim();
 
+    const additionalCategories = [...popupElement.querySelectorAll('.spot-category-extra')]
+        .map(input => input.value)
+        .filter(Boolean);
+
 
     const spamCheck =
         validateNewSpotSubmission({
@@ -194,6 +198,9 @@ async function saveSpot(
 
             category:
                 categoryInput.value,
+
+            additionalCategories:
+                additionalCategories,
 
             website:
                 websiteInput?.value || '',
@@ -235,6 +242,8 @@ async function saveSpot(
 
     spot.category =
         categoryInput.value;
+
+    spot.additionalCategories = additionalCategories;
 
 
     // ========================================
@@ -305,6 +314,9 @@ async function saveSpot(
 
                             category:
                                 spot.category,
+
+                            additional_categories:
+                                spot.additionalCategories,
 
                             latitude:
                                 position.lat,
@@ -450,5 +462,4 @@ async function saveSpot(
     }
 
 }
-
 

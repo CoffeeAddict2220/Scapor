@@ -71,10 +71,7 @@ function renderSpotList() {
             return Boolean(
                 spot?.saved &&
                 spot.marker &&
-                (
-                    selectedCategory === 'all' ||
-                    spot.category === selectedCategory
-                )
+                spotMatchesCategory(spot, selectedCategory)
             );
         })
         .map(function (spot) {
@@ -141,10 +138,11 @@ function renderSpotList() {
         name.textContent = spot.name || 'Unbenannter Spot';
 
         details.className = 'spot-list-item-details';
+        const categoryText = getSpotCategories(spot).join(', ');
         details.textContent =
             distance === null
-                ? spot.category
-                : `${spot.category} · ${formatSpotDistance(distance)}`;
+                ? categoryText
+                : `${categoryText} · ${formatSpotDistance(distance)}`;
 
         button.append(name, details);
 

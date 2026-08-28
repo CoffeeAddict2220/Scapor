@@ -32,6 +32,30 @@ Vor der Nutzung:
 3. Die Funktion `supabase/functions/create-spot` zu Supabase deployen.
 4. Eingereichte Spots im Supabase Table Editor prüfen und für die Veröffentlichung `active` auf `true` setzen.
 
+## Kategorieauswahl
+
+Beim Erstellen gibt es eine gemeinsame Dropdown-Auswahl mit entfernbaren Tags.
+Mindestens eine und höchstens drei unterschiedliche Kategorien sind möglich.
+Intern wird die erste ausgewählte Kategorie weiterhin als `category` gespeichert,
+die übrigen (bis zu zwei) als `additional_categories`. Beim Entfernen der ersten
+Kategorie rückt die nächste nach. Eine leere Auswahl verhindert das Speichern.
+Karte und Spot-Liste filtern nach allen ausgewählten Kategorien; die Sortierung
+nach Kategorie richtet sich weiterhin nach der ersten Kategorie.
+Bestehende Spots mit nur einer Kategorie bleiben unverändert nutzbar.
+
+Vor Veröffentlichung dieser Änderung in dieser Reihenfolge:
+
+1. `supabase/migrations/20260828_spot_additional_categories.sql` einmal im Supabase SQL Editor ausführen.
+2. Die aktualisierte Edge Function `supabase/functions/create-spot/index.ts` deployen.
+3. Danach die aktualisierten Website-Dateien veröffentlichen und neu laden.
+
+Die Datenbank speichert Zusatzkategorien in `additional_categories` (`text[]`).
+Die Edge Function akzeptiert weiterhin ältere Anfragen ohne dieses Feld.
+Ohne aktualisierte Edge Function würden Zusatzkategorien nicht gespeichert.
+Die bestehende Benachrichtigungs-Mail erhält alle Kategorien als kommaseparierten Text.
+
+Lokale Regressionstests ohne Datenbankzugriff: `node --test tests/spot-categories.test.cjs`.
+
 ## Datenschutz vor Veröffentlichung
 
 - Alle markierten Platzhalter in `privacy/index.html` und `imprint/index.html` ausfüllen.

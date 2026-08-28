@@ -78,6 +78,9 @@ Deno.serve(async (request) => {
             ? body.description.trim()
             : '';
         const category = typeof body.category === 'string' ? body.category : '';
+        const additionalCategories = body.additional_categories === undefined
+            ? []
+            : body.additional_categories;
         const latitude = Number(body.latitude);
         const longitude = Number(body.longitude);
         const combinedText = `${name} ${description}`;
@@ -92,6 +95,17 @@ Deno.serve(async (request) => {
 
         if (!allowedCategories.has(category)) {
             return respond({ error: 'Ungültige Kategorie.' }, 400);
+        }
+
+        if (!Array.isArray(additionalCategories) || additionalCategories.length > 2 ||
+            additionalCategories.some((value: unknown) =>
+                typeof value !== 'string' || !allowedCategories.has(value))) {
+            return respond({ error: 'Höchstens zwei gültige Zusatzkategorien sind erlaubt.' }, 400);
+        }
+
+        const categories = [category, ...additionalCategories];
+        if (new Set(categories).size !== categories.length) {
+            return respond({ error: 'Kategorien dürfen nicht doppelt ausgewählt werden.' }, 400);
         }
 
         if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90 ||
@@ -158,11 +172,12 @@ Deno.serve(async (request) => {
                 name,
                 description,
                 category,
+                additional_categories: additionalCategories,
                 latitude,
                 longitude,
                 active: false
             })
-            .select('id, name, description, category, latitude, longitude, active')
+            .select('id, name, description, category, additional_categories, latitude, longitude, active')
             .single();
 
         if (insertError) {

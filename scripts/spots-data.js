@@ -19,6 +19,19 @@ let selectedCategory =
     'all';
 
 
+// Alte Einträge ohne Zusatzkategorien bleiben unverändert nutzbar.
+function getSpotCategories(spot) {
+    const additional = Array.isArray(spot.additionalCategories)
+        ? spot.additionalCategories
+        : [];
+    return [...new Set([spot.category, ...additional].filter(Boolean))];
+}
+
+function spotMatchesCategory(spot, category) {
+    return category === 'all' || getSpotCategories(spot).includes(category);
+}
+
+
 function applyCategoryFilter() {
 
     spots.forEach(
@@ -59,10 +72,7 @@ function applyCategoryFilter() {
 
 
             const matches =
-                selectedCategory ===
-                    'all' ||
-                spot.category ===
-                    selectedCategory;
+                spotMatchesCategory(spot, selectedCategory);
 
 
             if (
@@ -503,6 +513,11 @@ function createSpotFromDatabase(
             row.category ||
             'Architecture',
 
+        additionalCategories:
+            Array.isArray(row.additional_categories)
+                ? row.additional_categories
+                : [],
+
         rating:
             Number(
                 row.rating ||
@@ -552,5 +567,4 @@ function createSpotFromDatabase(
     );
 
 }
-
 

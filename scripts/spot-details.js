@@ -177,7 +177,7 @@ async function showSpot(
         ) {
 
             category.textContent =
-                spot.category ||
+                getSpotCategories(spot).join(', ') ||
                 'Keine Kategorie';
 
         }
@@ -259,5 +259,4 @@ async function showSpot(
     }
 
 }
-
 

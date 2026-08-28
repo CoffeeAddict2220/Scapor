@@ -171,11 +171,34 @@ function validateNewSpotSubmission(
 
         return {
             valid: false,
-            message: 'Bitte wähle eine gültige Kategorie aus.'
+            message: 'Bitte wähle mindestens eine Kategorie aus.'
         };
 
     }
 
+
+    const additionalCategories = submission.additionalCategories === undefined
+        ? []
+        : submission.additionalCategories;
+
+    if (
+        !Array.isArray(additionalCategories) ||
+        additionalCategories.length > 2 ||
+        additionalCategories.some(category => !ALLOWED_SPOT_CATEGORIES.includes(category))
+    ) {
+        return {
+            valid: false,
+            message: 'Du kannst insgesamt höchstens drei gültige Kategorien auswählen.'
+        };
+    }
+
+    const categories = [submission.category, ...additionalCategories];
+    if (new Set(categories).size !== categories.length) {
+        return {
+            valid: false,
+            message: 'Bitte wähle jede Kategorie nur einmal aus.'
+        };
+    }
 
     const combinedText =
         `${name} ${description}`;

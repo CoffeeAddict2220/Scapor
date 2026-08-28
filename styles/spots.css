@@ -11,6 +11,18 @@
     gap: 7px;
 }
 
+/* Auch mit drei Kategorien bleibt das Formular auf kleinen Displays bedienbar. */
+.scapor-popup-editor .marker-form {
+    max-height: calc(100vh - 180px);
+    max-height: calc(100dvh - 180px - env(safe-area-inset-bottom));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.scapor-popup-editor .marker-form > * {
+    flex-shrink: 0;
+}
+
 .marker-form .spot-website-field {
     position: absolute;
     left: -10000px;
@@ -155,6 +167,87 @@
 
 .marker-form button:active {
     transform: scale(0.98);
+}
+
+.spot-extra-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 7px;
+}
+
+.spot-extra-categories-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    color: #243B53;
+    font-size: 13px;
+}
+
+.spot-category-count {
+    flex-shrink: 0;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: #EAF2FA;
+    color: #335C81;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.marker-form .spot-extra-categories-heading label {
+    margin: 0;
+}
+
+.spot-category-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.marker-form .spot-category-chip {
+    min-width: 0;
+    width: auto;
+    min-height: 32px;
+    margin: 0;
+    padding: 5px 9px;
+    border: 1px solid #C6D9EC;
+    border-radius: 8px;
+    background: #EAF2FA;
+    color: #243B53;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.marker-form .spot-category-chip:hover {
+    background: #DCEBFA;
+    border-color: #7BA5CC;
+}
+
+.marker-form .spot-category-chip::after {
+    content: '×';
+    margin-left: 6px;
+    color: #9B2C2C;
+    font-size: 15px;
+}
+
+.marker-form .spot-category-chip:focus-visible {
+    outline: 3px solid #7BA5CC;
+    outline-offset: 2px;
+}
+
+.marker-form .spot-category-picker[hidden],
+.spot-category-chips[hidden],
+.marker-form .spot-category-chip[hidden] {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .marker-form .spot-category-chip {
+        transition: none;
+    }
 }
 
 
