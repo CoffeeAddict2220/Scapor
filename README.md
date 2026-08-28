@@ -23,12 +23,13 @@ Die JavaScript-Dateien werden in index.html bewusst in Abhängigkeitsreihenfolge
 
 ## Einheitliche Schrift
 
-Alle eigenen Oberflächen verwenden die lokal ausgelieferte Schrift Inter.
+Alle eigenen Oberflächen außer dem Ladebildschirm verwenden die lokal ausgelieferte Schrift Inter.
+Der Ladebildschirm nutzt direkt die Systemschrift des Geräts, ohne Webfont oder Schrift-Ladelogik.
 `styles/fonts.css` definiert die Schriftdateien und die Variable `--scapor-font`.
 Die normalen und kursiven WOFF2-Dateien liegen einschließlich Lizenz in `fonts/`.
 Dieser Ordner muss zusammen mit der Website veröffentlicht werden. Es gibt keine
 externen Schriftanfragen und keine Abhängigkeit von einer lokalen Installation.
-Die reguläre Datei wird auf der Karte und im Ladebildschirm vorgeladen;
+Die reguläre Datei wird auf der Karte vorgeladen;
 Kursiv wird nur geladen, wenn benötigt. Bei einem Ladefehler bleibt Text durch
 eine Sans-Serif-Ersatzschrift lesbar.
 Kartennamen in externen Bildkacheln und native Betriebssystem-Auswahlfenster

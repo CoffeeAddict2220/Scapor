@@ -6,11 +6,11 @@ const { resolve, dirname } = require('node:path');
 const root = resolve(__dirname, '..');
 const read = path => readFileSync(resolve(root, path), 'utf8');
 
-test('Alle HTML-Einstiege verwenden dieselbe lokale Schriftdefinition', () => {
+test('Alle HTML-Einstiege außer dem Ladescreen verwenden dieselbe lokale Schriftdefinition', () => {
     for (const page of [
         'index.html', 'spots.html', 'about/index.html', 'contact/index.html',
         'imprint/index.html', 'privacy/index.html', 'terms/index.html',
-        'loadingUnit/index.html', 'welcome/index.html'
+        'welcome/index.html'
     ]) {
         const match = read(page).match(/<link\b[^>]*href="([^"]*styles\/fonts\.css)"[^>]*>/);
         assert.ok(match, `${page}: Schriftdefinition fehlt`);
@@ -33,8 +33,8 @@ test('Normale und kursive Inter-Dateien sind lokal und als WOFF2 vorhanden', () 
     assert.match(read('fonts/LICENSE.txt'), /SIL OPEN FONT LICENSE/);
 });
 
-test('Eigene Styles enthalten keine abweichenden Schriftfamilien mehr', () => {
-    for (const directory of ['styles', 'loadingUnit', 'welcome']) {
+test('Eigene Styles außerhalb des Ladescreens verwenden weiterhin Inter', () => {
+    for (const directory of ['styles', 'welcome']) {
         for (const file of readdirSync(resolve(root, directory)).filter(name => name.endsWith('.css'))) {
             const css = read(`${directory}/${file}`);
             for (const [, family] of css.matchAll(/font-family:\s*([^;]+);/g)) {
